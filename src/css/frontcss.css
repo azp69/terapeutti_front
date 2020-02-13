@@ -1,0 +1,11 @@
+.jumbotron
+{
+    background-image: url('../images/kiivi2.jpg');
+    background-size: cover;
+    background-position: center center;
+}
+
+.text-shadow
+{
+    text-shadow: 3px 1px #000;
+}

@@ -1,0 +1,17 @@
+.navbar
+{
+    background-color: #5a9089 !important;
+}
+
+.nav-link
+{
+    color: #fff !important;
+    font-size: 1.1em;
+    text-transform:uppercase;
+    
+}
+
+.nav-link:hover
+{
+    color: rgba(255, 255, 255, 0.774) !important;
+}
