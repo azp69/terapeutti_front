@@ -8,6 +8,59 @@ import ProfileCard from './profileCard';
 
 export default function Welcome()
 {
+
+    const profiles = [
+        {
+            "id" : 0,
+            "name" : "Ano Nyymi",
+            "education" : "TtM, laill. ravitsemusterapeutti",
+            "place" : "Kuopio",
+            "email" : "ano@nyymi.net",
+            "phone" : "050-123123",
+            "imageUrl" : "nainen.webp",
+            "experties" : [ 
+                {"id" : "0", "name" : "Urheiluravitsemus"},
+                {"id" : "1", "name" : "Syömishäiriöt"},
+                {"id" : "2", "name" : "Tunnesyöminen"},
+            ]
+        },
+
+        {
+            "id" : 1,
+            "name" : "Maija Mehiläinen",
+            "education" : "TtM, laill. ravitsemusterapeutti",
+            "place" : "Helsinki",
+            "email" : "maija@mehilainen.net",
+            "phone" : "050-1232123",
+            "imageUrl" : "nainen.webp",
+            "experties" : [ 
+                {"id" : "0", "name" : "Urheiluravitsemus"},
+                {"id" : "3", "name" : "Vegaaniravitsemus"},
+                {"id" : "4", "name" : "Ikääntyneen ruokavalio"},
+            ]
+        },
+
+        {
+            "id" : 2,
+            "name" : "Milla Magia",
+            "education" : "TtM, laill. ravitsemusterapeutti",
+            "place" : "Ankkalinna",
+            "email" : "milla@magia.net",
+            "phone" : "050-3333333",
+            "imageUrl" : "Milla_Magia.jpg",
+            "experties" : [ 
+                {"id" : "5", "name" : "Tyypin 1 diabeteksen ravitsemushoito"},
+                {"id" : "6", "name" : "Kasvisruokailijan ravitsemus"},
+                {"id" : "7", "name" : "Arkiruokailu ja elintapaohjaus"},
+                {"id" : "8", "name" : "Painonhallinta ja syömiskäyttäytyminen"},
+            ]
+        }
+    ];
+
+    const renderProfiles = profiles.map((profile) => {
+        return <ProfileCard key={profile.id} id={profile.id} name={profile.name} place={profile.place} education={profile.education} email={profile.email} phone={profile.phone} imageUrl={profile.imageUrl} experties={profile.experties} />
+    });
+
     return (
         <div className="row">
             <div className="col-sm-12 px-0 my-5">
@@ -42,20 +95,7 @@ export default function Welcome()
                     </div>
                 
                 <div className="card-columns my-3">
-                    <ProfileCard />
-                    <ProfileCard />
-                    <ProfileCard />
-                    <ProfileCard />
-                    <ProfileCard />
-                    <ProfileCard />
-                    <ProfileCard />
-                    <ProfileCard />
-                    <ProfileCard />
-                    <ProfileCard />
-                    <ProfileCard />
-                    <ProfileCard />
-                    <ProfileCard />
-                    <ProfileCard />
+                    {renderProfiles}
                 </div>
             </div>
         </div>

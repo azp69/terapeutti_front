@@ -3,19 +3,24 @@ import '../css/profileCard.css';
 
 import Nainen from '../images/nainen.webp';
 
-export default function ProfileCard(props)
+const imgPath = '../images/';
+
+export default function ProfileCard({id, name, place, education, email, phone, imageUrl, experties})
 {
+    const renderExperties = experties.map((expertie) => {
+        return <li key={expertie.id}>{expertie.name}</li>
+    });
+
     return (
         <div className="card profileCard">
             <div className="card-body text-left">
-                <img src={Nainen} className="card-img-top"></img>
-                <p className="text-center">Ano Nyymi</p>
-                <p>Koulutus: TtM, laill. ravitsemusterapeutti</p>
-                <p>Paikkakunta: Kuopio, etäyhteys</p>
+                <img src={require("../images/" + imageUrl)} className="card-img-top"></img>
+                <p className="text-center">{name}</p>
+                <p>Koulutus: {education}</p>
+                <p>Paikkakunta: {place}</p>
                 <p>Pätevyydet</p>
                 <ul>
-                    <li>Urheiluravitsemus</li>
-                    <li>Syömishäiriöt, tunnesyöminen</li>
+                    {renderExperties}
                 </ul>
             </div>
         </div>
