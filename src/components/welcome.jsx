@@ -57,8 +57,31 @@ export default function Welcome()
         }
     ];
 
-    const renderProfiles = profiles.map((profile) => {
+    const expertises = [
+        {"id" : 0, "name" : "Urheiluravitsemus"},
+        {"id" : 1, "name" : "Ikääntyneen ruokavalio"},
+        {"id" : 2, "name" : "Vegaaniravitsemus"},
+        {"id" : 3, "name" : "Syömishäiriöt & tunnesyöminen"},
+        {"id" : 4, "name" : "Tyypin 1 diabeteksen ravitsemushoito"},
+        {"id" : 5, "name" : "Kasvisruokailijan ravitsemus"},
+        {"id" : 6, "name" : "Arkiruokailu ja elintapaohjaus"},
+        {"id" : 7, "name" : "Painonhallinta ja syömiskäyttäytyminen"},
+        {"id" : 8, "name" : "Sydän- ja verisuonitautien ravitsemushoito"},
+        {"id" : 9, "name" : "Suolisto- ja vatsaongelmat"},
+        {"id" : 10, "name" : "Tyypin 2 diabetes ravitsemushoito"},
+        {"id" : 11, "name" : "Keliakia ja allergiat"}
+    ]
+
+    const renderedProfiles = profiles.map((profile) => {
         return <ProfileCard key={profile.id} id={profile.id} name={profile.name} place={profile.place} education={profile.education} email={profile.email} phone={profile.phone} imageUrl={profile.imageUrl} experties={profile.experties} />
+    });
+
+    const renderedExpertises = expertises.map((expertise) => {
+        return (
+        <div key={expertise.id} className="col-sm-12 col-md-6 col-lg-4">
+            <label className="form-check-label"><input type="checkbox" className="form-check-input"></input>{expertise.name}</label>
+        </div>
+        )
     });
 
     return (
@@ -80,22 +103,27 @@ export default function Welcome()
                         <h2 className="my-3">Me olemme ravitsemukseen koulutettu ammattikunta.</h2>
                     </div>
                 </div>
-                
             </div>
 
             <div className="col-sm-12 mt-4 card card-body bg-light">
-                
                 <div className="py-5 punchline my-3 px-5 text-center">
-                    
                     <h5 className="pb-3">Tutustu ravitsemusterapeutteihin ja varaa aika ammattilaiselle.</h5>
                     <div className="form-group mb-0">
                         <label>Etsi nimellä tai kaupungilla</label>
                         <input type="text" className="form-control mr-auto ml-auto" id="usr" style={{maxWidth : "500px"}}/>
+                        <button type="button" className="btn btn-primary my-3" data-toggle="collapse" data-target="#searchFilter">Lisää hakuehtoja</button>
+                        <div className="collapse" id="searchFilter">
+                            <div className="container">
+                                <div className="row text-left">
+                                    {renderedExpertises}
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
                 
                 <div className="card-columns my-3">
-                    {renderProfiles}
+                    {renderedProfiles}
                 </div>
             </div>
         </div>

@@ -1,0 +1,11 @@
+@media (min-width: 576px) {
+    .card-columns.whyTherapyCards {
+        column-count: 1;
+    }
+}
+
+@media (min-width: 992px) {
+    .card-columns.whyTherapyCards {
+        column-count: 2;
+    }
+}

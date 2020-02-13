@@ -1,5 +1,7 @@
 import React from 'react';
 
+import '../css/jumbotron.css';
+
 export default function Jumbotron()
 {
     return (
@@ -8,5 +10,4 @@ export default function Jumbotron()
             <h2 className="text-center text-white">Laillistetut ravitsemusterapeutit</h2>
         </div>
     );
-
 }

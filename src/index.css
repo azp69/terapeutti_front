@@ -4,6 +4,8 @@ body {
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  hyphens:auto;
 }
 
 code {

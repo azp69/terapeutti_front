@@ -22,6 +22,7 @@ export default function ProfileCard({id, name, place, education, email, phone, i
                 <ul>
                     {renderExperties}
                 </ul>
+                <p className="text-center"><button type="button" className="btn btn-primary">Varaa aika</button></p>
             </div>
         </div>
     )
