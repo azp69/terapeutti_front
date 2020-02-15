@@ -12,7 +12,7 @@ export default function ProfileCard({id, name, place, education, email, phone, i
     return (
         <div className="card profileCard">
             <div className="card-body text-left">
-                <img src={require("../images/" + imageUrl)} className="card-img-top"></img>
+                {RenderImage()}
                 <p className="text-center">{name}</p>
                 <p>Koulutus: {education}</p>
                 <p>Paikkakunta: {place}</p>
@@ -27,9 +27,25 @@ export default function ProfileCard({id, name, place, education, email, phone, i
         </div>
     );
 
+    function RenderImage() {
+        try
+        {
+            return <img src={require("../images/" + imageUrl)} className="card-img-top"></img>;
+        }
+        catch {
+            return;
+        }
+        
+    }
+
     function RenderExperties() {
-        return experties.map((expertie) => {
-            return <li key={expertie.id}>{expertie.name}</li>;
-        });
+        try {
+            return experties.map((expertie) => {
+                return <li key={expertie.id}>{expertie.name}</li>;
+            });
+        }
+        catch {
+            return;
+        }
     }
 }

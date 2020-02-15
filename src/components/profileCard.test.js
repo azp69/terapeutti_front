@@ -33,4 +33,8 @@ test('renders content', () => {
     expect(component.container).toHaveTextContent(profile.experties[0].name);
     expect(component.container).toHaveTextContent(profile.experties[1].name);
     expect(component.container).toHaveTextContent(profile.experties[2].name);
+
+    const emptyComponent = render (
+        <ProfileCard />
+    );
 });
