@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    BrowserRouter as Router,
+    
     Link
   } from "react-router-dom";
 
@@ -9,7 +9,6 @@ import '../css/nav.css';
 export default function Nav()
 {
     return (
-        <Router>
             <nav className="navbar navbar-expand-md sticky-top navbar-light">
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                 <span className="navbar-toggler-icon"></span>
@@ -32,6 +31,5 @@ export default function Nav()
                     </ul>
                 </div>
             </nav>
-        </Router>
     );
 }

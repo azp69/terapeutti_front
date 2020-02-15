@@ -11,5 +11,8 @@ test('renders content', () => {
     );
 
     expect(component.container).toHaveTextContent('Etusivu');
-    
+    expect(component.container).toHaveTextContent('Palvelut');
+    expect(component.container).toHaveTextContent('Miksi ravitsemusterapiaan');
+    expect(component.container).toHaveTextContent('Ota yhteyttä');
+
 });
