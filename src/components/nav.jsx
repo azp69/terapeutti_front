@@ -5,7 +5,7 @@ import {
 
 import '../css/nav.css';
 
-export default function Nav({pageHandler})
+export default function Nav()
 {
     return (
         <nav className="navbar navbar-expand-md sticky-top navbar-light">

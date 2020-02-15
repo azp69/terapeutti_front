@@ -14,12 +14,10 @@ import WhyTherapy from './components/whyTherapy.jsx';
 
 function App() {
 
-  const [page, setPage] = useState("home");
-
   return (
     <Router>
       <Jumbotron />
-      <Nav pageHandler={changePage} />
+      <Nav />
       <div className="container">
         <Switch>
           <Route path="/palvelut">
@@ -41,29 +39,6 @@ function App() {
       </div>
     </Router>
   );
-
-  function Content()
-  {
-    switch (page)
-    {
-      case "home":
-        return <Welcome />
-      
-      case "services":
-        return <Services />
-      
-      case "why":
-        return <WhyTherapy />
-
-      default:
-        return <Welcome />
-    }
-  }
-
-  function changePage(newPage)
-  {
-    setPage(newPage);
-  }
 
 }
 
