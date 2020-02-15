@@ -72,17 +72,9 @@ export default function Welcome()
         {"id" : 11, "name" : "Keliakia ja allergiat"}
     ]
 
-    const renderedProfiles = profiles.map((profile) => {
-        return <ProfileCard key={profile.id} id={profile.id} name={profile.name} place={profile.place} education={profile.education} email={profile.email} phone={profile.phone} imageUrl={profile.imageUrl} experties={profile.experties} />
-    });
+    const renderedProfiles = RenderProfiles();
 
-    const renderedExpertises = expertises.map((expertise) => {
-        return (
-        <div key={expertise.id} className="col-sm-12 col-md-6 col-lg-4">
-            <label className="form-check-label"><input type="checkbox" className="form-check-input"></input>{expertise.name}</label>
-        </div>
-        )
-    });
+    const renderedExpertises = RenderExpertises();
 
     return (
         <div className="row">
@@ -128,4 +120,18 @@ export default function Welcome()
             </div>
         </div>
     )
+
+    function RenderExpertises() {
+        return expertises.map((expertise) => {
+            return (<div key={expertise.id} className="col-sm-12 col-md-6 col-lg-4">
+                <label className="form-check-label"><input type="checkbox" className="form-check-input"></input>{expertise.name}</label>
+            </div>);
+        });
+    }
+
+    function RenderProfiles() {
+        return profiles.map((profile) => {
+            return <ProfileCard key={profile.id} {...profile} />;
+        });
+    }
 }

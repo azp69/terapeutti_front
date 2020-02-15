@@ -1,12 +1,9 @@
 import React from 'react';
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
     Link
   } from "react-router-dom";
 
-import navCss from '../css/nav.css';
+import '../css/nav.css';
 
 export default function Nav({pageHandler})
 {

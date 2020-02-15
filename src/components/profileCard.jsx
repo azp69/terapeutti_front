@@ -7,6 +7,8 @@ const imgPath = '../images/';
 
 export default function ProfileCard({id, name, place, education, email, phone, imageUrl, experties})
 {
+    const renderedExperties = RenderExperties();
+
     return (
         <div className="card profileCard">
             <div className="card-body text-left">
@@ -16,7 +18,7 @@ export default function ProfileCard({id, name, place, education, email, phone, i
                 <p>Paikkakunta: {place}</p>
                 <p>Pätevyydet</p>
                 <ul>
-                    {RenderExperties()}
+                    {renderedExperties}
                 </ul>
                 <p className="text-center"><button type="button" className="btn btn-primary">Varaa aika</button></p>
             </div>
