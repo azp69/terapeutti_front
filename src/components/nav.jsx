@@ -15,17 +15,17 @@ export default function Nav()
 
             <div className="collapse navbar-collapse justify-content-center" id="collapsibleNavbar">
                 <ul className="navbar-nav">
-                    <li className="nav-link">
-                        <Link to="/" className="nav-link">Etusivu</Link>
+                    <li className="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show">
+                        <Link to="/" className="nav-link" >Etusivu</Link>
                     </li>
-                    <li className="nav-link">
-                        <Link to="/palvelut" className="nav-link">Palvelut</Link>
+                    <li className="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show">
+                        <Link to="/palvelut" className="nav-link" >Palvelut</Link>
                     </li>
-                    <li className="nav-link">
-                        <Link to="/miksi" className="nav-link">Miksi ravitsemusterapiaan</Link>
+                    <li className="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show">
+                        <Link to="/miksi" className="nav-link" >Miksi ravitsemusterapiaan</Link>
                     </li>
-                    <li className="nav-link">
-                        <Link to="/yhteytta" className="nav-link">Ota yhteyttä</Link>
+                    <li className="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show">
+                        <Link to="/yhteytta" className="nav-link" >Ota yhteyttä</Link>
                     </li>
                 </ul>
             </div>
