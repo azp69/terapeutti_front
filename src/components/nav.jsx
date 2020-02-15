@@ -25,7 +25,7 @@ export default function Nav()
                         <Link to="/miksi" className="nav-link" >Miksi ravitsemusterapiaan</Link>
                     </li>
                     <li className="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show">
-                        <Link to="/yhteytta" className="nav-link" >Ota yhteyttä</Link>
+                        <Link to="/yhteys" className="nav-link" >Ota yhteyttä</Link>
                     </li>
                 </ul>
             </div>

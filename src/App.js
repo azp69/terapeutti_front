@@ -10,7 +10,8 @@ import Jumbotron from './components/jumbotron';
 import Nav from './components/nav';
 import Welcome from './components/welcome';
 import Services from './components/services';
-import WhyTherapy from './components/whyTherapy.jsx';
+import WhyTherapy from './components/whyTherapy';
+import Contact from './components/contact';
 
 function App() {
 
@@ -26,6 +27,10 @@ function App() {
 
           <Route path="/miksi">
             <WhyTherapy />
+          </Route>
+
+          <Route path="/yhteys">
+            <Contact />
           </Route>
 
           <Route path="/">

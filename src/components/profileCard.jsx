@@ -16,6 +16,8 @@ export default function ProfileCard({id, name, place, education, email, phone, i
                 <p className="text-center">{name}</p>
                 <p>Koulutus: {education}</p>
                 <p>Paikkakunta: {place}</p>
+                <p>Puhnro: {phone}</p>
+                <p>Sähköposti: {email}</p>
                 <p>Pätevyydet</p>
                 <ul>
                     {renderedExperties}

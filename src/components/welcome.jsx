@@ -78,7 +78,7 @@ export default function Welcome()
 
     return (
         <div className="row">
-            <div className="col-sm-12 px-0 my-5">
+            <div className="col-sm-12 px-0 my-4">
                 <div className="card-columns">
                     <div className="card card-body bg-light text-center mt-4" style={{minHeight : "350px"}}>
                         <i className='fas fa-apple-alt pb-3' style={{fontSize:"4em", color : "#c1727b"}}></i>
