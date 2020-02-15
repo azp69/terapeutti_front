@@ -1,4 +1,11 @@
 import React from 'react';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+  } from "react-router-dom";
+
 import navCss from '../css/nav.css';
 
 export default function Nav({pageHandler})
@@ -12,16 +19,16 @@ export default function Nav({pageHandler})
             <div className="collapse navbar-collapse justify-content-center" id="collapsibleNavbar">
                 <ul className="navbar-nav">
                     <li className="nav-link">
-                        <a className="nav-link" href="#" onClick={() => pageHandler('home')} data-toggle="collapse" data-target=".navbar-collapse.show">Etusivu</a>
+                        <Link to="/" className="nav-link">Etusivu</Link>
                     </li>
                     <li className="nav-link">
-                        <a className="nav-link" href="#" onClick={() => pageHandler('services')} data-toggle="collapse" data-target=".navbar-collapse.show">Palvelut</a>
+                        <Link to="/palvelut" className="nav-link">Palvelut</Link>
                     </li>
                     <li className="nav-link">
-                        <a className="nav-link" href="#" onClick={() => pageHandler('why')} data-toggle="collapse" data-target=".navbar-collapse.show">Miksi ravitsemusterapiaan</a>
+                        <Link to="/miksi" className="nav-link">Miksi ravitsemusterapiaan</Link>
                     </li>
                     <li className="nav-link">
-                        <a className="nav-link" href="#" onClick={() => pageHandler('contact')} data-toggle="collapse" data-target=".navbar-collapse.show">Ota yhteyttä</a>
+                        <Link to="/yhteytta" className="nav-link">Ota yhteyttä</Link>
                     </li>
                 </ul>
             </div>

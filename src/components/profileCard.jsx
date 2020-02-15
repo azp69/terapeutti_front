@@ -7,10 +7,6 @@ const imgPath = '../images/';
 
 export default function ProfileCard({id, name, place, education, email, phone, imageUrl, experties})
 {
-    const renderExperties = experties.map((expertie) => {
-        return <li key={expertie.id}>{expertie.name}</li>
-    });
-
     return (
         <div className="card profileCard">
             <div className="card-body text-left">
@@ -20,10 +16,16 @@ export default function ProfileCard({id, name, place, education, email, phone, i
                 <p>Paikkakunta: {place}</p>
                 <p>Pätevyydet</p>
                 <ul>
-                    {renderExperties}
+                    {RenderExperties()}
                 </ul>
                 <p className="text-center"><button type="button" className="btn btn-primary">Varaa aika</button></p>
             </div>
         </div>
-    )
+    );
+
+    function RenderExperties() {
+        return experties.map((expertie) => {
+            return <li key={expertie.id}>{expertie.name}</li>;
+        });
+    }
 }
