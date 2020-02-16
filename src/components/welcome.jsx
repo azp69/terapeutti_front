@@ -1,13 +1,21 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import '../css/welcome.css';
 
 import ProfileCard from './profileCard';
 import NutricianSearchAPICall from '../services/nutricianSearch';
+import ExpertiesAPICall from '../services/getExperties';
+
 
 
 export default function Welcome()
 {
+    const [experties, setExperties] = useState();
+
+    
+    useEffect(() => {
+        ExpertiesAPICall(setExperties);
+    },[]);
 
     const profiles = [
         {
@@ -163,11 +171,20 @@ export default function Welcome()
     }
 
     function RenderExpertises() {
-        return expertises.map((expertise) => {
-            return (<div key={expertise.id} className="col-sm-12 col-md-6 col-lg-4">
-                <label className="form-check-label"><input type="checkbox" className="form-check-input" id={expertise.id} name='expertise'></input>{expertise.name}</label>
-            </div>);
-        });
+        
+
+        try {
+            return experties.map((expertise) => {
+                return (<div key={expertise.id} className="col-sm-12 col-md-6 col-lg-4">
+                    <label className="form-check-label"><input type="checkbox" className="form-check-input" id={expertise.id} name='expertise'></input>{expertise.name}</label>
+                </div>);
+            });
+        }
+        catch
+        {
+            return null;
+        }
+        
     }
 
     function RenderProfiles(profiles)

@@ -1,4 +1,19 @@
 {
+    "experties" : [
+      {"id" : 0, "name" : "Urheiluravitsemus"},
+      {"id" : 1, "name" : "Ikääntyneen ruokavalio"},
+      {"id" : 2, "name" : "Vegaaniravitsemus"},
+      {"id" : 3, "name" : "Syömishäiriöt & tunnesyöminen"},
+      {"id" : 4, "name" : "Tyypin 1 diabeteksen ravitsemushoito"},
+      {"id" : 5, "name" : "Kasvisruokailijan ravitsemus"},
+      {"id" : 6, "name" : "Arkiruokailu ja elintapaohjaus"},
+      {"id" : 7, "name" : "Painonhallinta ja syömiskäyttäytyminen"},
+      {"id" : 8, "name" : "Sydän- ja verisuonitautien ravitsemushoito"},
+      {"id" : 9, "name" : "Suolisto- ja vatsaongelmat"},
+      {"id" : 10, "name" : "Tyypin 2 diabetes ravitsemushoito"},
+      {"id" : 11, "name" : "Keliakia ja allergiat"}
+    ],
+    
     "nutricians" : [
       {
         "id" : 0,
@@ -10,8 +25,8 @@
         "imageUrl" : "nainen.webp",
         "experties" : [ 
             {"id" : "0", "name" : "Urheiluravitsemus"},
-            {"id" : "1", "name" : "Syömishäiriöt"},
-            {"id" : "2", "name" : "Tunnesyöminen"}
+            {"id" : "1", "name" : "Ikääntyneen ruokavalio"},
+            {"id" : "2", "name" : "Vegaaniravitsemus"}
         ]
       },
 
@@ -25,8 +40,8 @@
           "imageUrl" : "nainen.webp",
           "experties" : [ 
               {"id" : "0", "name" : "Urheiluravitsemus"},
-              {"id" : "3", "name" : "Vegaaniravitsemus"},
-              {"id" : "4", "name" : "Ikääntyneen ruokavalio"}
+              {"id" : "3", "name" : "Syömishäiriöt & tunnesyöminen"},
+              {"id" : "4", "name" : "Tyypin 1 diabeteksen ravitsemushoito"}
           ]
       },
 
@@ -39,10 +54,10 @@
           "phone" : "050-3333333",
           "imageUrl" : "Milla_Magia.jpg",
           "experties" : [ 
-              {"id" : "5", "name" : "Tyypin 1 diabeteksen ravitsemushoito"},
-              {"id" : "6", "name" : "Kasvisruokailijan ravitsemus"},
-              {"id" : "7", "name" : "Arkiruokailu ja elintapaohjaus"},
-              {"id" : "8", "name" : "Painonhallinta ja syömiskäyttäytyminen"}
+              {"id" : "5", "name" : "Kasvisruokailijan ravitsemus"},
+              {"id" : 6, "name" : "Arkiruokailu ja elintapaohjaus"},
+              {"id" : 7, "name" : "Painonhallinta ja syömiskäyttäytyminen"},
+              {"id" : 8, "name" : "Sydän- ja verisuonitautien ravitsemushoito"}
           ]
       }
     ]
