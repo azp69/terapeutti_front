@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import '../css/welcome.css';
 
 import ProfileCard from './profileCard';
-
+import NutricianSearchAPICall from '../services/nutricianSearch';
 
 
 export default function Welcome()
@@ -103,39 +103,64 @@ export default function Welcome()
     }
 
     function NutricianSearch() {
+
+        const [nutricianProfiles, setNutricianProfiles] = useState();
+        console.log(nutricianProfiles);
         return (
             <div className="col-sm-12 mt-4 card card-body bg-light">
-                <SearchBox />
-                <Results />
+                <SearchBox profileDataUpdateFunction={setNutricianProfiles} />
+                
+                <Results profileData={nutricianProfiles} />
             </div>
         )
+
     }
 
-    function Results() {
+    function Results({profileData}) 
+    {
+        const renderedProfiles = RenderProfiles(profileData);
+
         return <div className="card-columns my-3">
             {renderedProfiles}
         </div>;
     }
 
-    function SearchBox() {
-        
+    function SearchBox(props) {
+        const profileDataUpdateFunction = props.profileDataUpdateFunction;
+
         return (
             <div className="py-5 punchline my-3 px-5 text-center">
                 <h5 className="pb-3">Tutustu ravitsemusterapeutteihin ja varaa aika ammattilaiselle.</h5>
                 <div className="form-group mb-0">
-                    <label>Etsi nimellä tai kaupungilla</label>
-                    <input type="text" className="form-control mr-auto ml-auto" id="searchBox" name='searchBox' style={{ maxWidth: "500px" }} />
-                    <button type="button" className="btn btn-primary my-3" data-toggle="collapse" data-target="#searchFilter">Lisää hakuehtoja</button>
-                    <div className="collapse" id="searchFilter">
-                        <div className="container">
-                            <div className="row text-left">
-                                {renderedExpertises}
+                    <form>
+                        <label>Etsi nimellä tai kaupungilla</label>
+                        <input type="text" className="form-control mr-auto ml-auto" id="searchBox" name='searchBox' style={{ maxWidth: "500px" }} />
+                        <div className="mt-3" id="searchFilter">
+                            <div className="container">
+                                <div className="row text-left">
+                                    <RenderExpertises />
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <button type="submit" className="btn btn-primary mt-3" onClick={(e) => submitForm(e, profileDataUpdateFunction)}>Etsi terapeutteja</button>
+                    </form>
                 </div>
             </div>
         );
+    }
+
+    function submitForm(e, profileDataUpdateFunction)
+    {
+        e.preventDefault();
+        console.log(e.target.parentElement.searchBox.value);
+        // console.log(e.target.parentElement.expertise[2].id);
+
+        const checkBoxes = e.target.parentElement.expertise;
+
+        checkBoxes.forEach((c) => {
+            if (c.checked) console.log(c.id);
+        });
+        NutricianSearchAPICall(profileDataUpdateFunction);
     }
 
     function RenderExpertises() {
@@ -146,10 +171,17 @@ export default function Welcome()
         });
     }
 
-    function RenderProfiles() {
-        return profiles.map((profile) => {
-            return <ProfileCard key={profile.id} {...profile} />;
-        });
+    function RenderProfiles(profiles)
+    {
+        try {
+            return profiles.map((profile) => {
+                return <ProfileCard key={profile.id} {...profile} />;
+            });
+        }
+        catch {
+            return null;
+        }
+        
     }
 
     
