@@ -1,11 +1,10 @@
-import React from 'react';
 import axios from 'axios';
 
 export default function NutricianSearchAPICall(profileDataUpdateFunction, searchParams)
 {
-    axios.get('https://terapia.palikka.org/api.php')
+    axios.get(`http://localhost:3001/nutricians/?q=${searchParams ? searchParams : ''}`)
     .then(response => {
-        console.log(response.data);
+        console.log("API Response: ", response.data);
         profileDataUpdateFunction(response.data);
     })
     .catch(error => {

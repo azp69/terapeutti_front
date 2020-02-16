@@ -105,7 +105,6 @@ export default function Welcome()
     function NutricianSearch() {
 
         const [nutricianProfiles, setNutricianProfiles] = useState();
-        console.log(nutricianProfiles);
         return (
             <div className="col-sm-12 mt-4 card card-body bg-light">
                 <SearchBox profileDataUpdateFunction={setNutricianProfiles} />
@@ -121,7 +120,7 @@ export default function Welcome()
         const renderedProfiles = RenderProfiles(profileData);
 
         return <div className="card-columns my-3">
-            {renderedProfiles}
+            {renderedProfiles ? renderedProfiles : <h1>Ei tuloksia</h1>}
         </div>;
     }
 
@@ -160,7 +159,7 @@ export default function Welcome()
         checkBoxes.forEach((c) => {
             if (c.checked) console.log(c.id);
         });
-        NutricianSearchAPICall(profileDataUpdateFunction);
+        NutricianSearchAPICall(profileDataUpdateFunction, e.target.parentElement.searchBox.value);
     }
 
     function RenderExpertises() {
