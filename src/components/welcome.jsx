@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import '../css/welcome.css';
 
@@ -78,53 +78,70 @@ export default function Welcome()
 
     return (
         <div className="row">
-            <div className="col-sm-12 px-0 my-4">
-                <div className="card-columns">
-                    <div className="card card-body bg-light text-center mt-4" style={{minHeight : "350px"}}>
-                        <i className='fas fa-apple-alt pb-3' style={{fontSize:"4em", color : "#c1727b"}}></i>
-                        <h2 className="my-3">Etsitkö luotettavaa tietoa ruokailuun tai syömiseen liittyvissä kysymyksissä?</h2>
-                    </div>
-                    
-                    <div className="card card-body bg-light text-center mt-4" style={{minHeight : "350px"}}>
-                        <i className='fas fa-carrot pb-3' style={{fontSize:"4em", color : "#c1727b"}}></i>
-                        <h2 className="my-3">Onko sinulla tai läheiselläsi haasteita ruoansulatuksen tai erityisruokavalioiden kanssa?</h2>
-                    </div>
+            <HeaderCards />
+            <NutricianSearch />
+        </div>
+    )
 
-                    <div className="card card-body bg-light text-center mt-4" style={{minHeight : "350px"}}>
-                        <i className='fas fa-seedling pb-3' style={{fontSize:"4em", color : "#c1727b"}}></i>
-                        <h2 className="my-3">Me olemme ravitsemukseen koulutettu ammattikunta.</h2>
-                    </div>
-                </div>
+    function HeaderCards() {
+        return <div className="col-sm-12 px-0 my-4">
+            <div className="card-columns">
+                <HeaderCard icon='fa-apple-alt' text='Etsitkö luotettavaa tietoa ruokailuun tai syömiseen liittyvissä kysymyksissä?' />
+                <HeaderCard icon='fa-carrot' text='Onko sinulla tai läheiselläsi haasteita ruoansulatuksen tai erityisruokavalioiden kanssa?' />
+                <HeaderCard icon='fa-seedling' text='Me olemme ravitsemukseen koulutettu ammattikunta.' />
             </div>
+        </div>;
+    }
 
+    function HeaderCard({icon, text}) {
+        return (
+            <div className="card card-body bg-light text-center mt-4" style={{ minHeight: "350px" }}>
+                <i className={`fas pb-3 ${icon}`} style={{ fontSize: "4em", color: "#c1727b" }}></i>
+                <h2 className="my-3">{text}</h2>
+            </div>
+        )
+    }
+
+    function NutricianSearch() {
+        return (
             <div className="col-sm-12 mt-4 card card-body bg-light">
-                <div className="py-5 punchline my-3 px-5 text-center">
-                    <h5 className="pb-3">Tutustu ravitsemusterapeutteihin ja varaa aika ammattilaiselle.</h5>
-                    <div className="form-group mb-0">
-                        <label>Etsi nimellä tai kaupungilla</label>
-                        <input type="text" className="form-control mr-auto ml-auto" id="usr" style={{maxWidth : "500px"}}/>
-                        <button type="button" className="btn btn-primary my-3" data-toggle="collapse" data-target="#searchFilter">Lisää hakuehtoja</button>
-                        <div className="collapse" id="searchFilter">
-                            <div className="container">
-                                <div className="row text-left">
-                                    {renderedExpertises}
-                                </div>
+                <SearchBox />
+                <Results />
+            </div>
+        )
+    }
+
+    function Results() {
+        return <div className="card-columns my-3">
+            {renderedProfiles}
+        </div>;
+    }
+
+    function SearchBox() {
+        
+        return (
+            <div className="py-5 punchline my-3 px-5 text-center">
+                <h5 className="pb-3">Tutustu ravitsemusterapeutteihin ja varaa aika ammattilaiselle.</h5>
+                <div className="form-group mb-0">
+                    <label>Etsi nimellä tai kaupungilla</label>
+                    <input type="text" className="form-control mr-auto ml-auto" id="searchBox" name='searchBox' style={{ maxWidth: "500px" }} />
+                    <button type="button" className="btn btn-primary my-3" data-toggle="collapse" data-target="#searchFilter">Lisää hakuehtoja</button>
+                    <div className="collapse" id="searchFilter">
+                        <div className="container">
+                            <div className="row text-left">
+                                {renderedExpertises}
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <div className="card-columns my-3">
-                    {renderedProfiles}
-                </div>
             </div>
-        </div>
-    )
+        );
+    }
 
     function RenderExpertises() {
         return expertises.map((expertise) => {
             return (<div key={expertise.id} className="col-sm-12 col-md-6 col-lg-4">
-                <label className="form-check-label"><input type="checkbox" className="form-check-input"></input>{expertise.name}</label>
+                <label className="form-check-label"><input type="checkbox" className="form-check-input" id={expertise.id} name='expertise'></input>{expertise.name}</label>
             </div>);
         });
     }
@@ -134,4 +151,6 @@ export default function Welcome()
             return <ProfileCard key={profile.id} {...profile} />;
         });
     }
+
+    
 }
