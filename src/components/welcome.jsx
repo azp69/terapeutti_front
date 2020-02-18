@@ -141,7 +141,7 @@ export default function Welcome()
                 <div className="form-group mb-0">
                     <form>
                         <label>Etsi nimellä tai kaupungilla</label>
-                        <input type="text" className="form-control mr-auto ml-auto" id="searchBox" name='searchBox' style={{ maxWidth: "500px" }} />
+                        <input type="text" onChange={(e) => submitForm(e, profileDataUpdateFunction)} className="form-control mr-auto ml-auto" id="searchBox" name='searchBox' style={{ maxWidth: "500px" }} />
                         <div className="mt-3" id="searchFilter">
                             <div className="container">
                                 <div className="row text-left">
