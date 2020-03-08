@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
+import * as Helper from './helper';
 
 import '../css/welcome.css';
 
 import ProfileCard from './profileCard';
-import NutricianSearchAPICall from '../services/nutricianSearch';
 import ExpertiesAPICall from '../services/getExperties';
-
+import * as DieticianAPI from '../services/dieticianAPI';
 
 
 export default function Welcome()
@@ -16,6 +16,7 @@ export default function Welcome()
     useEffect(() => {
         ExpertiesAPICall(setExperties);
     },[]);
+    
 
     const profiles = [
         {
@@ -80,14 +81,10 @@ export default function Welcome()
         {"id" : 11, "name" : "Keliakia ja allergiat"}
     ]
 
-    const renderedProfiles = RenderProfiles();
-
-    const renderedExpertises = RenderExpertises();
-
     return (
         <div className="row">
             <HeaderCards />
-            <NutricianSearch />
+            <DieticianSearch />
         </div>
     )
 
@@ -110,9 +107,10 @@ export default function Welcome()
         )
     }
 
-    function NutricianSearch() {
+    function DieticianSearch() {
 
         const [nutricianProfiles, setNutricianProfiles] = useState();
+
         return (
             <div className="col-sm-12 mt-4 card card-body bg-light">
                 <SearchBox profileDataUpdateFunction={setNutricianProfiles} />
@@ -163,11 +161,22 @@ export default function Welcome()
         // console.log(e.target.parentElement.expertise[2].id);
 
         const checkBoxes = e.target.parentElement.expertise;
+        let checkedExperties = [];
 
         checkBoxes.forEach((c) => {
-            if (c.checked) console.log(c.id);
+            if (c.checked) checkedExperties.push(c.id);
         });
-        NutricianSearchAPICall(profileDataUpdateFunction, e.target.parentElement.searchBox.value);
+
+        let searchParams = [];
+        searchParams.push({"query": e.target.parentElement.searchBox.value});
+        searchParams.push({"experties" : checkedExperties});
+        const search = {"searchparams" : searchParams};
+
+        Helper.log(JSON.stringify(search));
+        // Helper.log(checkedExperties);
+
+        // DieticianSearchAPICall(profileDataUpdateFunction, e.target.parentElement.searchBox.value);
+        DieticianAPI.search(profileDataUpdateFunction, e.target.parentElement.searchBox.value);
     }
 
     function RenderExpertises() {
@@ -189,13 +198,22 @@ export default function Welcome()
 
     function RenderProfiles(profiles)
     {
+        // console.log(profiles);
+
         try {
             return profiles.map((profile) => {
                 return <ProfileCard key={profile.id} {...profile} />;
             });
         }
         catch {
-            return null;
+
+            try {
+                return <ProfileCard key={profiles.id} {...profiles} />
+            }
+            catch {
+                console.log("error");
+                return null;
+            }
         }
         
     }

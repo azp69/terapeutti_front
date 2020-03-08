@@ -12,6 +12,7 @@ import Welcome from './components/welcome';
 import Services from './components/services';
 import WhyTherapy from './components/whyTherapy';
 import Contact from './components/contact';
+import ProfilePage from './components/profilePage';
 
 function App() {
 
@@ -31,6 +32,10 @@ function App() {
 
           <Route path="/yhteys">
             <Contact />
+          </Route>
+
+          <Route path="/terapeutit">
+            <ProfilePage />
           </Route>
 
           <Route path="/">

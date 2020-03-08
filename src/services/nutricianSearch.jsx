@@ -2,11 +2,11 @@ import axios from 'axios';
 
 export default function NutricianSearchAPICall(callBack, searchParams)
 {
-    const debugMode = false;
+    const devMode = false;
 
-    const url = debugMode ? `http://palikka.org:3001/nutricians/?q=${searchParams ? searchParams : ''}` : `http://localhost:3001/nutricians/?q=${searchParams ? searchParams : ''}`;
+    const url = !devMode ? `https://api.terapia.palikka.org/api/dieticians/?q=${searchParams ? searchParams : ''}` : `http://localhost:3001/nutricians/?q=${searchParams ? searchParams : ''}`;
 
-    axios.get(url)
+    axios.get(url, {crossdomain: true})
     .then(response => {
         console.log("Nutrician API Response: ", response.data);
         callBack(response.data);

@@ -4,7 +4,7 @@ export default function ExpertiesAPICall(callBack, searchParams)
 {
     const debugMode = false;
 
-    const url = debugMode ? `http://palikka.org:3001/experties/?q=${searchParams ? searchParams : ''}` : `http://localhost:3001/experties/?q=${searchParams ? searchParams : ''}`;
+    const url = debugMode ? `http://palikka.org:3001/expertises/?q=${searchParams ? searchParams : ''}` : `http://localhost:3001/api/expertises/?q=${searchParams ? searchParams : ''}`;
 
     axios.get(url)
     .then(response => {
