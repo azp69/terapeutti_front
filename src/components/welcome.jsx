@@ -11,7 +11,6 @@ import * as DieticianAPI from '../services/dieticianAPI';
 export default function Welcome()
 {
     const [experties, setExperties] = useState();
-
     
     useEffect(() => {
         ExpertiesAPICall(setExperties);
@@ -166,22 +165,24 @@ export default function Welcome()
         checkBoxes.forEach((c) => {
             if (c.checked) checkedExperties.push(c.id);
         });
+        
+        const searchParams = {
+            searchparams : {
+                query : e.target.parentElement.searchBox.value,
+                expertises : checkedExperties
+            }
+        };
 
-        let searchParams = [];
-        searchParams.push({"query": e.target.parentElement.searchBox.value});
-        searchParams.push({"experties" : checkedExperties});
-        const search = {"searchparams" : searchParams};
-
-        Helper.log(JSON.stringify(search));
+        // Helper.log(JSON.stringify(search));
         // Helper.log(checkedExperties);
 
         // DieticianSearchAPICall(profileDataUpdateFunction, e.target.parentElement.searchBox.value);
-        DieticianAPI.search(profileDataUpdateFunction, e.target.parentElement.searchBox.value);
+        console.log("s", searchParams.searchparams.query);
+
+        DieticianAPI.search(profileDataUpdateFunction, searchParams);
     }
 
     function RenderExpertises() {
-        
-
         try {
             return experties.map((expertise) => {
                 return (<div key={expertise.id} className="col-sm-12 col-md-6 col-lg-4">
@@ -198,8 +199,6 @@ export default function Welcome()
 
     function RenderProfiles(profiles)
     {
-        // console.log(profiles);
-
         try {
             return profiles.map((profile) => {
                 return <ProfileCard key={profile.id} {...profile} />;
@@ -215,8 +214,6 @@ export default function Welcome()
                 return null;
             }
         }
-        
     }
-
     
 }

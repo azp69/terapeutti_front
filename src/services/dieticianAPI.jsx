@@ -7,7 +7,11 @@ const devUrl = 'http://localhost:3001/';
 
 export function search(callBack, params, data)
 {
-    const url = devMode ? `${devUrl}api/dieticians/${params}` : `${releaseUrl}api/dieticians/${params}`;
+    const query = `?query=${params.searchparams.query}&expertises=[${params.searchparams.expertises}]`;
+    console.log("search: ", query);
+    
+    
+    const url = devMode ? `${devUrl}api/dieticians/${query}` : `${releaseUrl}api/dieticians/${query}`;
 
     axios.get(url)
     .then(response => {
