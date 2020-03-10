@@ -28,6 +28,9 @@ export default function Nav()
                         <li className="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show">
                             <Link to="/yhteys" className="nav-link">Ota yhteyttä</Link>
                         </li>
+                        <li className="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show">
+                            <Link to="/rekisteroidy" className="nav-link">Rekisteröidy</Link>
+                        </li>
                     </ul>
                 </div>
             </nav>

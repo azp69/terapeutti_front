@@ -13,6 +13,7 @@ import Services from './components/services';
 import WhyTherapy from './components/whyTherapy';
 import Contact from './components/contact';
 import ProfilePage from './components/profilePage';
+import Register from './components/register';
 
 function App() {
 
@@ -36,6 +37,10 @@ function App() {
 
           <Route path="/terapeutit">
             <ProfilePage />
+          </Route>
+
+          <Route path="/rekisteroidy">
+            <Register />
           </Route>
 
           <Route path="/">
