@@ -52,6 +52,7 @@ export function add(callBack, data)
     })
     .catch(error => {
         console.log(error);
+        callBack(error.response.data);
     });
 }
 

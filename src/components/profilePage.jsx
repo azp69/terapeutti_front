@@ -31,7 +31,7 @@ export default function ProfilePage()
             });
         }
         catch {
-            return (<p>Virhe ladattaessa..</p>);
+            return (<p>Ei määriteltyjä erikoisosaamisia.</p>);
         }
     }
 

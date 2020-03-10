@@ -1,93 +1,113 @@
-import React from 'react';
+import React, {useState} from 'react';
 import * as DieticianAPI from '../services/dieticianAPI';
 
 import '../css/welcome.css';
+import '../css/textInput.css';
 
 export default function Register(){
 
-  return (
+    const [errors, setErrors] = useState(
+        {
+            'Name' : '',
+            'Place' : '',
+            'Education' : '',
+            'Phone' : '',
+            'Email' : ''
+        }
+    );
+
+    return (
     <div>
-      <div className="row">
-          <div className="col-sm-12 mt-5 card card-body bg-light">
-              <div className="py-5 my-3 px-5 text-center">
-                  <h1>Oletko laillistettu ravitsemusterapeutti?</h1>
-                  <h2>Rekisteröidy sivuillemme alla olevalla lomakkeella ja liity mukaan toimintaan!</h2>
-              </div>
-          </div>
-       </div>
+        <div className="row">
+            <div className="col-sm-12 mt-5 card card-body bg-light">
+                <div className="py-5 my-3 px-5 text-center">
+                    <h1>Oletko laillistettu ravitsemusterapeutti?</h1>
+                    <h2>Rekisteröidy sivuillemme alla olevalla lomakkeella ja liity mukaan toimintaan!</h2>
+                </div>
+            </div>
+        </div>
 
-       <div className="row">
-       <div className="col-sm-12 mt-5 card card-body bg-light">
-           <div className="py-5 my-3 px-5 text-center">
-              <form>
+        <div className="row">
+        <div className="col-sm-12 mt-5 card card-body bg-light">
+            <div className="py-5 my-3 px-5 text-center">
+                <form>
 
-              <div className="form-group">
-                  <div className="row">
+                <div className="form-group">
+                    <div className="row">
                     <div className="col">
-                      <label for="EtunimiInput">Etunimi</label>
-                      <input type="text" className="form-control" id="FirstnameInput" placeholder="Syötä etunimi"/>
+                        <TextInput id="Firstname" label="Etunimi" placeholder="Syötä etunimi" error={errors.name ? errors.name : ''} />
                     </div>
 
                     <div className="col">
-                      <label for="SukunimiInput">Sukunimi</label>
-                      <input type="text" className="form-control" id="LastnameInput" placeholder="Syötä sukunimi"/>
+                        <TextInput id="Lastname" label="Sukunimi" placeholder="Syötä sukunimi" error={errors.name ? errors.name : ''} />
                     </div>
                 </div>
-              </div>
+                </div>
 
-              <div className="form-group">
-                <label for="FormControlSelect1">Toimipaikka</label>
+                <div className="form-group">
+                <label htmlFor="FormControlSelect1">Toimipaikka</label>
                 <select className="form-control" id="FormControlSelect1">
-                  <option>Helsinki</option>
-                  <option>Vantaa</option>
-                  <option>Espoo</option>
-                  <option>Kuopio</option>
-                  <option>Oulu</option>
+                    <option>Helsinki</option>
+                    <option>Vantaa</option>
+                    <option>Espoo</option>
+                    <option>Kuopio</option>
+                    <option>Oulu</option>
                 </select>
-              </div>
-
-              <div className="form-group">
-              <label for="EducationInput">Koulutus</label>
-              <input type="text" className="form-control" id="EducationInput" placeholder="Syötä koulutus"/>
-              </div>
-
-              <div className="form-group">
-              <label for="PhoneInput">Puhelinnumero</label>
-              <input type="text" className="form-control" id="PhoneInput" placeholder="Syötä puhelinnumero"/>
-              </div>
-
-            <div className="form-group">
-            <label for="EmailInput">Sähköposti</label>
-            <input type="email" className="form-control" id="EmailInput" aria-describedby="emailHelp" placeholder="Syötä sähköpostiosoite"/>
-            </div>
-
-            <div className="form-group">
-            <label for="PasswordInput">Salasana</label>
-            <input type="password" className="form-control" id="PasswordInput" placeholder="Syötä salasana"/>
-            </div>
-
-              <div className="form-group">
-                <div className="form-check">
-                  <input className="form-check-input" type="checkbox" value="hyvaksy1" id="hyvaksy1"/>
-                  <label className="form-check-label" for="hyvaksy1">
-                    Hyväksyn jotain jotain
-                  </label>
                 </div>
-              </div>
+
+                <div className="form-group">
+                <TextInput id="Education" label="Koulutus" placeholder="Syötä koulutus" />
+                </div>
+
+                <div className="form-group">
+                <TextInput id="Phone" label="Puhelinnumero" placeholder="Syötä puhelinnumero" />
+                </div>
+
+            <div className="form-group">
+                <TextInput id="Email" label="Sähköposti" placeholder="Syötä sähköposti" error={errors.email ? errors.email : ''} />
+            </div>
+
+            <div className="form-group">
+                <TextInput id="Password" label="Salasana" placeholder="" type="password" />
+            </div>
+
+                <div className="form-group">
+                <div className="form-check">
+                    <input className="form-check-input" type="checkbox" value="hyvaksy1" id="hyvaksy1"/>
+                    <label className="form-check-label" htmlFor="hyvaksy1">
+                    Hyväksyn jotain jotain
+                    </label>
+                </div>
+                </div>
 
                 <button type="submit" className="btn btn-primary" onClick={(e) => submitForm(e, queryDone)}>Rekisteröidy</button>
 
-              </form>
-           </div>
-       </div>
-       </div>
+                </form>
+            </div>
+        </div>
+        </div>
     </div>
-  );
+    );
+
+    function queryDone(response)
+    {
+        setErrors(response.errors);
+    }
 }
 
-function queryDone()
-{
 
+
+function TextInput({label, id, placeholder, type, error})
+{
+    const err = error ? ' validationError' : '';
+    const style = "form-control" + err;
+    const typeOfInput = type === 'password' ? 'password' : 'text';
+    return (
+        <>
+            <label htmlFor={id}>{label}</label>
+            <input type={typeOfInput} className={style} id={id} placeholder={error ? error : placeholder}/>
+        </>
+    );
 }
 
 function submitForm(e, queryDone)
@@ -95,12 +115,12 @@ function submitForm(e, queryDone)
     e.preventDefault();
     // console.log(e.target.parentElement.searchBox.value);
     var elements = document.getElementsByClassName('form-control');
-    var name = document.getElementById('FirstnameInput').value + ' ' + document.getElementById('LastnameInput').value;
-    var email = document.getElementById('EmailInput').value;
-    var phone = document.getElementById('PhoneInput').value;
+    var name = document.getElementById('Firstname').value + ' ' + document.getElementById('Lastname').value;
+    var email = document.getElementById('Email').value;
+    var phone = document.getElementById('Phone').value;
     var place = document.getElementById('FormControlSelect1').value;
-    var password = document.getElementById('PasswordInput').value;
-    var education = document.getElementById('EducationInput').value;
+    var password = document.getElementById('Password').value;
+    var education = document.getElementById('Education').value;
     
     var dietician = 
     {

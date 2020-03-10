@@ -1,0 +1,10 @@
+.validationError
+{
+    background-color: #F00;
+}
+
+.validationError::placeholder
+{
+    color: #fff;
+}
+
