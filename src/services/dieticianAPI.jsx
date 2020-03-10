@@ -38,13 +38,16 @@ export function get(callBack, params, data)
     });
 }
 
-export function add(callBack, params, data)
+export function add(callBack, data)
 {
-    const url = devMode ? `${devUrl}api/dieticians/${params}` : `${releaseUrl}api/dieticians/${params}`;
+    const url = devMode ? `${devUrl}api/dieticians` : `${releaseUrl}api/dieticians`;
 
-    axios.post(url, data)
+    axios.post(url, data, {
+        headers: {
+            'Content-Type' : 'application/json'
+        }
+    })
     .then(response => {
-        console.log("dietician API Response: ", response.data);
         callBack(response.data);
     })
     .catch(error => {

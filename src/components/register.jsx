@@ -1,8 +1,10 @@
 import React from 'react';
+import * as DieticianAPI from '../services/dieticianAPI';
 
 import '../css/welcome.css';
 
 export default function Register(){
+
   return (
     <div>
       <div className="row">
@@ -20,22 +22,22 @@ export default function Register(){
               <form>
 
               <div className="form-group">
-                  <div class="row">
-                    <div class="col">
+                  <div className="row">
+                    <div className="col">
                       <label for="EtunimiInput">Etunimi</label>
-                      <input type="text" class="form-control" placeholder="Syötä etunimi"/>
+                      <input type="text" className="form-control" id="FirstnameInput" placeholder="Syötä etunimi"/>
                     </div>
 
-                    <div class="col">
+                    <div className="col">
                       <label for="SukunimiInput">Sukunimi</label>
-                      <input type="text" class="form-control" placeholder="Syötä sukunimi"/>
+                      <input type="text" className="form-control" id="LastnameInput" placeholder="Syötä sukunimi"/>
                     </div>
                 </div>
               </div>
 
-              <div class="form-group">
+              <div className="form-group">
                 <label for="FormControlSelect1">Toimipaikka</label>
-                <select class="form-control" id="FormControlSelect1">
+                <select className="form-control" id="FormControlSelect1">
                   <option>Helsinki</option>
                   <option>Vantaa</option>
                   <option>Espoo</option>
@@ -45,37 +47,35 @@ export default function Register(){
               </div>
 
               <div className="form-group">
+              <label for="EducationInput">Koulutus</label>
+              <input type="text" className="form-control" id="EducationInput" placeholder="Syötä koulutus"/>
+              </div>
+
+              <div className="form-group">
               <label for="PhoneInput">Puhelinnumero</label>
-              <input type="text" class="form-control" id="PhoneInput" placeholder="Syötä puhelinnumero"/>
+              <input type="text" className="form-control" id="PhoneInput" placeholder="Syötä puhelinnumero"/>
               </div>
 
-                <div className="form-group">
-                <label for="InputEmail1">Sähköposti</label>
-                <input type="email" class="form-control" id="InputEmail1" aria-describedby="emailHelp" placeholder="Syötä sähköpostiosoite"/>
-                </div>
+            <div className="form-group">
+            <label for="EmailInput">Sähköposti</label>
+            <input type="email" className="form-control" id="EmailInput" aria-describedby="emailHelp" placeholder="Syötä sähköpostiosoite"/>
+            </div>
 
-                <div class="form-group">
-                <label for="InputPassword1">Salasana</label>
-                <input type="password" class="form-control" id="InputPassword1" placeholder="Syötä salasana"/>
-                </div>
+            <div className="form-group">
+            <label for="PasswordInput">Salasana</label>
+            <input type="password" className="form-control" id="PasswordInput" placeholder="Syötä salasana"/>
+            </div>
 
-              <div class="form-group">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="hyvaksy1" id="hyvaksy1"/>
-                  <label class="form-check-label" for="hyvaksy1">
-                    Hyväksyn jotain jotain
-                  </label>
-                </div>
-
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="hyvaksy2" id="hyvaksy2"/>
-                  <label class="form-check-label" for="hyvaksy2">
+              <div className="form-group">
+                <div className="form-check">
+                  <input className="form-check-input" type="checkbox" value="hyvaksy1" id="hyvaksy1"/>
+                  <label className="form-check-label" for="hyvaksy1">
                     Hyväksyn jotain jotain
                   </label>
                 </div>
               </div>
 
-                <button type="submit" class="btn btn-primary">Rekisteröidy</button>
+                <button type="submit" className="btn btn-primary" onClick={(e) => submitForm(e, queryDone)}>Rekisteröidy</button>
 
               </form>
            </div>
@@ -83,4 +83,59 @@ export default function Register(){
        </div>
     </div>
   );
+}
+
+function queryDone()
+{
+
+}
+
+function submitForm(e, queryDone)
+{
+    e.preventDefault();
+    // console.log(e.target.parentElement.searchBox.value);
+    var elements = document.getElementsByClassName('form-control');
+    var name = document.getElementById('FirstnameInput').value + ' ' + document.getElementById('LastnameInput').value;
+    var email = document.getElementById('EmailInput').value;
+    var phone = document.getElementById('PhoneInput').value;
+    var place = document.getElementById('FormControlSelect1').value;
+    var password = document.getElementById('PasswordInput').value;
+    var education = document.getElementById('EducationInput').value;
+    
+    var dietician = 
+    {
+        name,
+        email,
+        phone,
+        place,
+        education,
+        password
+    }
+    console.log(dietician);
+
+
+    /*
+    const checkBoxes = e.target.parentElement.expertise;
+    let checkedExperties = [];
+
+    checkBoxes.forEach((c) => {
+        if (c.checked) checkedExperties.push(c.id);
+    });
+
+    const searchParams = {
+        searchparams : {
+            query : e.target.parentElement.searchBox.value,
+            expertises : checkedExperties
+        }
+    };
+
+    */
+
+    // Helper.log(JSON.stringify(search));
+    // Helper.log(checkedExperties);
+
+    // DieticianSearchAPICall(profileDataUpdateFunction, e.target.parentElement.searchBox.value);
+    // console.log("s", searchParams.searchparams.query);
+
+    DieticianAPI.add(queryDone, JSON.stringify(dietician));
 }

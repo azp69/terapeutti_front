@@ -42,7 +42,7 @@ export default function ProfilePage()
 
         useEffect(() => {
             DieticianAPI.get(setProfile, Id);
-        },[]);
+        },[Id]);
 
         console.log(profile);
         if (profile != null)
