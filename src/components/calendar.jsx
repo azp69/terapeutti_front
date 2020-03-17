@@ -3,11 +3,32 @@ import "../css/calendar.css";
 
 export function Calendar({ calEvents }) {
 	const calBase = drawCalendar();
-	const ajanvarausTieto = {
-		pvm: "2020-03-04"
+
+	// vain testaukseen
+	const reservations = {
+		responseData: [
+			{
+				reservationId: 0,
+				reservationBeginsAt: "2020-03-17 11:00:00",
+				reservationEndsAt: "2020-03-17 12:00:00",
+				customerId: "0"
+			},
+			{
+				reservationId: 1,
+				reservationBeginsAt: "2020-03-17 12:00:00",
+				reservationEndsAt: "2020-03-17 13:00:00",
+				customerId: "0"
+			},
+			{
+				reservationId: 2,
+				reservationBeginsAt: "2020-03-17 15:00:00",
+				reservationEndsAt: "2020-03-17 16:00:00",
+				customerId: "0"
+			}
+		]
 	};
 
-	const [reservationData, setReservationData] = useState(ajanvarausTieto);
+	const [reservationData, setReservationData] = useState(reservations);
 
 	return (
 		<>
@@ -31,7 +52,11 @@ export function Calendar({ calEvents }) {
 							</button>
 						</div>
 
-						<div className="modal-body">Vapaat ajat päivälle {paiva}</div>
+						<div className="modal-body">
+							<strong>Ajat päivälle {paiva}</strong>
+
+							<CalendarDayView />
+						</div>
 
 						<div className="modal-footer">
 							<button
@@ -48,7 +73,38 @@ export function Calendar({ calEvents }) {
 		);
 	}
 
-	function drawCalendarDayView() {}
+	function CalendarDayView() {
+		const hours = [
+			{ begin: "08:00", end: "09:00" },
+			{ begin: "09:00", end: "10:00" },
+			{ begin: "10:00", end: "11:00" },
+			{ begin: "11:00", end: "12:00" },
+			{ begin: "12:00", end: "13:00" },
+			{ begin: "13:00", end: "14:00" },
+			{ begin: "14:00", end: "15:00" },
+			{ begin: "15:00", end: "16:00" },
+			{ begin: "16:00", end: "17:00" }
+		];
+
+		const rows = hours.map(h => {
+			return (
+				<tr>
+					<td>
+						{h.begin} - {h.end}
+					</td>
+					<td>
+						<button className="btn btn-primary">Varaa</button>
+					</td>
+				</tr>
+			);
+		});
+
+		return (
+			<table className="table table-striped">
+				<tbody>{rows}</tbody>
+			</table>
+		);
+	}
 
 	function getEventIDsForDate(date) {
 		const IDs = [];
@@ -72,8 +128,8 @@ export function Calendar({ calEvents }) {
 		else return null;
 	}
 
-	function onCalEventClick(IDs) {
-		console.log(IDs);
+	function onCalDayClick(date) {
+		console.log(date);
 		/*
         console.log(calEvents[IDs].alku);
         const startTime = new Date(calEvents[IDs].alku);
@@ -87,21 +143,6 @@ export function Calendar({ calEvents }) {
         */
 		// console.log(timeTable);
 		// setSelectedDay(timeTable);
-	}
-
-	function createCalEventPopupInfo(IDs) {
-		const timeTable = IDs.map(
-			eventID =>
-				calEvents[eventID].kohde +
-				": " +
-				getHoursAndMinutesFromDate(calEvents[eventID].alku) +
-				"-" +
-				getHoursAndMinutesFromDate(calEvents[eventID].loppu) +
-				"<br/>"
-		);
-
-		// console.log(timeTable);
-		return timeTable.join("");
 	}
 
 	function drawCalendar() {
@@ -193,13 +234,13 @@ export function Calendar({ calEvents }) {
 							}-${runningDay} 00:00:00`
 						);
 						let eventIDs = getEventIDsForDate(currentDateInCalendar);
-
+						console.log(currentDateInCalendar);
 						if (eventIDs) {
 							// If we have event for this day
 							dayCells.push(
 								<div
 									key={"paiva" + runningDay}
-									onClick={() => onCalEventClick(eventIDs)}
+									onClick={() => onCalDayClick(currentDateInCalendar)}
 									className="col cal-cell text-nowrap text-light bg-primary"
 									data-toggle="modal"
 									data-target="#myModal"
@@ -219,7 +260,7 @@ export function Calendar({ calEvents }) {
 								<div
 									key={"paiva" + runningDay}
 									className="col cal-cell text-nowrap"
-									onClick={() => onCalEventClick(null)}
+									onClick={() => onCalDayClick(currentDateInCalendar)}
 									data-toggle="modal"
 									data-target="#myModal"
 								>
