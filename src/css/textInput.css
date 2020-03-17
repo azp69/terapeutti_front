@@ -1,10 +1,7 @@
-.validationError
-{
-    background-color: #F00;
+.validationError {
+  background-color: #f00;
 }
 
-.validationError::placeholder
-{
-    color: #fff;
+.validationError::placeholder {
+  color: #fff;
 }
-

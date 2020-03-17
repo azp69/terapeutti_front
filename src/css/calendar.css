@@ -1,0 +1,8 @@
+.cal-cell {
+	background-color: var(--light);
+	border: 1px solid #fff;
+}
+
+.cal-cell:hover {
+	background-color: rgb(104, 175, 255);
+}

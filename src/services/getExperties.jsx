@@ -1,17 +1,23 @@
-import axios from 'axios';
+import axios from "axios";
 
-export default function ExpertiesAPICall(callBack, searchParams)
-{
-    const debugMode = false;
+export default function ExpertiesAPICall(callBack, searchParams) {
+	const debugMode = false;
 
-    const url = debugMode ? `http://palikka.org:3001/expertises/?q=${searchParams ? searchParams : ''}` : `http://localhost:3001/api/expertises/?q=${searchParams ? searchParams : ''}`;
+	const url = debugMode
+		? `http://palikka.org:3001/expertises/?q=${
+				searchParams ? searchParams : ""
+		  }`
+		: `http://localhost:3001/api/expertises/?q=${
+				searchParams ? searchParams : ""
+		  }`;
 
-    axios.get(url)
-    .then(response => {
-        console.log("Experties API Response: ", response.data);
-        callBack(response.data);
-    })
-    .catch(error => {
-        console.log(error);
-    });
+	axios
+		.get(url)
+		.then(response => {
+			console.log("Experties API Response: ", response.data);
+			callBack(response.data);
+		})
+		.catch(error => {
+			console.log(error);
+		});
 }
