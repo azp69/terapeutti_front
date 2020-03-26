@@ -1,71 +1,50 @@
 import React, { useState } from "react";
-import "../css/calendar.css";
+import * as Booking from "../services/bookingAPI";
 
-export function Calendar({ calEvents }) {
+import "../css/calendar.css";
+import "../css/modal.css";
+
+export function Calendar({ calEvents, dieticianId }) {
 	const calBase = drawCalendar();
 
-	// vain testaukseen
-	const reservations = {
-		responseData: [
-			{
-				reservationId: 0,
-				reservationBeginsAt: "2020-03-17 11:00:00",
-				reservationEndsAt: "2020-03-17 12:00:00",
-				customerId: "0"
-			},
-			{
-				reservationId: 1,
-				reservationBeginsAt: "2020-03-17 12:00:00",
-				reservationEndsAt: "2020-03-17 13:00:00",
-				customerId: "0"
-			},
-			{
-				reservationId: 2,
-				reservationBeginsAt: "2020-03-17 15:00:00",
-				reservationEndsAt: "2020-03-17 16:00:00",
-				customerId: "0"
-			}
-		]
-	};
-
-	const [reservationData, setReservationData] = useState(reservations);
+	const [reservationData, setReservationData] = useState(null);
+	const [selectedDate, setSelectedDate] = useState("2020-03-10 12:00:00");
+	const [modalIsOpen, setIsOpen] = React.useState(false);
 
 	return (
 		<>
+			<Modal />
 			<div className="col-12 px-0 calendar">{calBase}</div>
-			<Modal reservationData={reservationData} />
+			<div>{selectedDate}</div>
 		</>
 	);
 
-	function Modal({ reservationData }) {
-		let paiva = new Date(reservationData.pvm);
-		paiva = getDayMonthYear(paiva);
+	function openModal() {
+		setIsOpen(true);
+	}
+
+	function closeModal() {
+		setIsOpen(false);
+	}
+
+	function Modal() {
+		if (!modalIsOpen) {
+			return null;
+		}
 
 		return (
-			<div className="modal" id="myModal">
-				<div className="modal-dialog">
-					<div className="modal-content">
-						<div className="modal-header">
-							<h4 className="modal-title">Ajanvaraus</h4>
-							<button type="button" className="close" data-dismiss="modal">
+			<div id="myModal" className="custom-modal">
+				<div className="container-sm card custom-modal-content">
+					<div className="row">
+						<div className="col-md-12 col-lg-5">
+							<button className="close" onClick={closeModal}>
 								&times;
 							</button>
-						</div>
-
-						<div className="modal-body">
-							<strong>Ajat päivälle {paiva}</strong>
-
+							<h4>Varauskalenteri ajalle {getDayMonthYear(selectedDate)}</h4>
 							<CalendarDayView />
 						</div>
-
-						<div className="modal-footer">
-							<button
-								type="button"
-								className="btn btn-danger"
-								data-dismiss="modal"
-							>
-								Sulje
-							</button>
+						<div className="col-md-12 col-lg-7">
+							<h4>Varauksen tiedot</h4>
 						</div>
 					</div>
 				</div>
@@ -86,13 +65,13 @@ export function Calendar({ calEvents }) {
 			{ begin: "16:00", end: "17:00" }
 		];
 
-		const rows = hours.map(h => {
+		const rows = hours.map((h, index) => {
 			return (
-				<tr>
-					<td>
+				<tr key={`tr1 ${index}`}>
+					<td key={`td1 ${index}`}>
 						{h.begin} - {h.end}
 					</td>
-					<td>
+					<td key={`td2 ${index}`}>
 						<button className="btn btn-primary">Varaa</button>
 					</td>
 				</tr>
@@ -107,8 +86,9 @@ export function Calendar({ calEvents }) {
 	}
 
 	function getEventIDsForDate(date) {
+		/*
 		const IDs = [];
-		console.log(calEvents);
+		// console.log(calEvents);
 
 		const referenceDate = new Date(date);
 		try {
@@ -126,23 +106,17 @@ export function Calendar({ calEvents }) {
 
 		if (IDs.length > 0) return IDs;
 		else return null;
+
+		*/
 	}
 
 	function onCalDayClick(date) {
-		console.log(date);
-		/*
-        console.log(calEvents[IDs].alku);
-        const startTime = new Date(calEvents[IDs].alku);
-        const endTime = new Date(calEvents[IDs].loppu);
-        console.log(getHoursAndMinutesFromDate(startTime) + " - " + getHoursAndMinutesFromDate(endTime));
-        */
-		/*
-        const timeTable = IDs.map((eventID) => (
-           <p>{getDayMonthYear(calEvents[eventID].alku)} { getHoursAndMinutesFromDate(calEvents[eventID].alku)} - {getHoursAndMinutesFromDate(calEvents[eventID].loppu)}</p>
-        ));
-        */
-		// console.log(timeTable);
-		// setSelectedDay(timeTable);
+		Booking.get(
+			setReservationData,
+			`?dieticianId=${dieticianId}&startDate=${date}&endDate=${date}`
+		);
+		setSelectedDate(date);
+		openModal();
 	}
 
 	function drawCalendar() {
@@ -217,8 +191,7 @@ export function Calendar({ calEvents }) {
 		);
 		dayCells = [];
 
-		// firstDayOfMonth = 7;
-		console.log("First day of month: ", firstDayOfMonth);
+		// console.log("First day of month: ", firstDayOfMonth);
 
 		while (runningDay <= lastDayOfMonth) {
 			for (let i = 1; i < 8; i++) {
@@ -228,57 +201,39 @@ export function Calendar({ calEvents }) {
 							<div key={"paiva" + runningDay} className="col cal-cell"></div>
 						);
 					} else {
-						let currentDateInCalendar = new Date(
-							`${year}-${
-								month + 1 < 10 ? "0" + (month + 1) : month + 1
-							}-${runningDay} 00:00:00`
+						let currentDateInCalendar = `${year}-${
+							month + 1 < 10 ? "0" + (month + 1) : month + 1
+						}-${runningDay < 10 ? "0" + runningDay : runningDay}`;
+
+						// let eventIDs = getEventIDsForDate(currentDateInCalendar);
+						// console.log(currentDateInCalendar);
+
+						dayCells.push(
+							<div
+								key={"paiva" + runningDay}
+								className="col cal-cell text-nowrap"
+								onClick={() => onCalDayClick(currentDateInCalendar)}
+							>
+								<small>
+									{runningDay === day ? (
+										<span className="badge badge-primary">{runningDay}</span>
+									) : (
+										runningDay
+									)}
+								</small>
+							</div>
 						);
-						let eventIDs = getEventIDsForDate(currentDateInCalendar);
-						console.log(currentDateInCalendar);
-						if (eventIDs) {
-							// If we have event for this day
-							dayCells.push(
-								<div
-									key={"paiva" + runningDay}
-									onClick={() => onCalDayClick(currentDateInCalendar)}
-									className="col cal-cell text-nowrap text-light bg-primary"
-									data-toggle="modal"
-									data-target="#myModal"
-								>
-									<small>
-										{runningDay === day ? (
-											<span className="badge badge-light">{runningDay}</span>
-										) : (
-											runningDay
-										)}
-									</small>
-								</div>
-							);
-						} // And we dont have any events for this day
-						else {
-							dayCells.push(
-								<div
-									key={"paiva" + runningDay}
-									className="col cal-cell text-nowrap"
-									onClick={() => onCalDayClick(currentDateInCalendar)}
-									data-toggle="modal"
-									data-target="#myModal"
-								>
-									<small>
-										{runningDay === day ? (
-											<span className="badge badge-primary">{runningDay}</span>
-										) : (
-											runningDay
-										)}
-									</small>
-								</div>
-							);
-						}
 					}
 					runningDay++;
 				} else {
 					dayCells.push(
 						<div key={runningDay + i} className="col cal-cell"></div>
+					);
+
+					let currentDateInCalendar = new Date(
+						`${year}-${
+							month + 1 < 10 ? "0" + (month + 1) : month + 1
+						}-${runningDay + 1} 00:00:00`
 					);
 				}
 			}
