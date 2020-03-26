@@ -65,6 +65,16 @@ export default function Nav() {
 							Rekisteröidy
 						</Link>
 					</li>
+					<li
+						className="nav-link"
+						data-toggle="collapse"
+						data-target=".navbar-collapse.show"
+					>
+						<Link to="/kirjaudu" className="nav-link">
+							Kirjaudu
+						</Link>
+					</li>
+
 				</ul>
 			</div>
 		</nav>

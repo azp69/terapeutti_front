@@ -9,6 +9,8 @@ import WhyTherapy from "./components/whyTherapy";
 import Contact from "./components/contact";
 import ProfilePage from "./components/profilePage";
 import Register from "./components/register";
+import Login from "./components/login";
+import UserControl from "./components/usercontrol";
 
 function App() {
 	return (
@@ -35,6 +37,14 @@ function App() {
 
 					<Route path="/rekisteroidy">
 						<Register />
+					</Route>
+
+					<Route path="/kirjaudu">
+						<Login />
+					</Route>
+
+					<Route path="/kayttajahallinta">
+						<UserControl />
 					</Route>
 
 					<Route path="/">
