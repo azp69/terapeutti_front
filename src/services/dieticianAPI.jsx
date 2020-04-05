@@ -15,27 +15,27 @@ export function search(callBack, params, data) {
 
 	axios
 		.get(url)
-		.then(response => {
+		.then((response) => {
 			Helper.log(response.data);
 			callBack(response.data);
 		})
-		.catch(error => {
+		.catch((error) => {
 			console.log(error);
 		});
 }
 
-export function get(callBack, params, data) {
+export function get(callBack, id, data) {
 	const url = devMode
-		? `${devUrl}api/dieticians/${params}`
-		: `${releaseUrl}api/dieticians/${params}`;
+		? `${devUrl}api/dieticians/${id}`
+		: `${releaseUrl}api/dieticians/${id}`;
 
 	axios
 		.get(url)
-		.then(response => {
+		.then((response) => {
 			console.log("dietician API Response: ", response.data);
 			callBack(response.data);
 		})
-		.catch(error => {
+		.catch((error) => {
 			callBack(null);
 			console.log(error);
 		});
@@ -49,13 +49,13 @@ export function add(callBack, data) {
 	axios
 		.post(url, data, {
 			headers: {
-				"Content-Type": "application/json"
-			}
+				"Content-Type": "application/json",
+			},
 		})
-		.then(response => {
+		.then((response) => {
 			callBack(response.data);
 		})
-		.catch(error => {
+		.catch((error) => {
 			console.log(error);
 			callBack(error.response.data);
 		});
@@ -68,11 +68,11 @@ export function update(callBack, params, data) {
 
 	axios
 		.put(url, data)
-		.then(response => {
+		.then((response) => {
 			console.log("dietician API Response: ", response.data);
 			callBack(response.data);
 		})
-		.catch(error => {
+		.catch((error) => {
 			console.log(error);
 		});
 }
@@ -84,11 +84,11 @@ export function remove(callBack, params, data) {
 
 	axios
 		.delete(url)
-		.then(response => {
+		.then((response) => {
 			console.log("dietician API Response: ", response.data);
 			callBack(response.data);
 		})
-		.catch(error => {
+		.catch((error) => {
 			console.log(error);
 		});
 }

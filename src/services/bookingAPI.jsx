@@ -12,36 +12,37 @@ export function get(callBack, params) {
 
 	axios
 		.get(url)
-		.then(response => {
+		.then((response) => {
 			console.log("bookings API Response: ", response.data);
 			callBack(response.data);
 		})
-		.catch(error => {
+		.catch((error) => {
 			callBack(null);
 			console.log(error);
 		});
 }
 
-/*
 export function add(callBack, data) {
-	const url = devMode
-		? `${devUrl}api/dieticians`
-		: `${releaseUrl}api/dieticians`;
+	const url = devMode ? `${devUrl}api/bookings` : `${releaseUrl}api/bookings`;
 
 	axios
 		.post(url, data, {
 			headers: {
-				"Content-Type": "application/json"
+				"Content-Type": "application/json",
+			},
+		})
+		.then((response) => {
+			if (callBack != null) {
+				callBack(response.data);
 			}
 		})
-		.then(response => {
-			callBack(response.data);
-		})
-		.catch(error => {
+		.catch((error) => {
 			console.log(error);
-			callBack(error.response.data);
+			// callBack(error.response.data);
 		});
 }
+
+/*
 
 export function update(callBack, params, data) {
 	const url = devMode

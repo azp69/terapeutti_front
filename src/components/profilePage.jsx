@@ -8,7 +8,7 @@ import {
 	Route,
 	Link,
 	useRouteMatch,
-	useParams
+	useParams,
 } from "react-router-dom";
 
 export default function ProfilePage() {
@@ -24,7 +24,7 @@ export default function ProfilePage() {
 	function RenderExperties(experties) {
 		console.log(experties);
 		try {
-			return experties.map(expertie => {
+			return experties.map((expertie) => {
 				return <li key={expertie.id}>{expertie.name}</li>;
 			});
 		} catch {
@@ -41,6 +41,8 @@ export default function ProfilePage() {
 		}, [Id]);
 
 		if (profile != null) {
+			console.log("Profile", profile);
+
 			return (
 				<div className="row">
 					<div className="col-sm-12 text-center my-5 card card-body bg-light py-5">

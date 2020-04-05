@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import * as Booking from "../services/bookingAPI";
+import * as BookingAPI from "../services/bookingAPI";
+import DropDownMenu from "./dropDownMenu";
+import TextInput from "./textinput";
 
 import "../css/calendar.css";
 import "../css/modal.css";
@@ -9,6 +11,7 @@ export function Calendar({ calEvents, dieticianId }) {
 
 	const [reservationData, setReservationData] = useState(null);
 	const [selectedDate, setSelectedDate] = useState("2020-03-10 12:00:00");
+	// const [selected]
 	const [modalIsOpen, setIsOpen] = React.useState(false);
 
 	return (
@@ -36,15 +39,12 @@ export function Calendar({ calEvents, dieticianId }) {
 			<div id="myModal" className="custom-modal">
 				<div className="container-sm card custom-modal-content">
 					<div className="row">
-						<div className="col-md-12 col-lg-5">
+						<div className="col-md-12">
 							<button className="close" onClick={closeModal}>
 								&times;
 							</button>
 							<h4>Varauskalenteri ajalle {getDayMonthYear(selectedDate)}</h4>
-							<CalendarDayView />
-						</div>
-						<div className="col-md-12 col-lg-7">
-							<h4>Varauksen tiedot</h4>
+							<ReservationComponent selectedDate={selectedDate} />
 						</div>
 					</div>
 				</div>
@@ -52,66 +52,161 @@ export function Calendar({ calEvents, dieticianId }) {
 		);
 	}
 
-	function CalendarDayView() {
+	function ReservationComponent(props) {
 		const hours = [
-			{ begin: "08:00", end: "09:00" },
-			{ begin: "09:00", end: "10:00" },
-			{ begin: "10:00", end: "11:00" },
-			{ begin: "11:00", end: "12:00" },
-			{ begin: "12:00", end: "13:00" },
-			{ begin: "13:00", end: "14:00" },
-			{ begin: "14:00", end: "15:00" },
-			{ begin: "15:00", end: "16:00" },
-			{ begin: "16:00", end: "17:00" }
+			{ begin: "08:00", end: "08:30" },
+			{ begin: "08:30", end: "09:00" },
+			{ begin: "09:00", end: "09:30" },
+			{ begin: "09:30", end: "10:00" },
+			{ begin: "10:00", end: "10:30" },
+			{ begin: "10:30", end: "11:00" },
+			{ begin: "11:00", end: "11:30" },
+			{ begin: "11:30", end: "12:00" },
+			{ begin: "12:00", end: "12:30" },
+			{ begin: "12:30", end: "13:00" },
+			{ begin: "13:00", end: "13:30" },
+			{ begin: "13:30", end: "14:00" },
+			{ begin: "14:00", end: "14:30" },
+			{ begin: "14:30", end: "15:00" },
+			{ begin: "15:00", end: "15:30" },
+			{ begin: "15:30", end: "16:00" },
 		];
 
-		const rows = hours.map((h, index) => {
-			return (
-				<tr key={`tr1 ${index}`}>
-					<td key={`td1 ${index}`}>
-						{h.begin} - {h.end}
-					</td>
-					<td key={`td2 ${index}`}>
-						<button className="btn btn-primary">Varaa</button>
-					</td>
-				</tr>
-			);
-		});
+		var reservationMock = [
+			{
+				id: "mock_1",
+				startsAt: "2020-03-10T08:00:00.000Z",
+				endsAt: "2020-03-10T08:30:00.000Z",
+				description: "Vegaanin ruokavalio",
+				customer: {
+					id: "efb936eb-19d5-47fd-9ba6-56d6b1c2baa0",
+				},
+			},
+			{
+				id: "mock_2",
+				startsAt: "2020-03-10T09:00:00.000Z",
+				endsAt: "2020-03-10T09:30:00.000Z",
+				description: "Vegaanin ruokavalio",
+				customer: {
+					id: "efb936eb-19d5-47fd-9ba6-56d6b1c2baa0",
+				},
+			},
+			{
+				id: "mock_3",
+				startsAt: "2020-03-10T13:00:00.000Z",
+				endsAt: "2020-03-10T13:30:00.000Z",
+				description: "Vegaanin ruokavalio",
+				customer: {
+					id: "efb936eb-19d5-47fd-9ba6-56d6b1c2baa0",
+				},
+			},
+		];
+
+		if (reservationData == null) {
+			return null;
+		}
+
+		console.log("Reservation data: ", reservationData);
+
+		const freeData = hours.filter(
+			(x) => !checkForReservation(x.begin, x.end, reservationData)
+		);
+
+		const resData = freeData.map((x, index) => ({
+			id: index,
+			label: `${x.begin} - ${x.end}`,
+			value: `${new Date(
+				`${selectedDate} ${x.begin}`
+			).toISOString()} ${new Date(`${selectedDate} ${x.end}`).toISOString()}`,
+		}));
+
+		const res = {
+			label: "Vapaat ajat",
+			data: resData,
+		};
+
+		console.log(new Date(props.selectedDate).toISOString());
+		console.log(resData);
 
 		return (
-			<table className="table table-striped">
-				<tbody>{rows}</tbody>
-			</table>
+			<>
+				<form>
+					<DropDownMenu
+						id="reservationPicker"
+						label="Valitse aika "
+						data={res}
+						onChange={handleReservationDropDownChange}
+					/>
+					<TextInput label="Nimi" id="name" placeholder="Nimi" />
+					<TextInput label="Sähköposti" id="email" placeholder="Sähköposti" />
+					<TextInput label="Viesti" id="description" placeholder="Viesti" />
+					<button
+						className="btn btn-primary"
+						onClick={(e) => handleReservationSubmit(e)}
+					>
+						Varaa
+					</button>
+				</form>
+			</>
 		);
 	}
 
-	function getEventIDsForDate(date) {
-		/*
-		const IDs = [];
-		// console.log(calEvents);
+	function handleReservationSubmit(e) {
+		e.preventDefault();
+		const email = document.getElementById("email").value;
+		const name = document.getElementById("name").value;
+		const description = document.getElementById("description").value;
+		const reservation = document.getElementById("reservationPicker").value;
 
-		const referenceDate = new Date(date);
-		try {
-			for (var i = 0; i < calEvents.length; i++) {
-				const d = new Date(calEvents[i].alku);
-				if (
-					d.getDate() === referenceDate.getDate() &&
-					d.getMonth() === referenceDate.getMonth() &&
-					d.getFullYear() === referenceDate.getFullYear()
-				) {
-					IDs.push(calEvents[i].id); // return calEvents[i].id;
-				}
-			}
-		} catch {}
+		const res = reservation.split(" ");
+		const resStart = res[0];
+		const resEnd = res[1];
 
-		if (IDs.length > 0) return IDs;
-		else return null;
+		console.log("Res start", resStart);
+		console.log("Res end", resEnd);
 
-		*/
+		console.log(dieticianId);
+		const resObject = {
+			dieticianId: dieticianId,
+			startsAt: resStart,
+			endsAt: resEnd,
+			description: description,
+			customer: {
+				name: name,
+				email: email,
+			},
+		};
+
+		BookingAPI.add(null, resObject);
+
+		console.log("Reservation data: ", resObject);
+	}
+
+	function handleReservationDropDownChange(e) {
+		console.log("ISO Time", e.target.value);
+		const times = e.target.value.split(" ");
+		const startTime = new Date(times[0]);
+		const endTime = new Date(times[1]);
+
+		console.log(
+			getHoursAndMinutesFromDate(startTime) +
+				" - " +
+				getHoursAndMinutesFromDate(endTime)
+		);
+	}
+
+	function checkForReservation(begin, end, reservations) {
+		for (let i = 0; i < reservations.length; i++) {
+			let element = reservations[i];
+			const start = getHoursAndMinutesFromDate(new Date(element.startsAt));
+			const endd = getHoursAndMinutesFromDate(new Date(element.endsAt));
+			if (start.includes(begin) && endd.includes(end)) return true;
+		}
+		return false;
 	}
 
 	function onCalDayClick(date) {
-		Booking.get(
+		BookingAPI.get(
 			setReservationData,
 			`?dieticianId=${dieticianId}&startDate=${date}&endDate=${date}`
 		);
@@ -144,31 +239,9 @@ export function Calendar({ calEvents, dieticianId }) {
 			"Syyskuu",
 			"Lokakuu",
 			"Marraskuu",
-			"Joulukuu"
+			"Joulukuu",
 		];
-		const monthShort = [
-			"Tam",
-			"Hel",
-			"Maa",
-			"Huh",
-			"Tou",
-			"Kes",
-			"Hei",
-			"Elo",
-			"Syy",
-			"Lok",
-			"Mar",
-			"Jou"
-		];
-		const days = [
-			"Sunnuntai",
-			"Maanantai",
-			"Tiistai",
-			"Keskiviikko",
-			"Torstai",
-			"Perjantai",
-			"Lauantai"
-		];
+
 		const daysShortSuomi = ["Ma", "Ti", "Ke", "To", "Pe", "La", "Su"];
 
 		let runningDay = 1;
@@ -191,8 +264,6 @@ export function Calendar({ calEvents, dieticianId }) {
 		);
 		dayCells = [];
 
-		// console.log("First day of month: ", firstDayOfMonth);
-
 		while (runningDay <= lastDayOfMonth) {
 			for (let i = 1; i < 8; i++) {
 				if (i >= firstDayOfMonth || runningDay > i) {
@@ -204,9 +275,6 @@ export function Calendar({ calEvents, dieticianId }) {
 						let currentDateInCalendar = `${year}-${
 							month + 1 < 10 ? "0" + (month + 1) : month + 1
 						}-${runningDay < 10 ? "0" + runningDay : runningDay}`;
-
-						// let eventIDs = getEventIDsForDate(currentDateInCalendar);
-						// console.log(currentDateInCalendar);
 
 						dayCells.push(
 							<div
@@ -231,9 +299,9 @@ export function Calendar({ calEvents, dieticianId }) {
 					);
 
 					let currentDateInCalendar = new Date(
-						`${year}-${
-							month + 1 < 10 ? "0" + (month + 1) : month + 1
-						}-${runningDay + 1} 00:00:00`
+						`${year}-${month + 1 < 10 ? "0" + (month + 1) : month + 1}-${
+							runningDay + 1
+						} 00:00:00`
 					);
 				}
 			}
