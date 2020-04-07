@@ -13,13 +13,20 @@ export default function DieticianBookings(props) {
 
 	const dieticianId = "947c7835-3212-4608-a1a5-b2703b0f8538";
 
-	const today = convertDate(new Date("2020-04-10"));
+	const today = convertDate(new Date());
 
 	useEffect(() => {
 		getBookings();
 	}, []);
 
-	if (reservationData == null) return null;
+	if (reservationData == null)
+		return (
+			<div className="col-sm-12 mt-5 card card-body bg-light">
+				<div className="py-5 my-3 px-5 text-center">
+					<h1>Ladataan tietoja...</h1>
+				</div>
+			</div>
+		);
 
 	const resData = [...reservationData].sort(compareDates);
 
@@ -47,9 +54,9 @@ export default function DieticianBookings(props) {
 				<td key={`resTodayCell_2_${index}`}>asiakas</td>
 				<td key={`resTodayCell_3_${index}`}>viesti</td>
 				<td key={`resTodayCell_4_${index}`}>
-					<a href="#" className="btn btn-danger">
+					<button className="btn btn-danger" onClick={() => deleteBooking()}>
 						Peruuta
-					</a>
+					</button>
 				</td>
 			</tr>
 		);
@@ -66,9 +73,9 @@ export default function DieticianBookings(props) {
 				<td key={`resTomorrowRow_2_${index}`}>asiakas</td>
 				<td key={`resTomorrowRow_3_${index}`}>viesti</td>
 				<td key={`resTomorrowRow_4_${index}`}>
-					<a href="#" className="btn btn-danger">
+					<button className="btn btn-danger" onClick={() => deleteBooking()}>
 						Peruuta
-					</a>
+					</button>
 				</td>
 			</tr>
 		);
@@ -85,9 +92,9 @@ export default function DieticianBookings(props) {
 				<td key={`resCell_2_${index}`}>asiakas</td>
 				<td key={`resCell_3_${index}`}>viesti</td>
 				<td key={`resCell_4_${index}`}>
-					<a href="#" className="btn btn-danger">
+					<button className="btn btn-danger" onClick={() => deleteBooking()}>
 						Peruuta
-					</a>
+					</button>
 				</td>
 			</tr>
 		);
@@ -196,5 +203,12 @@ export default function DieticianBookings(props) {
 		var result = new Date(date);
 		result.setDate(result.getDate() + days);
 		return result;
+	}
+
+	function deleteBooking(id) {
+		let r = window.confirm("Haluatko varmasti poistaa varauksen?");
+		if (r == true) {
+			alert("TODO");
+		}
 	}
 }
