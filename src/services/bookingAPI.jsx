@@ -5,34 +5,15 @@ const devMode = process.env.NODE_ENV === "development" ? true : false;
 const releaseUrl = "https://api.terapia.palikka.org/";
 const devUrl = "http://localhost:3001/";
 
-export function search(callBack, params, data) {
-	const query = `?query=${params.searchparams.query}&expertises=[${params.searchparams.expertises}]`;
-	console.log("search: ", query);
-
+export function get(callBack, params) {
 	const url = devMode
-		? `${devUrl}api/dieticians/${query}`
-		: `${releaseUrl}api/dieticians/${query}`;
+		? `${devUrl}api/bookings/${params}`
+		: `${releaseUrl}api/bookings/${params}`;
 
 	axios
 		.get(url)
 		.then((response) => {
-			Helper.log(response.data);
-			callBack(response.data);
-		})
-		.catch((error) => {
-			console.log(error);
-		});
-}
-
-export function get(callBack, id, data) {
-	const url = devMode
-		? `${devUrl}api/dieticians/${id}`
-		: `${releaseUrl}api/dieticians/${id}`;
-
-	axios
-		.get(url)
-		.then((response) => {
-			console.log("dietician API Response: ", response.data);
+			console.log("bookings API Response: ", response.data);
 			callBack(response.data);
 		})
 		.catch((error) => {
@@ -42,9 +23,7 @@ export function get(callBack, id, data) {
 }
 
 export function add(callBack, data) {
-	const url = devMode
-		? `${devUrl}api/dieticians`
-		: `${releaseUrl}api/dieticians`;
+	const url = devMode ? `${devUrl}api/bookings` : `${releaseUrl}api/bookings`;
 
 	axios
 		.post(url, data, {
@@ -53,13 +32,17 @@ export function add(callBack, data) {
 			},
 		})
 		.then((response) => {
-			callBack(response.data);
+			if (callBack != null) {
+				callBack(response.data);
+			}
 		})
 		.catch((error) => {
 			console.log(error);
-			callBack(error.response.data);
+			// callBack(error.response.data);
 		});
 }
+
+/*
 
 export function update(callBack, params, data) {
 	const url = devMode
@@ -68,11 +51,11 @@ export function update(callBack, params, data) {
 
 	axios
 		.put(url, data)
-		.then((response) => {
+		.then(response => {
 			console.log("dietician API Response: ", response.data);
 			callBack(response.data);
 		})
-		.catch((error) => {
+		.catch(error => {
 			console.log(error);
 		});
 }
@@ -84,11 +67,12 @@ export function remove(callBack, params, data) {
 
 	axios
 		.delete(url)
-		.then((response) => {
+		.then(response => {
 			console.log("dietician API Response: ", response.data);
 			callBack(response.data);
 		})
-		.catch((error) => {
+		.catch(error => {
 			console.log(error);
 		});
 }
+*/
