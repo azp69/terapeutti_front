@@ -13,7 +13,7 @@ export default function DieticianBookings(props) {
 
 	const dieticianId = "947c7835-3212-4608-a1a5-b2703b0f8538";
 
-	const today = convertDate(new Date());
+	const today = convertDate(new Date("2020-04-10"));
 
 	useEffect(() => {
 		getBookings();
@@ -38,35 +38,58 @@ export default function DieticianBookings(props) {
 
 	const reservationsToday = resDataToday.map((x, index) => {
 		return (
-			<ul key={`bookingListToday_${index}`}>
-				{getHoursAndMinutesFromDate(x.startsAt)} -{" "}
-				{getHoursAndMinutesFromDate(x.endsAt)} <br />
-				Asiakas : <br />
-				Viesti :
-			</ul>
+			<tr key={`resTodayRow_1_${index}`}>
+				<td key={`resTodayCell_1_${index}`}>
+					{getNameOfDay(x.startsAt)} {getDayMonthYear(x.startsAt)}{" "}
+					{getHoursAndMinutesFromDate(x.startsAt)} -{" "}
+					{getHoursAndMinutesFromDate(x.endsAt)}
+				</td>
+				<td key={`resTodayCell_2_${index}`}>asiakas</td>
+				<td key={`resTodayCell_3_${index}`}>viesti</td>
+				<td key={`resTodayCell_4_${index}`}>
+					<a href="#" className="btn btn-danger">
+						Peruuta
+					</a>
+				</td>
+			</tr>
 		);
 	});
 
 	const reservationTomorrow = resDataTomorrow.map((x, index) => {
 		return (
-			<ul key={`bookingListToday_${index}`}>
-				{getHoursAndMinutesFromDate(x.startsAt)} -{" "}
-				{getHoursAndMinutesFromDate(x.endsAt)} <br />
-				Asiakas : <br />
-				Viesti :
-			</ul>
+			<tr key={`resTomorrowRow_1_${index}`}>
+				<td key={`resTomorrowRow_1_${index}`}>
+					{getNameOfDay(x.startsAt)} {getDayMonthYear(x.startsAt)}{" "}
+					{getHoursAndMinutesFromDate(x.startsAt)} -{" "}
+					{getHoursAndMinutesFromDate(x.endsAt)}
+				</td>
+				<td key={`resTomorrowRow_2_${index}`}>asiakas</td>
+				<td key={`resTomorrowRow_3_${index}`}>viesti</td>
+				<td key={`resTomorrowRow_4_${index}`}>
+					<a href="#" className="btn btn-danger">
+						Peruuta
+					</a>
+				</td>
+			</tr>
 		);
 	});
 
 	const reservationRest = resData.map((x, index) => {
 		return (
-			<ul key={`bookingListToday_${index}`}>
-				{getNameOfDay(x.startsAt)} {getDayMonthYear(x.startsAt)}{" "}
-				{getHoursAndMinutesFromDate(x.startsAt)} -{" "}
-				{getHoursAndMinutesFromDate(x.endsAt)} <br />
-				Asiakas : <br />
-				Viesti :
-			</ul>
+			<tr key={`resRow_1_${index}`}>
+				<td key={`resCell_1_${index}`}>
+					{getNameOfDay(x.startsAt)} {getDayMonthYear(x.startsAt)}{" "}
+					{getHoursAndMinutesFromDate(x.startsAt)} -{" "}
+					{getHoursAndMinutesFromDate(x.endsAt)}
+				</td>
+				<td key={`resCell_2_${index}`}>asiakas</td>
+				<td key={`resCell_3_${index}`}>viesti</td>
+				<td key={`resCell_4_${index}`}>
+					<a href="#" className="btn btn-danger">
+						Peruuta
+					</a>
+				</td>
+			</tr>
 		);
 	});
 
@@ -80,18 +103,38 @@ export default function DieticianBookings(props) {
 			</div>
 
 			<div className="col-sm-12 mt-4 px-0">
-				<div className="card-deck">
+				<div className="card-group">
 					<div className="card">
 						<div className="card-body bg-light">
 							<h1>Varaukset tänään</h1>
-							<ul>{reservationsToday}</ul>
+							<table className="table">
+								<thead>
+									<tr>
+										<th>Ajankohta</th>
+										<th>Asiakas</th>
+										<th>Viesti</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>{reservationsToday}</tbody>
+							</table>
 						</div>
 					</div>
 
 					<div className="card">
 						<div className="card-body bg-light">
 							<h1>Varaukset huomenna</h1>
-							<ul>{reservationTomorrow}</ul>
+							<table className="table">
+								<thead>
+									<tr>
+										<th>Ajankohta</th>
+										<th>Asiakas</th>
+										<th>Viesti</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>{reservationTomorrow}</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
@@ -102,7 +145,18 @@ export default function DieticianBookings(props) {
 					<div className="card">
 						<div className="card-body bg-light">
 							<h1>Varaukset seuraavat 2 viikkoa</h1>
-							<ul>{reservationRest}</ul>
+							<table className="table">
+								<thead>
+									<tr>
+										<th>Ajankohta</th>
+										<th>Asiakas</th>
+										<th>Viesti</th>
+										<th></th>
+									</tr>
+								</thead>
+
+								<tbody>{reservationRest}</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
