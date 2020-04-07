@@ -11,14 +11,12 @@ export function Calendar({ calEvents, dieticianId }) {
 
 	const [reservationData, setReservationData] = useState(null);
 	const [selectedDate, setSelectedDate] = useState("2020-03-10 12:00:00");
-	// const [selected]
 	const [modalIsOpen, setIsOpen] = React.useState(false);
 
 	return (
 		<>
 			<Modal />
 			<div className="col-12 px-0 calendar">{calBase}</div>
-			<div>{selectedDate}</div>
 		</>
 	);
 
@@ -182,6 +180,10 @@ export function Calendar({ calEvents, dieticianId }) {
 		console.log("Reservation data: ", resObject);
 	}
 
+	function handleReservationResponse(response) {
+		// if ()
+	}
+
 	function handleReservationDropDownChange(e) {
 		console.log("ISO Time", e.target.value);
 		const times = e.target.value.split(" ");
@@ -297,12 +299,6 @@ export function Calendar({ calEvents, dieticianId }) {
 					dayCells.push(
 						<div key={runningDay + i} className="col cal-cell"></div>
 					);
-
-					let currentDateInCalendar = new Date(
-						`${year}-${month + 1 < 10 ? "0" + (month + 1) : month + 1}-${
-							runningDay + 1
-						} 00:00:00`
-					);
 				}
 			}
 
@@ -354,4 +350,11 @@ export function getMonthAndDay(date) {
 	const year = d.getFullYear();
 
 	return `${day}.${month}.`;
+}
+
+export function getNameOfDay(date) {
+	const daysShortSuomi = ["Su", "Ma", "Ti", "Ke", "To", "Pe", "La"];
+	const d = new Date(date);
+	console.log(d.getDay());
+	return daysShortSuomi[d.getDay()];
 }

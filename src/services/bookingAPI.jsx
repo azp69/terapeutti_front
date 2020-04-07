@@ -37,7 +37,7 @@ export function add(callBack, data) {
 			}
 		})
 		.catch((error) => {
-			console.log(error);
+			console.log("Error in bookings api: ", error);
 			// callBack(error.response.data);
 		});
 }

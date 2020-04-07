@@ -13,11 +13,11 @@ export default function ExpertiesAPICall(callBack, searchParams) {
 
 	axios
 		.get(url)
-		.then(response => {
+		.then((response) => {
 			console.log("Experties API Response: ", response.data);
 			callBack(response.data);
 		})
-		.catch(error => {
+		.catch((error) => {
 			console.log(error);
 		});
 }
