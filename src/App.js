@@ -12,6 +12,7 @@ import Register from "./components/register";
 import Login from "./components/login";
 import UserControl from "./components/usercontrol";
 import DieticianBookings from "./components/dieticianBookings";
+import AdminControl from "./components/admincontrol";
 
 function App() {
 	return (
@@ -50,6 +51,10 @@ function App() {
 
 					<Route path="/varaukset">
 						<DieticianBookings />
+					</Route>
+
+					<Route path="/adminhallinta">
+						<AdminControl />
 					</Route>
 
 					<Route path="/">
