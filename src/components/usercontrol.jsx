@@ -3,7 +3,7 @@ import * as DieticianAPI from "../services/dieticianAPI";
 
 import "../css/welcome.css";
 import "../css/textInput.css";
-
+import Modal from './modal.jsx';
 
 export default function UserControl(){
 
@@ -81,12 +81,7 @@ export default function UserControl(){
       </div>
 
         <hr/>
-        <button
-          type="submit"
-          className="btn btn-primary"
-        >
-          Muokkaa tietoja
-        </button>
+        <a href="#" data-toggle="modal" data-target="#TietojenMuokkaus" class="btn btn-primary">Muokkaa esittelyä</a>
 
       </div>
     </div>
@@ -105,12 +100,7 @@ export default function UserControl(){
                  The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</h5>
           </div>
         <hr/>
-        <button
-          type="submit"
-          className="btn btn-primary"
-        >
-          Muokkaa esittelyä
-        </button>
+      <a href="#" data-toggle="modal" data-target="#EsittelynMuok" class="btn btn-primary">Muokkaa esittelyä</a>
       </div>
     </div>
 {/* end*/}
@@ -128,7 +118,7 @@ export default function UserControl(){
                     <p class="card-text">Tietoja tulevasta ajasta</p>
                   </div>
                   <div class="col">
-                    <a href="#" class="btn btn-info">Tarkastele</a>
+                    <a href="#" data-toggle="modal" data-target="#TulevatAjat" class="btn btn-primary">Tarkastele</a>
                   </div>
                   <div class="col">
                     <a href="#" class="btn btn-danger">Peru</a>
@@ -144,7 +134,7 @@ export default function UserControl(){
                     <p class="card-text">Tietoja tulevasta ajasta</p>
                   </div>
                   <div class="col">
-                    <a href="#" class="btn btn-info">Tarkastele</a>
+                    <a href="#" data-toggle="modal" data-target="#TulevatAjat" class="btn btn-primary">Tarkastele</a>
                   </div>
                   <div class="col">
                     <a href="#" class="btn btn-danger">Peru</a>
@@ -160,7 +150,7 @@ export default function UserControl(){
                     <p class="card-text">Tietoja tulevasta ajasta</p>
                   </div>
                   <div class="col">
-                    <a href="#" class="btn btn-info">Tarkastele</a>
+                    <a href="#" data-toggle="modal" data-target="#TulevatAjat" class="btn btn-primary">Tarkastele</a>
                   </div>
                   <div class="col">
                     <a href="#" class="btn btn-danger">Peru</a>
@@ -173,7 +163,7 @@ export default function UserControl(){
       </div>
     </div>
 
-
+<Modal></Modal>
 
     </div>
   );
