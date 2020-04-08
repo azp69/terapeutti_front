@@ -55,8 +55,10 @@ export default function DieticianBookings(props) {
 					{getHoursAndMinutesFromDate(x.startsAt)} -{" "}
 					{getHoursAndMinutesFromDate(x.endsAt)}
 				</td>
-				<td key={`resTodayCell_2_${index}`}>asiakas</td>
-				<td key={`resTodayCell_3_${index}`}>viesti</td>
+				<td key={`resTodayCell_2_${index}`}>
+					{x.hasOwnProperty("customer") ? x.customer.id : ""}
+				</td>
+				<td key={`resTodayCell_3_${index}`}>{x.description}</td>
 				<td key={`resTodayCell_4_${index}`}>
 					<button className="btn btn-danger" onClick={() => deleteBooking()}>
 						Peruuta
@@ -74,8 +76,10 @@ export default function DieticianBookings(props) {
 					{getHoursAndMinutesFromDate(x.startsAt)} -{" "}
 					{getHoursAndMinutesFromDate(x.endsAt)}
 				</td>
-				<td key={`resTomorrowRow_2_${index}`}>asiakas</td>
-				<td key={`resTomorrowRow_3_${index}`}>viesti</td>
+				<td key={`resTomorrowRow_2_${index}`}>
+					{x.hasOwnProperty("customer") ? x.customer.id : ""}
+				</td>
+				<td key={`resTomorrowRow_3${index}`}>{x.description}</td>
 				<td key={`resTomorrowRow_4_${index}`}>
 					<button className="btn btn-danger" onClick={() => deleteBooking()}>
 						Peruuta
