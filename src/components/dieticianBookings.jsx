@@ -17,10 +17,6 @@ export default function DieticianBookings(props) {
 	const [reservationData, setReservationData] = useState();
 
 	const dieticianId = "9b2a7778-73aa-4841-8a31-f88f6be268bf";
-
-	const token =
-		"d195119ed7895972432f96b760e44201556174ac762af976bc8cda4654fc719a4dd3102f1cac3e87fc399b14457f4956";
-
 	const today = convertDate(new Date());
 
 	useEffect(() => {
@@ -36,7 +32,7 @@ export default function DieticianBookings(props) {
 			</div>
 		);
 
-	const resData = [...reservationData].sort(compareDates);
+	let resData = [...reservationData].sort(compareDates);
 
 	let resDataToday = resData
 		.filter((x) => convertDate(x.startsAt) == convertDate(today))
@@ -194,8 +190,14 @@ export default function DieticianBookings(props) {
 		const today = convertDate(new Date());
 		const endDate = convertDate(addDays(new Date(), 14));
 		BookingAPI.get(
-			setReservationData,
 			`?dieticianId=${dieticianId}&startDate=${today}&endDate=${endDate}`
+		).then(
+			(success) => {
+				setReservationData(success.data);
+			},
+			(error) => {
+				NotificationManager.error("Virhe ladattaessa varaustietoja");
+			}
 		);
 	}
 
@@ -221,15 +223,15 @@ export default function DieticianBookings(props) {
 	function deleteBooking(id) {
 		let r = window.confirm("Haluatko varmasti poistaa varauksen?");
 		if (r == true) {
-			BookingAPI.remove(deleteSuccess, id);
-
-			// alert("TODO");
+			BookingAPI.remove(id).then(
+				(success) => {
+					NotificationManager.success("Varaus poistettu");
+					getBookings();
+				},
+				(rejected) => {
+					NotificationManager.error("Virhe poistaessa varausta");
+				}
+			);
 		}
-	}
-
-	function deleteSuccess() {
-		// alert("Onnistui");
-		NotificationManager.success("Varaus poistettu");
-		getBookings();
 	}
 }

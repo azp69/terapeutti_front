@@ -74,36 +74,6 @@ export function Calendar({ calEvents, dieticianId }) {
 			{ begin: "15:30", end: "16:00" },
 		];
 
-		var reservationMock = [
-			{
-				id: "mock_1",
-				startsAt: "2020-03-10T08:00:00.000Z",
-				endsAt: "2020-03-10T08:30:00.000Z",
-				description: "Vegaanin ruokavalio",
-				customer: {
-					id: "efb936eb-19d5-47fd-9ba6-56d6b1c2baa0",
-				},
-			},
-			{
-				id: "mock_2",
-				startsAt: "2020-03-10T09:00:00.000Z",
-				endsAt: "2020-03-10T09:30:00.000Z",
-				description: "Vegaanin ruokavalio",
-				customer: {
-					id: "efb936eb-19d5-47fd-9ba6-56d6b1c2baa0",
-				},
-			},
-			{
-				id: "mock_3",
-				startsAt: "2020-03-10T13:00:00.000Z",
-				endsAt: "2020-03-10T13:30:00.000Z",
-				description: "Vegaanin ruokavalio",
-				customer: {
-					id: "efb936eb-19d5-47fd-9ba6-56d6b1c2baa0",
-				},
-			},
-		];
-
 		if (reservationData == null) {
 			return null;
 		}
@@ -179,7 +149,16 @@ export function Calendar({ calEvents, dieticianId }) {
 			},
 		};
 
-		BookingAPI.add(handleReservationResponse, resObject);
+		BookingAPI.add(resObject).then(
+			(success) => {
+				NotificationManager.success("Varaus luotiin onnistuneesti");
+				setIsOpen(false);
+				// console.log("API Response in responsehandler: ", response);
+			},
+			(error) => {
+				NotificationManager.error("Virhe luotaessa varausta");
+			}
+		);
 
 		console.log("Reservation data: ", resObject);
 	}
@@ -217,9 +196,11 @@ export function Calendar({ calEvents, dieticianId }) {
 
 	function onCalDayClick(date) {
 		BookingAPI.get(
-			setReservationData,
 			`?dieticianId=${dieticianId}&startDate=${date}&endDate=${date}`
-		);
+		).then((success) => {
+			setReservationData(success.data);
+		});
+
 		setSelectedDate(date);
 		openModal();
 	}

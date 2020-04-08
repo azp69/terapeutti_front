@@ -5,17 +5,19 @@ const devMode = process.env.NODE_ENV === "development" ? true : false;
 const releaseUrl = "https://api.terapia.palikka.org/";
 const devUrl = "http://localhost:3001/";
 
-export function get(callBack, params) {
+export function get(params) {
 	const url = devMode
 		? `${devUrl}api/bookings/${params}`
 		: `${releaseUrl}api/bookings/${params}`;
 
-	axios
-		.get(url, {
-			headers: {
-				AccessToken: Helper.getCookie("accesstoken"),
-			},
-		})
+	const request = axios.get(url, {
+		headers: {
+			AccessToken: Helper.getCookie("accesstoken"),
+		},
+	});
+
+	return request;
+	/*
 		.then((response) => {
 			console.log("bookings API Response: ", response.data);
 			callBack(response.data);
@@ -24,17 +26,21 @@ export function get(callBack, params) {
 			callBack(null);
 			console.log(error);
 		});
+		*/
 }
 
-export function add(callBack, data) {
+export function add(data) {
 	const url = devMode ? `${devUrl}api/bookings` : `${releaseUrl}api/bookings`;
 
-	axios
-		.post(url, data, {
-			headers: {
-				"Content-Type": "application/json",
-			},
-		})
+	const request = axios.post(url, data, {
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+
+	return request;
+
+	/*
 		.then((response) => {
 			if (callBack != null) {
 				callBack(response.data);
@@ -47,6 +53,7 @@ export function add(callBack, data) {
 			}
 			// callBack(error.response.data);
 		});
+		*/
 }
 
 /*
@@ -68,22 +75,16 @@ export function update(callBack, params, data) {
 }
 */
 
-export function remove(callBack, params) {
+export function remove(params) {
 	const url = devMode
 		? `${devUrl}api/bookings/${params}`
 		: `${releaseUrl}api/bookings/${params}`;
 
-	axios
-		.delete(url, {
-			headers: {
-				AccessToken: Helper.getCookie("accesstoken"),
-			},
-		})
-		.then((response) => {
-			console.log("booking API Response: ", response.data);
-			callBack(response.data);
-		})
-		.catch((error) => {
-			console.log(error);
-		});
+	const request = axios.delete(url, {
+		headers: {
+			AccessToken: Helper.getCookie("accesstoken"),
+		},
+	});
+
+	return request;
 }
