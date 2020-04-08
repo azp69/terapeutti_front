@@ -11,7 +11,11 @@ export function get(callBack, params) {
 		: `${releaseUrl}api/bookings/${params}`;
 
 	axios
-		.get(url)
+		.get(url, {
+			headers: {
+				AccessToken: Helper.getCookie("accesstoken"),
+			},
+		})
 		.then((response) => {
 			console.log("bookings API Response: ", response.data);
 			callBack(response.data);
@@ -38,6 +42,9 @@ export function add(callBack, data) {
 		})
 		.catch((error) => {
 			console.log("Error in bookings api: ", error);
+			if (callBack != null) {
+				callBack(error.response.data);
+			}
 			// callBack(error.response.data);
 		});
 }
@@ -59,20 +66,24 @@ export function update(callBack, params, data) {
 			console.log(error);
 		});
 }
+*/
 
-export function remove(callBack, params, data) {
+export function remove(callBack, params) {
 	const url = devMode
-		? `${devUrl}api/dieticians/${params}`
-		: `${releaseUrl}api/dieticians/${params}`;
+		? `${devUrl}api/bookings/${params}`
+		: `${releaseUrl}api/bookings/${params}`;
 
 	axios
-		.delete(url)
-		.then(response => {
-			console.log("dietician API Response: ", response.data);
+		.delete(url, {
+			headers: {
+				AccessToken: Helper.getCookie("accesstoken"),
+			},
+		})
+		.then((response) => {
+			console.log("booking API Response: ", response.data);
 			callBack(response.data);
 		})
-		.catch(error => {
+		.catch((error) => {
 			console.log(error);
 		});
 }
-*/

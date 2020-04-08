@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import * as Helper from "./helper";
 
 import "../css/nav.css";
 
-export default function Nav() {
+export default function Nav(props) {
 	return (
 		<nav className="navbar navbar-expand-md sticky-top navbar-light">
 			<button
@@ -56,25 +57,40 @@ export default function Nav() {
 							Ota yhteyttä
 						</Link>
 					</li>
-					<li
-						className="nav-link"
-						data-toggle="collapse"
-						data-target=".navbar-collapse.show"
-					>
-						<Link to="/rekisteroidy" className="nav-link">
-							Rekisteröidy
-						</Link>
-					</li>
-					<li
-						className="nav-link"
-						data-toggle="collapse"
-						data-target=".navbar-collapse.show"
-					>
-						<Link to="/kirjaudu" className="nav-link">
-							Kirjaudu
-						</Link>
-					</li>
 
+					{props.authenticated ? (
+						<li
+							className="nav-link"
+							data-toggle="collapse"
+							data-target=".navbar-collapse.show"
+						>
+							<Link to="/varaukset" className="nav-link">
+								Varaukset
+							</Link>
+						</li>
+					) : (
+						<>
+							<li
+								className="nav-link"
+								data-toggle="collapse"
+								data-target=".navbar-collapse.show"
+							>
+								<Link to="/rekisteroidy" className="nav-link">
+									Rekisteröidy
+								</Link>
+							</li>
+
+							<li
+								className="nav-link"
+								data-toggle="collapse"
+								data-target=".navbar-collapse.show"
+							>
+								<Link to="/kirjaudu" className="nav-link">
+									Kirjaudu
+								</Link>
+							</li>
+						</>
+					)}
 				</ul>
 			</div>
 		</nav>

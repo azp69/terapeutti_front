@@ -175,13 +175,17 @@ export function Calendar({ calEvents, dieticianId }) {
 			},
 		};
 
-		BookingAPI.add(null, resObject);
+		BookingAPI.add(handleReservationResponse, resObject);
 
 		console.log("Reservation data: ", resObject);
 	}
 
 	function handleReservationResponse(response) {
-		// if ()
+		if (response) {
+			alert("Varaus luotu onnistuneesti!");
+			setIsOpen(false);
+			console.log("API Response in responsehandler: ", response);
+		}
 	}
 
 	function handleReservationDropDownChange(e) {

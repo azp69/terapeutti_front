@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+	Link,
+	Redirect,
+} from "react-router-dom";
+import * as Helper from "./components/helper";
 
 import Jumbotron from "./components/jumbotron";
 import Nav from "./components/nav";
@@ -15,10 +22,14 @@ import DieticianBookings from "./components/dieticianBookings";
 import AdminControl from "./components/admincontrol";
 
 function App() {
+	const [authenticated, setAuthenticated] = useState(
+		Helper.getCookie("accesstoken") ? 1 : 0
+	);
+
 	return (
 		<Router>
 			<Jumbotron />
-			<Nav />
+			<Nav authenticated={authenticated} />
 			<div className="container">
 				<Switch>
 					<Route path="/palvelut">
@@ -38,11 +49,15 @@ function App() {
 					</Route>
 
 					<Route path="/rekisteroidy">
-						<Register />
+						{authenticated ? <Redirect to="/varaukset" /> : <Register />}
 					</Route>
 
 					<Route path="/kirjaudu">
-						<Login />
+						{authenticated ? (
+							<Redirect to="/varaukset" />
+						) : (
+							<Login authenticationHandler={authHandler} />
+						)}
 					</Route>
 
 					<Route path="/kayttajahallinta">
@@ -65,6 +80,10 @@ function App() {
 			<div className="mb-5"></div>
 		</Router>
 	);
+
+	function authHandler() {
+		setAuthenticated(1);
+	}
 }
 
 export default App;

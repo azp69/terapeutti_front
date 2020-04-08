@@ -11,7 +11,10 @@ import "../css/welcome.css";
 export default function DieticianBookings(props) {
 	const [reservationData, setReservationData] = useState();
 
-	const dieticianId = "947c7835-3212-4608-a1a5-b2703b0f8538";
+	const dieticianId = "9b2a7778-73aa-4841-8a31-f88f6be268bf";
+
+	const token =
+		"d195119ed7895972432f96b760e44201556174ac762af976bc8cda4654fc719a4dd3102f1cac3e87fc399b14457f4956";
 
 	const today = convertDate(new Date());
 
@@ -89,10 +92,15 @@ export default function DieticianBookings(props) {
 					{getHoursAndMinutesFromDate(x.startsAt)} -{" "}
 					{getHoursAndMinutesFromDate(x.endsAt)}
 				</td>
-				<td key={`resCell_2_${index}`}>asiakas</td>
-				<td key={`resCell_3_${index}`}>viesti</td>
+				<td key={`resCell_2_${index}`}>
+					{x.hasOwnProperty("customer") ? x.customer.id : ""}
+				</td>
+				<td key={`resCell_3_${index}`}>{x.description}</td>
 				<td key={`resCell_4_${index}`}>
-					<button className="btn btn-danger" onClick={() => deleteBooking()}>
+					<button
+						className="btn btn-danger"
+						onClick={() => deleteBooking(x.id)}
+					>
 						Peruuta
 					</button>
 				</td>
@@ -208,7 +216,13 @@ export default function DieticianBookings(props) {
 	function deleteBooking(id) {
 		let r = window.confirm("Haluatko varmasti poistaa varauksen?");
 		if (r == true) {
-			alert("TODO");
+			BookingAPI.remove(deleteSuccess, id);
+			// alert("TODO");
 		}
+	}
+
+	function deleteSuccess() {
+		alert("Onnistui");
+		getBookings();
 	}
 }
