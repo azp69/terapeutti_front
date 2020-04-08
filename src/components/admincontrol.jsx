@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import * as DieticianAPI from "../services/dieticianAPI";
-import Modal from 'react-modal';
-
+import Modal from './modal.jsx';
 
 import "../css/welcome.css";
 import "../css/textInput.css";
 
 
+
 export default function AdminControl(){
- const [modalIsOpen, setModalIsOpen] = useState(false)
   return(
+
     <div>
       <div className="row">
         <div className="col-sm-12 mt-5 card card-body bg-light">
@@ -33,7 +33,7 @@ export default function AdminControl(){
                   <p class="card-text">Tietoja rekisteröinnistä</p>
                 </div>
                 <div class="col">
-                  <a href="#" class="btn btn-info">Tarkastele</a>
+                  <a href="#" data-toggle="modal" data-target="#HyvaksyttavaTerapeutti" class="btn btn-info">Tarkastele</a>
                 </div>
                 <div class="col">
                   <a href="#" class="btn btn-danger">Peru</a>
@@ -50,7 +50,7 @@ export default function AdminControl(){
                   <p class="card-text">Tietoja rekistöröinnistä</p>
                 </div>
                 <div class="col">
-                  <a href="#" class="btn btn-info">Tarkastele</a>
+                  <a href="#" data-toggle="modal" data-target="#HyvaksyttavaTerapeutti" class="btn btn-info">Tarkastele</a>
                 </div>
                 <div class="col">
                   <a href="#" class="btn btn-danger">Peru</a>
@@ -78,10 +78,10 @@ export default function AdminControl(){
                   <p class="card-text">Tietoja pyynnöstä</p>
                 </div>
                 <div class="col">
-                  <a href="#" class="btn btn-info">Tarkastele</a>
+                  <a href="#" data-toggle="modal" data-target="#KorjauspyyntModal" class="btn btn-info">Tarkastele</a>
                 </div>
                 <div class="col">
-                  <a href="#" class="btn btn-danger">Poista</a>
+                  <a href="#"class="btn btn-danger">Poista</a>
                 </div>
             </div>
           </div>
@@ -95,7 +95,7 @@ export default function AdminControl(){
                   <p class="card-text">Tietoja pyynnöstä</p>
                 </div>
                 <div class="col">
-                  <a href="#" class="btn btn-info">Tarkastele</a>
+                  <a href="#" data-toggle="modal" data-target="#KorjauspyyntModal" class="btn btn-info">Tarkastele</a>
                 </div>
                 <div class="col">
                   <a href="#" class="btn btn-danger">Poista</a>
@@ -134,7 +134,7 @@ export default function AdminControl(){
                        <p class="card-text">Käyttäjän nimi yms</p>
                      </div>
                      <div class="col">
-                       <a href="#" class="btn btn-info">Tarkastele</a>
+                  <a href="#" data-toggle="modal" data-target="#Poistomodal" class="btn btn-info">Tarkastele</a>
                      </div>
 
                  </div>
@@ -148,7 +148,7 @@ export default function AdminControl(){
                        <p class="card-text">Käyttäjän nimi yms</p>
                      </div>
                      <div class="col">
-                       <a href="#" class="btn btn-info">Tarkastele</a>
+                  <a href="#" data-toggle="modal" data-target="#Poistomodal" class="btn btn-info">Tarkastele</a>
                      </div>
                  </div>
                </div>
@@ -159,7 +159,7 @@ export default function AdminControl(){
 
 
       </div>
-
+      <Modal></Modal>
     </div>
   )
 
