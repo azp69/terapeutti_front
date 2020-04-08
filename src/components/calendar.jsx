@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import * as BookingAPI from "../services/bookingAPI";
 import DropDownMenu from "./dropDownMenu";
 import TextInput from "./textinput";
+import {
+	NotificationContainer,
+	NotificationManager,
+} from "react-notifications";
 
 import "../css/calendar.css";
 import "../css/modal.css";
@@ -10,7 +14,7 @@ export function Calendar({ calEvents, dieticianId }) {
 	const calBase = drawCalendar();
 
 	const [reservationData, setReservationData] = useState(null);
-	const [selectedDate, setSelectedDate] = useState("2020-03-10 12:00:00");
+	const [selectedDate, setSelectedDate] = useState();
 	const [modalIsOpen, setIsOpen] = React.useState(false);
 
 	return (
@@ -182,7 +186,7 @@ export function Calendar({ calEvents, dieticianId }) {
 
 	function handleReservationResponse(response) {
 		if (response) {
-			alert("Varaus luotu onnistuneesti!");
+			NotificationManager.success("Varaus luotiin onnistuneesti");
 			setIsOpen(false);
 			console.log("API Response in responsehandler: ", response);
 		}

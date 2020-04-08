@@ -20,10 +20,17 @@ import Login from "./components/login";
 import UserControl from "./components/usercontrol";
 import DieticianBookings from "./components/dieticianBookings";
 import AdminControl from "./components/admincontrol";
+import Logout from "./components/logout";
+
+import "react-notifications/lib/notifications.css";
+import {
+	NotificationContainer,
+	NotificationManager,
+} from "react-notifications";
 
 function App() {
 	const [authenticated, setAuthenticated] = useState(
-		Helper.getCookie("accesstoken") ? 1 : 0
+		Helper.getCookie("accesstoken") != "" ? 1 : 0
 	);
 
 	return (
@@ -49,11 +56,11 @@ function App() {
 					</Route>
 
 					<Route path="/rekisteroidy">
-						{authenticated ? <Redirect to="/varaukset" /> : <Register />}
+						{authenticated == 1 ? <Redirect to="/varaukset" /> : <Register />}
 					</Route>
 
 					<Route path="/kirjaudu">
-						{authenticated ? (
+						{authenticated == 1 ? (
 							<Redirect to="/varaukset" />
 						) : (
 							<Login authenticationHandler={authHandler} />
@@ -72,17 +79,23 @@ function App() {
 						<AdminControl />
 					</Route>
 
+					<Route path="/logout">
+						<Logout authenticationHandler={authHandler} />
+					</Route>
+
 					<Route path="/">
 						<Welcome />
 					</Route>
 				</Switch>
 			</div>
+			<NotificationContainer />
 			<div className="mb-5"></div>
 		</Router>
 	);
 
-	function authHandler() {
-		setAuthenticated(1);
+	function authHandler(value) {
+		console.log("jep");
+		setAuthenticated(value);
 	}
 }
 

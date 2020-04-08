@@ -58,16 +58,28 @@ export default function Nav(props) {
 						</Link>
 					</li>
 
-					{props.authenticated ? (
-						<li
-							className="nav-link"
-							data-toggle="collapse"
-							data-target=".navbar-collapse.show"
-						>
-							<Link to="/varaukset" className="nav-link">
-								Varaukset
-							</Link>
-						</li>
+					{props.authenticated == 1 ? (
+						<>
+							<li
+								className="nav-link"
+								data-toggle="collapse"
+								data-target=".navbar-collapse.show"
+							>
+								<Link to="/varaukset" className="nav-link">
+									Varaukset
+								</Link>
+							</li>
+
+							<li
+								className="nav-link"
+								data-toggle="collapse"
+								data-target=".navbar-collapse.show"
+							>
+								<Link to="/logout" className="nav-link">
+									Kirjaudu ulos
+								</Link>
+							</li>
+						</>
 					) : (
 						<>
 							<li
@@ -86,7 +98,7 @@ export default function Nav(props) {
 								data-target=".navbar-collapse.show"
 							>
 								<Link to="/kirjaudu" className="nav-link">
-									Kirjaudu
+									Kirjaudu sisään
 								</Link>
 							</li>
 						</>

@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import * as Helper from "./helper";
 import * as LoginAPI from "../services/loginAPI";
+import {
+	NotificationContainer,
+	NotificationManager,
+} from "react-notifications";
 
 import "../css/welcome.css";
 import "../css/textInput.css";
@@ -71,14 +75,10 @@ export default function Login(props) {
 	function handleLoginResponse(response) {
 		try {
 			Helper.setCookie("accesstoken", response.AccessToken, 1);
-
-			props.authenticationHandler(true);
-
-			// document.cookie = `accesstoken=${response.AccessToken}`;
-			// window.location("/varaukset");
-			// console.log("Got response: ", response.AccessToken);
+			NotificationManager.success("Kirjautuminen onnistui");
+			props.authenticationHandler(1);
 		} catch {
-			console.log("Error");
+			NotificationManager.error("Kirjautuminen epäonnistui");
 		}
 	}
 }

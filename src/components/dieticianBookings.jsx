@@ -6,6 +6,11 @@ import {
 	getNameOfDay,
 } from "./calendar";
 
+import {
+	NotificationContainer,
+	NotificationManager,
+} from "react-notifications";
+
 import "../css/welcome.css";
 
 export default function DieticianBookings(props) {
@@ -217,12 +222,14 @@ export default function DieticianBookings(props) {
 		let r = window.confirm("Haluatko varmasti poistaa varauksen?");
 		if (r == true) {
 			BookingAPI.remove(deleteSuccess, id);
+
 			// alert("TODO");
 		}
 	}
 
 	function deleteSuccess() {
-		alert("Onnistui");
+		// alert("Onnistui");
+		NotificationManager.success("Varaus poistettu");
 		getBookings();
 	}
 }
