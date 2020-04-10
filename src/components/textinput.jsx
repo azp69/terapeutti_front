@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
+import "../css/textInput.css";
 
-export default function TextInput({ label, id, placeholder, type, error }) {
+export default function TextInput({
+	label,
+	id,
+	placeholder,
+	type,
+	error,
+	onChange,
+}) {
 	const err = error ? " validationError" : "";
 	const style = "form-control" + err;
 	const typeOfInput = type === "password" ? "password" : "text";
@@ -12,6 +20,7 @@ export default function TextInput({ label, id, placeholder, type, error }) {
 				className={style}
 				id={id}
 				placeholder={error ? error : placeholder}
+				onChange={onChange}
 			/>
 		</>
 	);

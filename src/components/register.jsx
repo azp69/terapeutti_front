@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import * as DieticianAPI from "../services/dieticianAPI";
+import TextInput from "./textinput";
+import {
+	NotificationContainer,
+	NotificationManager,
+} from "react-notifications";
 
 import "../css/welcome.css";
-import "../css/textInput.css";
 
 export default function Register() {
 	const [errors, setErrors] = useState({
@@ -10,7 +14,19 @@ export default function Register() {
 		Place: "",
 		Education: "",
 		Phone: "",
-		Email: ""
+		Email: "",
+		Agreement: "",
+	});
+
+	const [userData, setUserData] = useState({
+		FirstName: "",
+		LastName: "",
+		Place: "",
+		Education: "",
+		Phone: "",
+		Email: "",
+		Password: "",
+		Agreement: false,
 	});
 
 	return (
@@ -39,6 +55,7 @@ export default function Register() {
 											label="Etunimi"
 											placeholder="Syötä etunimi"
 											error={errors.name ? errors.name : ""}
+											onChange={handleInputChange}
 										/>
 									</div>
 
@@ -48,14 +65,19 @@ export default function Register() {
 											label="Sukunimi"
 											placeholder="Syötä sukunimi"
 											error={errors.name ? errors.name : ""}
+											onChange={handleInputChange}
 										/>
 									</div>
 								</div>
 							</div>
 
 							<div className="form-group">
-								<label htmlFor="FormControlSelect1">Toimipaikka</label>
-								<select className="form-control" id="FormControlSelect1">
+								<label htmlFor="Place">Toimipaikka</label>
+								<select
+									className="form-control"
+									id="Place"
+									onChange={handleInputChange}
+								>
 									<option>Helsinki</option>
 									<option>Vantaa</option>
 									<option>Espoo</option>
@@ -69,6 +91,7 @@ export default function Register() {
 									id="Education"
 									label="Koulutus"
 									placeholder="Syötä koulutus"
+									onChange={handleInputChange}
 								/>
 							</div>
 
@@ -77,6 +100,7 @@ export default function Register() {
 									id="Phone"
 									label="Puhelinnumero"
 									placeholder="Syötä puhelinnumero"
+									onChange={handleInputChange}
 								/>
 							</div>
 
@@ -86,6 +110,7 @@ export default function Register() {
 									label="Sähköposti"
 									placeholder="Syötä sähköposti"
 									error={errors.email ? errors.email : ""}
+									onChange={handleInputChange}
 								/>
 							</div>
 
@@ -95,6 +120,7 @@ export default function Register() {
 									label="Salasana"
 									placeholder=""
 									type="password"
+									onChange={handleInputChange}
 								/>
 							</div>
 
@@ -104,10 +130,11 @@ export default function Register() {
 										className="form-check-input"
 										type="checkbox"
 										value="hyvaksy1"
-										id="hyvaksy1"
+										id="agreement"
+										onChange={handleInputChange}
 									/>
 									<label className="form-check-label" htmlFor="hyvaksy1">
-										Hyväksyn jotain jotain
+										Hyväksyn, että tietoni luovutetaan Venäjän mafialle.
 									</label>
 								</div>
 							</div>
@@ -115,7 +142,7 @@ export default function Register() {
 							<button
 								type="submit"
 								className="btn btn-primary"
-								onClick={e => submitForm(e, queryDone)}
+								onClick={(e) => submitForm(e, queryDone)}
 							>
 								Rekisteröidy
 							</button>
@@ -129,71 +156,91 @@ export default function Register() {
 	function queryDone(response) {
 		setErrors(response.errors);
 	}
-}
 
-function TextInput({ label, id, placeholder, type, error }) {
-	const err = error ? " validationError" : "";
-	const style = "form-control" + err;
-	const typeOfInput = type === "password" ? "password" : "text";
-	return (
-		<>
-			<label htmlFor={id}>{label}</label>
-			<input
-				type={typeOfInput}
-				className={style}
-				id={id}
-				placeholder={error ? error : placeholder}
-			/>
-		</>
-	);
-}
+	function handleInputChange(e) {
+		// const data = { ...userData, FirstName: "he" };
+		switch (e.target.id) {
+			case "Firstname":
+				setUserData({ ...userData, FirstName: e.target.value });
+				break;
+			case "Lastname":
+				setUserData({ ...userData, LastName: e.target.value });
+				break;
+			case "Education":
+				setUserData({ ...userData, Education: e.target.value });
+				break;
+			case "Phone":
+				setUserData({ ...userData, Phone: e.target.value });
+				break;
+			case "Email":
+				setUserData({ ...userData, Email: e.target.value });
+				break;
+			case "Password":
+				setUserData({ ...userData, Password: e.target.value });
+				break;
+			case "Place":
+				setUserData({ ...userData, Place: e.target.value });
+				break;
+			case "agreement":
+				setUserData({ ...userData, Agreement: e.target.checked });
+				break;
+		}
+	}
 
-function submitForm(e, queryDone) {
-	e.preventDefault();
-	// console.log(e.target.parentElement.searchBox.value);
-	var elements = document.getElementsByClassName("form-control");
-	var name =
-		document.getElementById("Firstname").value +
-		" " +
-		document.getElementById("Lastname").value;
-	var email = document.getElementById("Email").value;
-	var phone = document.getElementById("Phone").value;
-	var place = document.getElementById("FormControlSelect1").value;
-	var password = document.getElementById("Password").value;
-	var education = document.getElementById("Education").value;
+	function submitForm(e, queryDone) {
+		e.preventDefault();
 
-	var dietician = {
-		name,
-		email,
-		phone,
-		place,
-		education,
-		password
-	};
-	console.log(dietician);
+		if (userData.Agreement !== true) {
+			NotificationManager.error("Sinun täytyy hyväksyä palvelun käyttöehdot");
+			return;
+		}
 
-	/*
-    const checkBoxes = e.target.parentElement.expertise;
-    let checkedExperties = [];
+		console.log("Firstname ", userData.FirstName);
+		// console.log(e.target.parentElement.searchBox.value);
+		var elements = document.getElementsByClassName("form-control");
+		var name =
+			document.getElementById("Firstname").value +
+			" " +
+			document.getElementById("Lastname").value;
+		var email = document.getElementById("Email").value;
+		var phone = document.getElementById("Phone").value;
+		var place = document.getElementById("Place").value;
+		var password = document.getElementById("Password").value;
+		var education = document.getElementById("Education").value;
 
-    checkBoxes.forEach((c) => {
-        if (c.checked) checkedExperties.push(c.id);
-    });
+		var dietician = {
+			name,
+			email,
+			phone,
+			place,
+			education,
+			password,
+		};
+		console.log(dietician);
 
-    const searchParams = {
-        searchparams : {
-            query : e.target.parentElement.searchBox.value,
-            expertises : checkedExperties
-        }
-    };
+		/*
+		const checkBoxes = e.target.parentElement.expertise;
+		let checkedExperties = [];
+	
+		checkBoxes.forEach((c) => {
+			if (c.checked) checkedExperties.push(c.id);
+		});
+	
+		const searchParams = {
+			searchparams : {
+				query : e.target.parentElement.searchBox.value,
+				expertises : checkedExperties
+			}
+		};
+	
+		*/
 
-    */
+		// Helper.log(JSON.stringify(search));
+		// Helper.log(checkedExperties);
 
-	// Helper.log(JSON.stringify(search));
-	// Helper.log(checkedExperties);
+		// DieticianSearchAPICall(profileDataUpdateFunction, e.target.parentElement.searchBox.value);
+		// console.log("s", searchParams.searchparams.query);
 
-	// DieticianSearchAPICall(profileDataUpdateFunction, e.target.parentElement.searchBox.value);
-	// console.log("s", searchParams.searchparams.query);
-
-	DieticianAPI.add(queryDone, JSON.stringify(dietician));
+		DieticianAPI.add(queryDone, JSON.stringify(dietician));
+	}
 }

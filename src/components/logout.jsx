@@ -12,7 +12,7 @@ import "../css/textInput.css";
 export default function Logout({ authenticationHandler }) {
 	Helper.setCookie("accesstoken", "", -1);
 	authenticationHandler(0);
-	NotificationManager.success("Olet kirjautunut ulos");
+	// NotificationManager.success("Olet kirjautunut ulos");
 	// window.location.reload();
 	return (
 		<div>

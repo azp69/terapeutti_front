@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as BookingAPI from "../services/bookingAPI";
+import * as Helper from "./helper";
+
 import {
 	getHoursAndMinutesFromDate,
 	getDayMonthYear,
@@ -16,7 +18,7 @@ import "../css/welcome.css";
 export default function DieticianBookings(props) {
 	const [reservationData, setReservationData] = useState();
 
-	const dieticianId = "9b2a7778-73aa-4841-8a31-f88f6be268bf";
+	const dieticianId = Helper.getCookie("dieticianId");
 	const today = convertDate(new Date());
 
 	useEffect(() => {
@@ -200,7 +202,12 @@ export default function DieticianBookings(props) {
 				setReservationData(success.data);
 			},
 			(error) => {
-				NotificationManager.error("Virhe ladattaessa varaustietoja");
+				if (error.response.status === 401) {
+					NotificationManager.error("Autentikointivirhe. Kirjaudu sisään.");
+					Helper.setCookie("accesstoken", "", -1);
+				} else NotificationManager.error("Virhe ladattaessa tietoja.");
+
+				console.log(error.response.status);
 			}
 		);
 	}
@@ -232,8 +239,11 @@ export default function DieticianBookings(props) {
 					NotificationManager.success("Varaus poistettu");
 					getBookings();
 				},
-				(rejected) => {
-					NotificationManager.error("Virhe poistaessa varausta");
+				(error) => {
+					if (error.response.status === 401) {
+						NotificationManager.error("Autentikointivirhe. Kirjaudu sisään.");
+						Helper.setCookie("accesstoken", "", -1);
+					} else NotificationManager.error("Virhe poistaessa varausta");
 				}
 			);
 		}

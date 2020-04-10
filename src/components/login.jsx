@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import * as Helper from "./helper";
 import * as LoginAPI from "../services/loginAPI";
+import TextInput from "./textinput";
 import {
 	NotificationContainer,
 	NotificationManager,
 } from "react-notifications";
 
 import "../css/welcome.css";
-import "../css/textInput.css";
 
 export default function Login(props) {
+	const [email, setEmail] = useState();
+	const [password, setPassword] = useState();
+
 	return (
 		<div>
 			<div className="row">
@@ -31,6 +34,7 @@ export default function Login(props) {
 											id="Email"
 											label="Sähköposti"
 											placeholder="Syötä sähköposti"
+											onChange={handleChange}
 										/>
 									</div>
 								</div>
@@ -42,6 +46,7 @@ export default function Login(props) {
 									label="Salasana"
 									placeholder=""
 									type="password"
+									onChange={handleChange}
 								/>
 							</div>
 
@@ -61,41 +66,22 @@ export default function Login(props) {
 
 	function handleLogin(e) {
 		e.preventDefault();
-		const user = document.getElementById("Email").value;
-		const pass = document.getElementById("Password").value;
 
-		const data = {
-			username: user,
-			password: pass,
-		};
+		LoginAPI.login({ username: email, password }).then(
+			(success) => {
+				Helper.setCookie("accesstoken", success.data.AccessToken, 1);
+				Helper.setCookie("dieticianId", success.data.dieticianId, 1);
 
-		LoginAPI.login(handleLoginResponse, data);
+				props.authenticationHandler(1);
+			},
+			(error) => {
+				NotificationManager.error("Kirjautuminen epäonnistui");
+			}
+		);
 	}
 
-	function handleLoginResponse(response) {
-		try {
-			Helper.setCookie("accesstoken", response.AccessToken, 1);
-			NotificationManager.success("Kirjautuminen onnistui");
-			props.authenticationHandler(1);
-		} catch {
-			NotificationManager.error("Kirjautuminen epäonnistui");
-		}
+	function handleChange(e) {
+		if (e.target.id === "Email") setEmail(e.target.value);
+		if (e.target.id === "Password") setPassword(e.target.value);
 	}
-}
-
-function TextInput({ label, id, placeholder, type, error }) {
-	const err = error ? " validationError" : "";
-	const style = "form-control" + err;
-	const typeOfInput = type === "password" ? "password" : "text";
-	return (
-		<>
-			<label htmlFor={id}>{label}</label>
-			<input
-				type={typeOfInput}
-				className={style}
-				id={id}
-				placeholder={error ? error : placeholder}
-			/>
-		</>
-	);
 }

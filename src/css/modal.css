@@ -17,6 +17,7 @@
 .custom-modal-content {
 	background-color: #fefefe;
 	max-width: 50% !important;
+	padding: 20pt;
 }
 
 /* The Close Button */
