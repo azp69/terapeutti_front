@@ -58,7 +58,11 @@ export default function DieticianBookings(props) {
 					{getHoursAndMinutesFromDate(x.endsAt)}
 				</td>
 				<td key={`resTodayCell_2_${index}`}>
-					{x.hasOwnProperty("customer") ? x.customer.id : ""}
+					{x.hasOwnProperty("customer") ? (
+						<a href={"mailto:" + x.customer.email}>{x.customer.name}</a>
+					) : (
+						""
+					)}
 				</td>
 				<td key={`resTodayCell_3_${index}`}>{x.description}</td>
 				<td key={`resTodayCell_4_${index}`}>
@@ -79,7 +83,11 @@ export default function DieticianBookings(props) {
 					{getHoursAndMinutesFromDate(x.endsAt)}
 				</td>
 				<td key={`resTomorrowRow_2_${index}`}>
-					{x.hasOwnProperty("customer") ? x.customer.id : ""}
+					{x.hasOwnProperty("customer") ? (
+						<a href={"mailto:" + x.customer.email}>{x.customer.name}</a>
+					) : (
+						""
+					)}
 				</td>
 				<td key={`resTomorrowRow_3${index}`}>{x.description}</td>
 				<td key={`resTomorrowRow_4_${index}`}>
@@ -100,7 +108,11 @@ export default function DieticianBookings(props) {
 					{getHoursAndMinutesFromDate(x.endsAt)}
 				</td>
 				<td key={`resCell_2_${index}`}>
-					{x.hasOwnProperty("customer") ? x.customer.id : ""}
+					{x.hasOwnProperty("customer") ? (
+						<a href={"mailto:" + x.customer.email}>{x.customer.name}</a>
+					) : (
+						""
+					)}
 				</td>
 				<td key={`resCell_3_${index}`}>{x.description}</td>
 				<td key={`resCell_4_${index}`}>
