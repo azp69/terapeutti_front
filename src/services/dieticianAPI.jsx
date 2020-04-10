@@ -41,24 +41,18 @@ export function get(callBack, id, data) {
 		});
 }
 
-export function add(callBack, data) {
+export function add(data) {
 	const url = devMode
 		? `${devUrl}api/dieticians`
 		: `${releaseUrl}api/dieticians`;
 
-	axios
-		.post(url, data, {
-			headers: {
-				"Content-Type": "application/json",
-			},
-		})
-		.then((response) => {
-			callBack(response.data);
-		})
-		.catch((error) => {
-			console.log(error);
-			callBack(error.response.data);
-		});
+	const request = axios.post(url, data, {
+		headers: {
+			"Content-Type": "application/json",
+		},
+	});
+
+	return request;
 }
 
 export function update(callBack, params, data) {

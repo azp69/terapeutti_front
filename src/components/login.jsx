@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import * as Helper from "./helper";
-import * as LoginAPI from "../services/loginAPI";
+import * as AuthApi from "../services/authAPI";
 import TextInput from "./textinput";
 import {
 	NotificationContainer,
@@ -67,11 +67,10 @@ export default function Login(props) {
 	function handleLogin(e) {
 		e.preventDefault();
 
-		LoginAPI.login({ username: email, password }).then(
+		AuthApi.login({ username: email, password }).then(
 			(success) => {
 				Helper.setCookie("accesstoken", success.data.AccessToken, 1);
 				Helper.setCookie("dieticianId", success.data.dieticianId, 1);
-
 				props.authenticationHandler(1);
 			},
 			(error) => {

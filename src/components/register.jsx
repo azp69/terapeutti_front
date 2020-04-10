@@ -9,14 +9,7 @@ import {
 import "../css/welcome.css";
 
 export default function Register() {
-	const [errors, setErrors] = useState({
-		Name: "",
-		Place: "",
-		Education: "",
-		Phone: "",
-		Email: "",
-		Agreement: "",
-	});
+	const [errors, setErrors] = useState({});
 
 	const [userData, setUserData] = useState({
 		FirstName: "",
@@ -28,6 +21,26 @@ export default function Register() {
 		Password: "",
 		Agreement: false,
 	});
+
+	const [registered, setRegistered] = useState(false);
+
+	if (registered) {
+		NotificationManager.success("Rekisteröityminen onnistui");
+		return (
+			<div className="row">
+				<div className="col-sm-12 mt-5 card card-body bg-light">
+					<div className="py-5 my-3 px-5 text-center">
+						<h1>Rekisteröityminen onnistui</h1>
+						<h2>
+							Ylläpitäjämme vahvistavat tilisti mahdollisimman pian. Saat
+							sähköpostiisi ilmoituksen, kun tilisi on vahvistettu ja käytössä.
+							Tervetuloa mukaan!
+						</h2>
+					</div>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div>
@@ -130,7 +143,7 @@ export default function Register() {
 										className="form-check-input"
 										type="checkbox"
 										value="hyvaksy1"
-										id="agreement"
+										id="Agreement"
 										onChange={handleInputChange}
 									/>
 									<label className="form-check-label" htmlFor="hyvaksy1">
@@ -181,7 +194,7 @@ export default function Register() {
 			case "Place":
 				setUserData({ ...userData, Place: e.target.value });
 				break;
-			case "agreement":
+			case "Agreement":
 				setUserData({ ...userData, Agreement: e.target.checked });
 				break;
 		}
@@ -195,27 +208,15 @@ export default function Register() {
 			return;
 		}
 
-		console.log("Firstname ", userData.FirstName);
-		// console.log(e.target.parentElement.searchBox.value);
-		var elements = document.getElementsByClassName("form-control");
-		var name =
-			document.getElementById("Firstname").value +
-			" " +
-			document.getElementById("Lastname").value;
-		var email = document.getElementById("Email").value;
-		var phone = document.getElementById("Phone").value;
-		var place = document.getElementById("Place").value;
-		var password = document.getElementById("Password").value;
-		var education = document.getElementById("Education").value;
-
 		var dietician = {
-			name,
-			email,
-			phone,
-			place,
-			education,
-			password,
+			name: `${userData.FirstName} ${userData.LastName}`,
+			email: userData.Email,
+			phone: userData.Phone,
+			place: userData.Place,
+			education: userData.Education,
+			password: userData.Password,
 		};
+
 		console.log(dietician);
 
 		/*
@@ -241,6 +242,17 @@ export default function Register() {
 		// DieticianSearchAPICall(profileDataUpdateFunction, e.target.parentElement.searchBox.value);
 		// console.log("s", searchParams.searchparams.query);
 
-		DieticianAPI.add(queryDone, JSON.stringify(dietician));
+		DieticianAPI.add(JSON.stringify(dietician)).then(
+			(result) => {
+				setRegistered(true);
+			},
+			(error) => {
+				NotificationManager.error(
+					"Rekisteröityminen ei onnistunut. Tarkista tiedot"
+				);
+				setErrors(error.response.data.errors);
+				console.log(error.response.data.errors);
+			}
+		);
 	}
 }

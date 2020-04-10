@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import * as Helper from "./helper";
-import * as LoginAPI from "../services/loginAPI";
+import * as AuthAPI from "../services/authAPI";
 import {
 	NotificationContainer,
 	NotificationManager,
@@ -10,10 +10,11 @@ import "../css/welcome.css";
 import "../css/textInput.css";
 
 export default function Logout({ authenticationHandler }) {
-	Helper.setCookie("accesstoken", "", -1);
-	authenticationHandler(0);
-	// NotificationManager.success("Olet kirjautunut ulos");
-	// window.location.reload();
+	AuthAPI.logout().then((success) => {
+		Helper.setCookie("accesstoken", "", -1);
+		authenticationHandler(0);
+	});
+
 	return (
 		<div>
 			<div className="row">
