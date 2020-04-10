@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as DieticianAPI from "../services/dieticianAPI";
+import * as ExpertiesAPI from "../services/expertiesAPI";
 import { Calendar } from "./calendar";
 
 import {
@@ -10,6 +11,7 @@ import {
 	useRouteMatch,
 	useParams,
 } from "react-router-dom";
+import { NotificationManager } from "react-notifications";
 
 export default function ProfilePage() {
 	const match = useRouteMatch();
@@ -21,10 +23,17 @@ export default function ProfilePage() {
 		</Switch>
 	);
 
-	function RenderExperties(experties) {
-		console.log(experties);
+	function RenderExperties(experties, allExperties) {
+		if (allExperties == null) return null;
+
+		const x = allExperties.map((x) => {
+			return parseExpertises(x, experties) ? x : null;
+		});
+
+		const y = x.filter((x) => x != null);
+
 		try {
-			return experties.map((expertie) => {
+			return y.map((expertie) => {
 				return <li key={expertie.id}>{expertie.name}</li>;
 			});
 		} catch {
@@ -32,12 +41,44 @@ export default function ProfilePage() {
 		}
 	}
 
+	function parseExpertises(expertie, experties) {
+		for (let i = 0; i < experties.length; i++) {
+			if (experties[i].id == expertie.id) return true;
+		}
+		return false;
+	}
+
 	function RenderProfile() {
 		const [profile, setProfile] = useState();
+		const [experties, setExperties] = useState();
+
 		const { Id } = useParams();
 
+		//
 		useEffect(() => {
-			DieticianAPI.get(setProfile, Id);
+			DieticianAPI.get(Id).then(
+				(success) => {
+					setProfile(success.data);
+				},
+				(error) => {
+					NotificationManager.error(
+						"Terapeutin tietojen haussa tapahtui virhe"
+					);
+				}
+			);
+		}, [Id]);
+
+		// Experties
+
+		useEffect(() => {
+			ExpertiesAPI.get().then(
+				(success) => {
+					setExperties(success.data);
+				},
+				(error) => {
+					NotificationManager.error("Erikoisosaamisten haussa tapahtui virhe");
+				}
+			);
 		}, [Id]);
 
 		if (profile != null) {
@@ -55,7 +96,7 @@ export default function ProfilePage() {
 								<p>Paikkakunta: {profile.place ? profile.place : ""}</p>
 								<p>Puhnro: {profile.phone ? profile.phone : ""}</p>
 								<p>Sähköposti: {profile.email ? profile.email : ""}</p>
-								<ul>{RenderExperties(profile.experties)}</ul>
+								<ul>{RenderExperties(profile.expertises, experties)}</ul>
 							</div>
 						</div>
 					</div>

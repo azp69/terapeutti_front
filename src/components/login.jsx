@@ -3,6 +3,16 @@ import * as Helper from "./helper";
 import * as AuthApi from "../services/authAPI";
 import TextInput from "./textinput";
 import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+	Link,
+	Redirect,
+	useHistory,
+	useLocation,
+} from "react-router-dom";
+
+import {
 	NotificationContainer,
 	NotificationManager,
 } from "react-notifications";

@@ -4,64 +4,20 @@ import * as Helper from "./helper";
 import "../css/welcome.css";
 
 import ProfileCard from "./profileCard";
-import ExpertiesAPICall from "../services/getExperties";
+import * as ExpertiesAPI from "../services/expertiesAPI";
 import * as DieticianAPI from "../services/dieticianAPI";
+import { NotificationManager } from "react-notifications";
 
 export default function Welcome() {
 	const [experties, setExperties] = useState();
 
 	useEffect(() => {
-		ExpertiesAPICall(setExperties);
+		ExpertiesAPI.get().then((success) => {
+			setExperties(success.data);
+		});
 	}, []);
 
-	const profiles = [
-		{
-			id: 0,
-			name: "Ano Nyymi",
-			education: "TtM, laill. ravitsemusterapeutti",
-			place: "Kuopio",
-			email: "ano@nyymi.net",
-			phone: "050-123123",
-			imageUrl: "nainen.webp",
-			experties: [
-				{ id: "0", name: "Urheiluravitsemus" },
-				{ id: "1", name: "Syömishäiriöt" },
-				{ id: "2", name: "Tunnesyöminen" }
-			]
-		},
-
-		{
-			id: 1,
-			name: "Maija Mehiläinen",
-			education: "TtM, laill. ravitsemusterapeutti",
-			place: "Helsinki",
-			email: "maija@mehilainen.net",
-			phone: "050-1232123",
-			imageUrl: "nainen.webp",
-			experties: [
-				{ id: "0", name: "Urheiluravitsemus" },
-				{ id: "3", name: "Vegaaniravitsemus" },
-				{ id: "4", name: "Ikääntyneen ruokavalio" }
-			]
-		},
-
-		{
-			id: 2,
-			name: "Milla Magia",
-			education: "TtM, laill. ravitsemusterapeutti",
-			place: "Ankkalinna",
-			email: "milla@magia.net",
-			phone: "050-3333333",
-			imageUrl: "Milla_Magia.jpg",
-			experties: [
-				{ id: "5", name: "Tyypin 1 diabeteksen ravitsemushoito" },
-				{ id: "6", name: "Kasvisruokailijan ravitsemus" },
-				{ id: "7", name: "Arkiruokailu ja elintapaohjaus" },
-				{ id: "8", name: "Painonhallinta ja syömiskäyttäytyminen" }
-			]
-		}
-	];
-
+	/*
 	const expertises = [
 		{ id: 0, name: "Urheiluravitsemus" },
 		{ id: 1, name: "Ikääntyneen ruokavalio" },
@@ -76,6 +32,7 @@ export default function Welcome() {
 		{ id: 10, name: "Tyypin 2 diabetes ravitsemushoito" },
 		{ id: 11, name: "Keliakia ja allergiat" }
 	];
+	*/
 
 	return (
 		<div className="row">
@@ -121,13 +78,13 @@ export default function Welcome() {
 	}
 
 	function DieticianSearch() {
-		const [nutricianProfiles, setNutricianProfiles] = useState();
+		const [dieticianProfiles, setDieticianProfiles] = useState();
 
 		return (
 			<div className="col-sm-12 mt-4 card card-body bg-light">
-				<SearchBox profileDataUpdateFunction={setNutricianProfiles} />
+				<SearchBox profileDataUpdateFunction={setDieticianProfiles} />
 
-				<Results profileData={nutricianProfiles} />
+				<Results profileData={dieticianProfiles} />
 			</div>
 		);
 	}
@@ -155,7 +112,6 @@ export default function Welcome() {
 						<label>Etsi nimellä tai kaupungilla</label>
 						<input
 							type="text"
-							onChange={e => submitForm(e, profileDataUpdateFunction)}
 							className="form-control mr-auto ml-auto"
 							id="searchBox"
 							name="searchBox"
@@ -171,7 +127,7 @@ export default function Welcome() {
 						<button
 							type="submit"
 							className="btn btn-primary mt-3"
-							onClick={e => submitForm(e, profileDataUpdateFunction)}
+							onClick={(e) => submitForm(e, profileDataUpdateFunction)}
 						>
 							Etsi terapeutteja
 						</button>
@@ -190,7 +146,7 @@ export default function Welcome() {
 		let checkedExperties = [];
 
 		try {
-			checkBoxes.forEach(c => {
+			checkBoxes.forEach((c) => {
 				if (c.checked) checkedExperties.push(c.id);
 			});
 		} catch {}
@@ -198,8 +154,8 @@ export default function Welcome() {
 		const searchParams = {
 			searchparams: {
 				query: e.target.parentElement.searchBox.value,
-				expertises: checkedExperties
-			}
+				expertises: checkedExperties,
+			},
 		};
 
 		// Helper.log(JSON.stringify(search));
@@ -208,12 +164,21 @@ export default function Welcome() {
 		// DieticianSearchAPICall(profileDataUpdateFunction, e.target.parentElement.searchBox.value);
 		console.log("s", searchParams.searchparams.query);
 
-		DieticianAPI.search(profileDataUpdateFunction, searchParams);
+		// DieticianAPI.search(profileDataUpdateFunction, searchParams);
+
+		DieticianAPI.search(searchParams).then(
+			(success) => {
+				profileDataUpdateFunction(success.data);
+			},
+			(error) => {
+				NotificationManager.error("Jotain meni pieleen haussa.");
+			}
+		);
 	}
 
 	function RenderExpertises() {
 		try {
-			return experties.map(expertise => {
+			return experties.map((expertise) => {
 				return (
 					<div key={expertise.id} className="col-sm-12 col-md-6 col-lg-4">
 						<label className="form-check-label">
@@ -234,8 +199,10 @@ export default function Welcome() {
 	}
 
 	function RenderProfiles(profiles) {
+		if (profiles == null) return null;
+
 		try {
-			return profiles.map(profile => {
+			return profiles.map((profile) => {
 				return <ProfileCard key={profile.id} {...profile} />;
 			});
 		} catch {

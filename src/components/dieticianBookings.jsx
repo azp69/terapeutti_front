@@ -193,12 +193,16 @@ export default function DieticianBookings(props) {
 	}
 
 	function getBookings() {
+		console.log("Getting booking data");
+		console.log("token: ", Helper.getCookie("accesstoken"));
+		console.log("dieticianId: ", Helper.getCookie("dieticianId"));
 		const today = convertDate(new Date());
 		const endDate = convertDate(addDays(new Date(), 14));
 		BookingAPI.get(
 			`?dieticianId=${dieticianId}&startDate=${today}&endDate=${endDate}`
 		).then(
 			(success) => {
+				console.log("Got response from booking api");
 				setReservationData(success.data);
 			},
 			(error) => {

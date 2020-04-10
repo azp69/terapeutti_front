@@ -5,7 +5,7 @@ const devMode = process.env.NODE_ENV === "development" ? true : false;
 const releaseUrl = "https://api.terapia.palikka.org/";
 const devUrl = "http://localhost:3001/";
 
-export function search(callBack, params, data) {
+export function search(params) {
 	const query = `?query=${params.searchparams.query}&expertises=[${params.searchparams.expertises}]`;
 	console.log("search: ", query);
 
@@ -13,8 +13,10 @@ export function search(callBack, params, data) {
 		? `${devUrl}api/dieticians/${query}`
 		: `${releaseUrl}api/dieticians/${query}`;
 
-	axios
-		.get(url)
+	const request = axios.get(url);
+
+	return request;
+	/*
 		.then((response) => {
 			Helper.log(response.data);
 			callBack(response.data);
@@ -22,15 +24,19 @@ export function search(callBack, params, data) {
 		.catch((error) => {
 			console.log(error);
 		});
+
+		*/
 }
 
-export function get(callBack, id, data) {
+export function get(id) {
 	const url = devMode
 		? `${devUrl}api/dieticians/${id}`
 		: `${releaseUrl}api/dieticians/${id}`;
 
-	axios
-		.get(url)
+	const request = axios.get(url);
+
+	return request;
+	/*
 		.then((response) => {
 			console.log("dietician API Response: ", response.data);
 			callBack(response.data);
@@ -39,6 +45,7 @@ export function get(callBack, id, data) {
 			callBack(null);
 			console.log(error);
 		});
+		*/
 }
 
 export function add(data) {
