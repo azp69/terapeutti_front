@@ -66,7 +66,10 @@ export default function DieticianBookings(props) {
 				</td>
 				<td key={`resTodayCell_3_${index}`}>{x.description}</td>
 				<td key={`resTodayCell_4_${index}`}>
-					<button className="btn btn-danger" onClick={() => deleteBooking()}>
+					<button
+						className="btn btn-danger"
+						onClick={() => deleteBooking(x.id)}
+					>
 						Peruuta
 					</button>
 				</td>
@@ -91,7 +94,10 @@ export default function DieticianBookings(props) {
 				</td>
 				<td key={`resTomorrowRow_3${index}`}>{x.description}</td>
 				<td key={`resTomorrowRow_4_${index}`}>
-					<button className="btn btn-danger" onClick={() => deleteBooking()}>
+					<button
+						className="btn btn-danger"
+						onClick={() => deleteBooking(x.id)}
+					>
 						Peruuta
 					</button>
 				</td>

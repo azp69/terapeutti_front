@@ -81,7 +81,12 @@ export default function Login(props) {
 			(success) => {
 				Helper.setCookie("accesstoken", success.data.AccessToken, 1);
 				Helper.setCookie("dieticianId", success.data.dieticianId, 1);
-				props.authenticationHandler(1);
+				const authObject = {
+					admin: success.data.dieticianId ? 0 : 1,
+					auth: 1,
+				};
+
+				props.authenticationHandler(authObject);
 			},
 			(error) => {
 				NotificationManager.error("Kirjautuminen epäonnistui");

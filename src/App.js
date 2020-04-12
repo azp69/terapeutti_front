@@ -33,6 +33,13 @@ function App() {
 		Helper.getCookie("accesstoken") != "" ? 1 : 0
 	);
 
+	const [admin, setAdmin] = useState(
+		Helper.getCookie("accesstoken") != "" &&
+			Helper.getCookie("dieticianId") == null
+			? 1
+			: 0
+	);
+
 	return (
 		<Router>
 			<Jumbotron />
@@ -60,8 +67,10 @@ function App() {
 					</Route>
 
 					<Route path="/kirjaudu">
-						{authenticated == 1 ? (
+						{authenticated == 1 && admin == 0 ? (
 							<Redirect to="/varaukset" />
+						) : authenticated == 1 && admin == 1 ? (
+							<Redirect to="/adminhallinta" />
 						) : (
 							<Login authenticationHandler={authHandler} />
 						)}
@@ -94,8 +103,8 @@ function App() {
 	);
 
 	function authHandler(value) {
-		console.log("jep");
-		setAuthenticated(value);
+		setAdmin(value.admin);
+		setAuthenticated(value.auth);
 	}
 }
 

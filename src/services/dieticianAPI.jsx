@@ -28,6 +28,16 @@ export function search(params) {
 		*/
 }
 
+export function getPendingDieticians() {
+	const url = devMode
+		? `${devUrl}api/dieticians/?isPending=true`
+		: `${releaseUrl}api/dieticians/?isPending=true`;
+
+	const request = axios.get(url);
+
+	return request;
+}
+
 export function get(id) {
 	const url = devMode
 		? `${devUrl}api/dieticians/${id}`

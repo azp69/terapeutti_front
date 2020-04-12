@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import * as BookingAPI from "../services/bookingAPI";
 import DropDownMenu from "./dropDownMenu";
 import TextInput from "./textinput";
+import CustomModal from "./customModal";
+
 import {
 	NotificationContainer,
 	NotificationManager,
@@ -19,40 +21,18 @@ export function Calendar({ calEvents, dieticianId }) {
 
 	return (
 		<>
-			<Modal />
+			<CustomModal
+				isOpen={modalIsOpen}
+				setOpen={(x) => {
+					setIsOpen(x);
+				}}
+			>
+				<h4>Varauskalenteri ajalle {getDayMonthYear(selectedDate)}</h4>
+				<ReservationComponent selectedDate={selectedDate} />
+			</CustomModal>
 			<div className="col-12 px-0 calendar">{calBase}</div>
 		</>
 	);
-
-	function openModal() {
-		setIsOpen(true);
-	}
-
-	function closeModal() {
-		setIsOpen(false);
-	}
-
-	function Modal() {
-		if (!modalIsOpen) {
-			return null;
-		}
-
-		return (
-			<div id="myModal" className="custom-modal">
-				<div className="container-sm card custom-modal-content">
-					<div className="row">
-						<div className="col-md-12">
-							<button className="close" onClick={closeModal}>
-								&times;
-							</button>
-							<h4>Varauskalenteri ajalle {getDayMonthYear(selectedDate)}</h4>
-							<ReservationComponent selectedDate={selectedDate} />
-						</div>
-					</div>
-				</div>
-			</div>
-		);
-	}
 
 	function ReservationComponent(props) {
 		const hours = [
@@ -202,7 +182,7 @@ export function Calendar({ calEvents, dieticianId }) {
 		});
 
 		setSelectedDate(date);
-		openModal();
+		setIsOpen(true);
 	}
 
 	function drawCalendar() {
