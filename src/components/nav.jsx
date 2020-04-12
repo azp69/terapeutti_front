@@ -65,9 +65,15 @@ export default function Nav(props) {
 								data-toggle="collapse"
 								data-target=".navbar-collapse.show"
 							>
-								<Link to="/varaukset" className="nav-link">
-									Varaukset
-								</Link>
+								{props.admin == 0 ? (
+									<Link to="/varaukset" className="nav-link">
+										Varaukset
+									</Link>
+								) : (
+									<Link to="/adminhallinta" className="nav-link">
+										Hallinta
+									</Link>
+								)}
 							</li>
 
 							<li

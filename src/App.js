@@ -43,7 +43,7 @@ function App() {
 	return (
 		<Router>
 			<Jumbotron />
-			<Nav authenticated={authenticated} />
+			<Nav authenticated={authenticated} admin={admin} />
 			<div className="container">
 				<Switch>
 					<Route path="/palvelut">

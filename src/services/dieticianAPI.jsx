@@ -30,10 +30,34 @@ export function search(params) {
 
 export function getPendingDieticians() {
 	const url = devMode
-		? `${devUrl}api/dieticians/?isPending=true`
-		: `${releaseUrl}api/dieticians/?isPending=true`;
+		? `${devUrl}api/dieticians/?expertises=[]&isPending=true`
+		: `${releaseUrl}api/dieticians/?expertises=[]&isPending=true`;
 
-	const request = axios.get(url);
+	const request = axios.get(url, {
+		headers: {
+			"Content-Type": "application/json",
+			AccessToken: Helper.getCookie("accesstoken"),
+		},
+	});
+
+	return request;
+}
+
+export function approveDietician(id) {
+	const url = devMode
+		? `${devUrl}api/dieticians/${id}`
+		: `${releaseUrl}api/dieticians/${id}`;
+
+	const request = axios.put(
+		url,
+		{ isPending: 0 },
+		{
+			headers: {
+				"Content-Type": "application/json",
+				AccessToken: Helper.getCookie("accesstoken"),
+			},
+		}
+	);
 
 	return request;
 }
