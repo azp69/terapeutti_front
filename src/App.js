@@ -21,6 +21,7 @@ import UserControl from "./components/usercontrol";
 import DieticianBookings from "./components/dieticianBookings";
 import AdminControl from "./components/admincontrol";
 import Logout from "./components/logout";
+import CancelBooking from "./components/cancelBookingByCustomer";
 
 import "react-notifications/lib/notifications.css";
 import {
@@ -85,6 +86,10 @@ function App() {
 
 					<Route path="/logout">
 						<Logout authenticationHandler={authHandler} />
+					</Route>
+
+					<Route path="/peru">
+						<CancelBooking />
 					</Route>
 
 					<Route path="/">

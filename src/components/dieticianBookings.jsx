@@ -190,12 +190,18 @@ export default function DieticianBookings(props) {
 											</label>
 										</div>
 										<div className="col">
-											<label>
-												<TextInput
-													value={dieticianData.place}
-													id="place"
+											<label htmlFor="Place">
+												<select
+													className="form-control"
+													id="Place"
 													onChange={handleChangeDieticianValues}
-												></TextInput>
+												>
+													<option>Helsinki</option>
+													<option>Vantaa</option>
+													<option>Espoo</option>
+													<option>Kuopio</option>
+													<option>Oulu</option>
+												</select>
 											</label>
 										</div>
 									</div>
@@ -348,6 +354,7 @@ export default function DieticianBookings(props) {
 	function handleCancel() {
 		DieticianAPI.get(dieticianId).then((success) => {
 			setDieticianData(success.data);
+			NotificationManager.success("Tekemäsi muutokset peruutettiin");
 		});
 	}
 
