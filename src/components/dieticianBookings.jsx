@@ -4,6 +4,13 @@ import * as DieticianAPI from "../services/dieticianAPI";
 import * as ExpertiesAPI from "../services/expertiesAPI";
 import * as Helper from "./helper";
 import ExpertiesList from "./expertiesList";
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+	Link,
+	Redirect,
+} from "react-router-dom";
 
 import {
 	getHoursAndMinutesFromDate,
@@ -214,7 +221,7 @@ export default function DieticianBookings(props) {
 										</div>
 										<div className="col">
 											<label>
-												<h6>Sähköposti</h6>
+												<h6>Koulutus</h6>
 											</label>
 										</div>
 									</div>
@@ -229,10 +236,10 @@ export default function DieticianBookings(props) {
 											</label>
 										</div>
 										<div className="col">
-											<label htmlFor="email">
+											<label htmlFor="education">
 												<TextInput
-													value={dieticianData.email}
-													id="email"
+													value={dieticianData.education}
+													id="education"
 													onChange={handleChangeDieticianValues}
 												></TextInput>
 											</label>
@@ -344,8 +351,8 @@ export default function DieticianBookings(props) {
 		if (e.target.id == "phone")
 			setDieticianData({ ...dieticianData, phone: e.target.value });
 
-		if (e.target.id == "email")
-			setDieticianData({ ...dieticianData, email: e.target.value });
+		if (e.target.id == "education")
+			setDieticianData({ ...dieticianData, education: e.target.value });
 
 		if (e.target.id == "place")
 			setDieticianData({ ...dieticianData, place: e.target.value });
@@ -398,7 +405,10 @@ export default function DieticianBookings(props) {
 					setDieticianData(success.data);
 				},
 				(error) => {
-					NotificationManager.error("Virhe päivitettäessä tietoja");
+					console.log("virhettä pukkaa");
+					if (error.response.status === 401) {
+						NotificationManager.error("Virhe päivitettäessä tietoja");
+					}
 				}
 			);
 		});
@@ -426,6 +436,10 @@ export default function DieticianBookings(props) {
 				if (error.response.status === 401) {
 					NotificationManager.error("Autentikointivirhe. Kirjaudu sisään.");
 					Helper.setCookie("accesstoken", "", -1);
+					Helper.setCookie("dieticianId", "", -1);
+					Helper.setCookie("admin", "", -1);
+
+					return <Redirect to="/kirjaudu" />;
 				} else NotificationManager.error("Virhe ladattaessa tietoja.");
 
 				console.log(error.response.status);

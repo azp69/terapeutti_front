@@ -13,9 +13,10 @@ export default function ProfileCard({
 	email,
 	phone,
 	imageUrl,
-	experties
+	expertises,
+	allExperties,
 }) {
-	const renderedExperties = RenderExperties();
+	const renderedExperties = RenderExperties(expertises, allExperties);
 
 	return (
 		<div className="card profileCard">
@@ -50,13 +51,28 @@ export default function ProfileCard({
 		}
 	}
 
-	function RenderExperties() {
+	function RenderExperties(experties, allExperties) {
+		if (allExperties == null) return null;
+
+		const x = allExperties.map((x) => {
+			return parseExpertises(x, experties) ? x : null;
+		});
+
+		const y = x.filter((x) => x != null);
+
 		try {
-			return experties.map(expertie => {
+			return y.map((expertie) => {
 				return <li key={expertie.id}>{expertie.name}</li>;
 			});
 		} catch {
-			return;
+			return <p>Ei määriteltyjä erikoisosaamisia.</p>;
 		}
+	}
+
+	function parseExpertises(expertie, experties) {
+		for (let i = 0; i < experties.length; i++) {
+			if (experties[i].id == expertie.id) return true;
+		}
+		return false;
 	}
 }

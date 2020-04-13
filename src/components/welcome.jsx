@@ -203,7 +203,9 @@ export default function Welcome() {
 
 		try {
 			return profiles.map((profile) => {
-				return <ProfileCard key={profile.id} {...profile} />;
+				return (
+					<ProfileCard key={profile.id} {...profile} allExperties={experties} />
+				);
 			});
 		} catch {
 			try {
