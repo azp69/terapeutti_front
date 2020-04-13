@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as DieticianAPI from "../services/dieticianAPI";
 import CustomModal from "./customModal";
 import DieticianModal from "./dieticianModal";
+import TextInput from "./textinput";
 
 import Modal from "./modal.jsx";
 
@@ -12,6 +13,9 @@ import { NotificationManager } from "react-notifications";
 export default function AdminControl(props) {
 	const [pendingDieticians, setPendingDieticians] = useState();
 	const [selectedDietician, setSelectedDietician] = useState();
+	const [dieticianSearch, setDieticianSearch] = useState();
+	const [dieticianSearchResult, setDieticianSearchResult] = useState();
+
 	const [modalIsOpen, setIsOpen] = useState(false);
 
 	useEffect(() => {
@@ -49,6 +53,36 @@ export default function AdminControl(props) {
 		);
 	});
 
+	const dieticians =
+		dieticianSearchResult != null
+			? dieticianSearchResult.map((x, index) => {
+					return (
+						<div className="card w-100" key={`${index}__${x.id}`}>
+							<div className="card-body">
+								<div className="row">
+									<div className="col-sm-9">
+										<p className="card-text">{x.name}</p>
+									</div>
+									<div className="col">
+										<button
+											className="btn btn-info"
+											onClick={() => openModalAndSetDietician(x.id)}
+										>
+											Tarkastele
+										</button>
+									</div>
+									<div className="col">
+										<a href="#" className="btn btn-danger">
+											Poista
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					);
+			  })
+			: null;
+
 	function openModalAndSetDietician(dieticianId) {
 		setSelectedDietician(dieticianId);
 		setIsOpen(true);
@@ -75,6 +109,18 @@ export default function AdminControl(props) {
 		);
 	}
 
+	function handleDieticianSearch(e) {
+		const searchParams = {
+			searchparams: {
+				query: e.target.value,
+				expertises: [],
+			},
+		};
+		DieticianAPI.search(searchParams).then((success) => {
+			setDieticianSearchResult(success.data);
+		});
+	}
+
 	return (
 		<>
 			<DieticianModal
@@ -88,7 +134,7 @@ export default function AdminControl(props) {
 				<div className="row">
 					<div className="col-sm-12 mt-5 card card-body bg-light">
 						<div className="py-5 my-3 px-5 text-center">
-							<h1>Admin control</h1>
+							<h1>Käyttäjähallinta</h1>
 						</div>
 					</div>
 				</div>
@@ -111,7 +157,7 @@ export default function AdminControl(props) {
 								<h5>Hae käyttäjiä</h5>
 							</div>
 							<div className="col">
-								<input type="text" className="form-control" id="Kayttajahaku" />
+								<TextInput onChange={handleDieticianSearch} />
 							</div>
 						</div>
 						<hr />
@@ -119,19 +165,7 @@ export default function AdminControl(props) {
 						<div className="card w-100">
 							<div className="card-body">
 								<div className="row">
-									<div className="col-sm-10">
-										<p className="card-text">Käyttäjän nimi yms</p>
-									</div>
-									<div className="col">
-										<a
-											href="#"
-											data-toggle="modal"
-											data-target="#Poistomodal"
-											className="btn btn-info"
-										>
-											Tarkastele
-										</a>
-									</div>
+									<div className="col-sm-12">{dieticians}</div>
 								</div>
 							</div>
 						</div>

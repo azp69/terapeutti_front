@@ -41,6 +41,7 @@ export default function DieticianBookings(props) {
 	useEffect(() => {
 		DieticianAPI.get(dieticianId).then((success) => {
 			setDieticianData(success.data);
+			console.log("vastaus: ", success.data);
 		});
 	}, []);
 

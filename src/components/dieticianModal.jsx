@@ -92,14 +92,14 @@ export default function DieticianModal(props) {
 					<form>
 						<button
 							type="button"
-							className="btn btn-secondary"
+							className="btn btn-secondary mr-1"
 							onClick={() => props.setIsOpen(false)}
 						>
 							Sulje
 						</button>
 						<button
 							type="button"
-							className="btn btn-primary"
+							className="btn btn-primary ml-1"
 							onClick={() => props.approveDietician(props.dieticianId)}
 						>
 							Hyväksy

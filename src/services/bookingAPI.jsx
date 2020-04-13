@@ -88,3 +88,17 @@ export function remove(params) {
 
 	return request;
 }
+
+export function cancelBookingByCustomer(params) {
+	const url = devMode
+		? `${devUrl}api/bookings/${params}`
+		: `${releaseUrl}api/bookings/${params}`;
+
+	const request = axios.delete(url, {
+		headers: {
+			AccessToken: Helper.getCookie("accesstoken"),
+		},
+	});
+
+	return request;
+}

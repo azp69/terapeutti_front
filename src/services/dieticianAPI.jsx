@@ -67,7 +67,12 @@ export function get(id) {
 		? `${devUrl}api/dieticians/${id}`
 		: `${releaseUrl}api/dieticians/${id}`;
 
-	const request = axios.get(url);
+	const request = axios.get(url, {
+		headers: {
+			"Content-Type": "application/json",
+			AccessToken: Helper.getCookie("accesstoken"),
+		},
+	});
 
 	return request;
 	/*
