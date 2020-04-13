@@ -153,6 +153,8 @@ export default function DieticianBookings(props) {
 
 	console.log("Dietician data ", dieticianData);
 
+	if (dieticianData == null) return null;
+
 	return (
 		<div className="row">
 			<div className="col-sm-12 mt-5 card card-body bg-light">
