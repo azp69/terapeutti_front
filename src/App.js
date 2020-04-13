@@ -33,12 +33,7 @@ function App() {
 		Helper.getCookie("accesstoken") != "" ? 1 : 0
 	);
 
-	const [admin, setAdmin] = useState(
-		Helper.getCookie("accesstoken") != "" &&
-			Helper.getCookie("dieticianId") == null
-			? 1
-			: 0
-	);
+	const [admin, setAdmin] = useState(Helper.getCookie("admin") == 1 ? 1 : 0);
 
 	return (
 		<Router>

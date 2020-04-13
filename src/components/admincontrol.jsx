@@ -15,9 +15,7 @@ export default function AdminControl(props) {
 	const [modalIsOpen, setIsOpen] = useState(false);
 
 	useEffect(() => {
-		DieticianAPI.getPendingDieticians().then((success) => {
-			setPendingDieticians(success.data);
-		});
+		getPendingDieticians();
 	}, []);
 
 	if (pendingDieticians == null) return null;
@@ -57,11 +55,19 @@ export default function AdminControl(props) {
 		console.log(selectedDietician);
 	}
 
+	function getPendingDieticians() {
+		DieticianAPI.getPendingDieticians().then((success) => {
+			setPendingDieticians(success.data);
+		});
+	}
+
 	function approveDietician(dieticianId) {
 		console.log("Approving dietician: ", dieticianId);
 		DieticianAPI.approveDietician(dieticianId).then(
 			(success) => {
 				NotificationManager.success("Terapeutti on nyt aktiivinen");
+				setIsOpen(false);
+				getPendingDieticians();
 			},
 			(error) => {
 				NotificationManager.error("Jokin meni pieleen");

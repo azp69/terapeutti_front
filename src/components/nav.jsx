@@ -5,6 +5,10 @@ import * as Helper from "./helper";
 import "../css/nav.css";
 
 export default function Nav(props) {
+	const authenticated = Helper.getCookie("accesstoken") != "" ? true : false;
+	const admin = Helper.getCookie("admin") == 1 ? true : false;
+	console.log("admin? ", props.admin);
+
 	return (
 		<nav className="navbar navbar-expand-md sticky-top navbar-light">
 			<button
@@ -58,20 +62,20 @@ export default function Nav(props) {
 						</Link>
 					</li>
 
-					{props.authenticated == 1 ? (
+					{authenticated == true ? (
 						<>
 							<li
 								className="nav-link"
 								data-toggle="collapse"
 								data-target=".navbar-collapse.show"
 							>
-								{props.admin == 0 ? (
-									<Link to="/varaukset" className="nav-link">
-										Varaukset
-									</Link>
-								) : (
+								{admin == true ? (
 									<Link to="/adminhallinta" className="nav-link">
 										Hallinta
+									</Link>
+								) : (
+									<Link to="/varaukset" className="nav-link">
+										Oma sivu
 									</Link>
 								)}
 							</li>

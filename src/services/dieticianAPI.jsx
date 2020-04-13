@@ -96,20 +96,19 @@ export function add(data) {
 	return request;
 }
 
-export function update(callBack, params, data) {
+export function update(id, data) {
 	const url = devMode
-		? `${devUrl}api/dieticians/${params}`
-		: `${releaseUrl}api/dieticians/${params}`;
+		? `${devUrl}api/dieticians/${id}`
+		: `${releaseUrl}api/dieticians/${id}`;
 
-	axios
-		.put(url, data)
-		.then((response) => {
-			console.log("dietician API Response: ", response.data);
-			callBack(response.data);
-		})
-		.catch((error) => {
-			console.log(error);
-		});
+	const request = axios.put(url, data, {
+		headers: {
+			"Content-Type": "application/json",
+			AccessToken: Helper.getCookie("accesstoken"),
+		},
+	});
+
+	return request;
 }
 
 export function remove(callBack, params, data) {

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import * as BookingAPI from "../services/bookingAPI";
+import * as DieticianAPI from "../services/dieticianAPI";
+import * as ExpertiesAPI from "../services/expertiesAPI";
 import * as Helper from "./helper";
+import ExpertiesList from "./expertiesList";
 
 import {
 	getHoursAndMinutesFromDate,
@@ -14,15 +17,30 @@ import {
 } from "react-notifications";
 
 import "../css/welcome.css";
+import TextInput from "./textinput";
 
 export default function DieticianBookings(props) {
 	const [reservationData, setReservationData] = useState();
+	const [dieticianData, setDieticianData] = useState();
+	const [experties, setExperties] = useState();
 
 	const dieticianId = Helper.getCookie("dieticianId");
 	const today = convertDate(new Date());
 
 	useEffect(() => {
 		getBookings();
+	}, []);
+
+	useEffect(() => {
+		DieticianAPI.get(dieticianId).then((success) => {
+			setDieticianData(success.data);
+		});
+	}, []);
+
+	useEffect(() => {
+		ExpertiesAPI.get().then((success) => {
+			setExperties(success.data);
+		});
 	}, []);
 
 	if (reservationData == null)
@@ -133,12 +151,119 @@ export default function DieticianBookings(props) {
 		);
 	});
 
+	console.log("Dietician data ", dieticianData);
+
 	return (
 		<div className="row">
 			<div className="col-sm-12 mt-5 card card-body bg-light">
 				<div className="py-5 my-3 px-5 text-center">
-					<h1>Oma varauskalenterisi</h1>
-					<p>dieticianId: {dieticianId}</p>
+					<form>
+						<h1>Omat tietosi</h1>
+						<div className="container">
+							<div className="row">
+								<div className="col-4 text-center">
+									<h2>kuva</h2>
+								</div>
+								<div className="col-8">
+									<div className="row">
+										<div className="col">
+											<label>
+												<h6>Nimi</h6>
+											</label>
+										</div>
+										<div className="col">
+											<label>
+												<h6>Toimipaikka</h6>
+											</label>
+										</div>
+									</div>
+									<div className="row">
+										<div className="col">
+											<label htmlFor="name">
+												<TextInput
+													value={dieticianData.name}
+													id="name"
+													onChange={handleChangeDieticianValues}
+												></TextInput>
+											</label>
+										</div>
+										<div className="col">
+											<label>
+												<TextInput
+													value={dieticianData.place}
+													id="place"
+													onChange={handleChangeDieticianValues}
+												></TextInput>
+											</label>
+										</div>
+									</div>
+									<hr />
+									<div className="row">
+										<div className="col">
+											<label>
+												<h6>Puhelin</h6>
+											</label>
+										</div>
+										<div className="col">
+											<label>
+												<h6>Sähköposti</h6>
+											</label>
+										</div>
+									</div>
+									<div className="row">
+										<div className="col">
+											<label htmlFor="puhelin">
+												<TextInput
+													value={dieticianData.phone}
+													id="phone"
+													onChange={handleChangeDieticianValues}
+												></TextInput>
+											</label>
+										</div>
+										<div className="col">
+											<label htmlFor="email">
+												<TextInput
+													value={dieticianData.email}
+													id="email"
+													onChange={handleChangeDieticianValues}
+												></TextInput>
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div className="row text-left">
+								<div className="col-sm-12">
+									<hr />
+									<h5>Erikoisosaamiset</h5>
+								</div>
+								<ExpertiesList
+									experties={experties}
+									selectedExperties={dieticianData.expertises}
+									onChange={handleExpertiesChange}
+								/>
+							</div>
+							<div className="row">
+								<div className="col-sm-12">
+									<hr />
+									<button
+										type="button"
+										className="btn btn-primary mr-1"
+										onClick={handleSubmitData}
+									>
+										Tallenna
+									</button>
+									<button
+										type="button"
+										className="btn btn-danger ml-1"
+										onClick={handleCancel}
+									>
+										Peruuta
+									</button>
+								</div>
+							</div>
+						</div>
+					</form>
 				</div>
 			</div>
 
@@ -204,6 +329,71 @@ export default function DieticianBookings(props) {
 		</div>
 	);
 
+	function handleChangeDieticianValues(e) {
+		if (e.target.id == "name")
+			setDieticianData({ ...dieticianData, name: e.target.value });
+
+		if (e.target.id == "phone")
+			setDieticianData({ ...dieticianData, phone: e.target.value });
+
+		if (e.target.id == "email")
+			setDieticianData({ ...dieticianData, email: e.target.value });
+
+		if (e.target.id == "place")
+			setDieticianData({ ...dieticianData, place: e.target.value });
+	}
+
+	function handleCancel() {
+		DieticianAPI.get(dieticianId).then((success) => {
+			setDieticianData(success.data);
+		});
+	}
+
+	function handleExpertiesChange(e) {
+		for (let i = 0; i < dieticianData.expertises.length; i++) {
+			if (dieticianData.expertises[i].id == e.target.id) {
+				let exp = dieticianData.expertises;
+				exp.splice(i, 1);
+
+				setDieticianData({ ...dieticianData, expertises: exp });
+				return;
+			}
+		}
+
+		let exp = dieticianData.expertises;
+		exp.push({ id: e.target.id });
+
+		setDieticianData({ ...dieticianData, expertises: exp });
+	}
+
+	function handleSubmitData(e) {
+		e.preventDefault();
+
+		let checkedExperties = [];
+
+		try {
+			dieticianData.expertises.forEach((c) => {
+				checkedExperties.push(parseInt(c.id));
+			});
+		} catch {}
+
+		console.log("Expertises to submit: ", checkedExperties);
+
+		DieticianAPI.update(dieticianId, {
+			...dieticianData,
+			expertises: checkedExperties,
+		}).then((success) => {
+			NotificationManager.success("Tiedot päivitettiin onnistuneesti.");
+			DieticianAPI.get(dieticianId).then(
+				(success) => {
+					setDieticianData(success.data);
+				},
+				(error) => {
+					NotificationManager.error("Virhe päivitettäessä tietoja");
+				}
+			);
+		});
+	}
 	function compareDates(a, b) {
 		if (a.startsAt > b.startsAt) return 1;
 		if (a.startsAt < b.startsAt) return -1;

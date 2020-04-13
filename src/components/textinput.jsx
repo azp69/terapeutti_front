@@ -8,6 +8,8 @@ export default function TextInput({
 	type,
 	error,
 	onChange,
+	value,
+	defaultValue,
 }) {
 	const err = error ? " validationError" : "";
 	const style = "form-control" + err;
@@ -21,6 +23,8 @@ export default function TextInput({
 				id={id}
 				placeholder={error ? error : placeholder}
 				onChange={onChange}
+				value={value}
+				defaultValue={defaultValue}
 			/>
 		</>
 	);
