@@ -399,20 +399,26 @@ export default function DieticianBookings(props) {
 		DieticianAPI.update(dieticianId, {
 			...dieticianData,
 			expertises: checkedExperties,
-		}).then((success) => {
-			NotificationManager.success("Tiedot päivitettiin onnistuneesti.");
-			DieticianAPI.get(dieticianId).then(
-				(success) => {
+		}).then(
+			(success) => {
+				NotificationManager.success("Tiedot päivitettiin onnistuneesti.");
+				DieticianAPI.get(dieticianId).then((success) => {
 					setDieticianData(success.data);
-				},
-				(error) => {
-					console.log("virhettä pukkaa");
-					if (error.response.status === 401) {
-						NotificationManager.error("Virhe päivitettäessä tietoja");
-					}
+				});
+			},
+
+			(error) => {
+				console.log("virhettä pukkaa");
+				if (error.response.status === 401) {
+					NotificationManager.error("Autentikointivirhe. Kirjaudu sisään.");
+					Helper.setCookie("dieticianId", "", -1);
+					Helper.setCookie("admin", "", -1);
+					Helper.setCookie("accesstoken", "", -1);
+					props.authenticationHandler({ admin: 0, auth: 0 });
+					setTimeout(() => window.location.assign("/kirjaudu"), 2000);
 				}
-			);
-		});
+			}
+		);
 	}
 	function compareDates(a, b) {
 		if (a.startsAt > b.startsAt) return 1;
@@ -436,11 +442,11 @@ export default function DieticianBookings(props) {
 			(error) => {
 				if (error.response.status === 401) {
 					NotificationManager.error("Autentikointivirhe. Kirjaudu sisään.");
-					Helper.setCookie("accesstoken", "", -1);
 					Helper.setCookie("dieticianId", "", -1);
 					Helper.setCookie("admin", "", -1);
-
-					return <Redirect to="/kirjaudu" />;
+					Helper.setCookie("accesstoken", "", -1);
+					props.authenticationHandler({ admin: 0, auth: 0 });
+					setTimeout(() => window.location.assign("/kirjaudu"), 2000);
 				} else NotificationManager.error("Virhe ladattaessa tietoja.");
 
 				console.log(error.response.status);
@@ -478,7 +484,11 @@ export default function DieticianBookings(props) {
 				(error) => {
 					if (error.response.status === 401) {
 						NotificationManager.error("Autentikointivirhe. Kirjaudu sisään.");
+						Helper.setCookie("dieticianId", "", -1);
+						Helper.setCookie("admin", "", -1);
 						Helper.setCookie("accesstoken", "", -1);
+						props.authenticationHandler({ admin: 0, auth: 0 });
+						setTimeout(() => window.location.assign("/kirjaudu"), 2000);
 					} else NotificationManager.error("Virhe poistaessa varausta");
 				}
 			);

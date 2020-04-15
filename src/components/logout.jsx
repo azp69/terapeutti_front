@@ -19,10 +19,11 @@ import "../css/welcome.css";
 import "../css/textInput.css";
 
 export default function Logout({ authenticationHandler }) {
-	AuthAPI.logout().then((success) => {
-		Helper.setCookie("accesstoken", "", -1);
-		authenticationHandler(0);
-	});
+	AuthAPI.logout().then((success) => {});
+
+	Helper.setCookie("accesstoken", "", -1);
+	Helper.setCookie("admin", "", -1);
+	authenticationHandler({ admin: 0, auth: 0 });
 
 	return (
 		<div>

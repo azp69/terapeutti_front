@@ -3,8 +3,17 @@ import * as DieticianAPI from "../services/dieticianAPI";
 import CustomModal from "./customModal";
 import DieticianModal from "./dieticianModal";
 import TextInput from "./textinput";
+import * as Helper from "./helper";
 
 import Modal from "./modal.jsx";
+
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+	Link,
+	Redirect,
+} from "react-router-dom";
 
 import "../css/welcome.css";
 import "../css/textInput.css";
@@ -90,9 +99,21 @@ export default function AdminControl(props) {
 	}
 
 	function getPendingDieticians() {
-		DieticianAPI.getPendingDieticians().then((success) => {
-			setPendingDieticians(success.data);
-		});
+		DieticianAPI.getPendingDieticians().then(
+			(success) => {
+				setPendingDieticians(success.data);
+			},
+			(error) => {
+				if (error.response.status === 401) {
+					NotificationManager.error("Autentikointivirhe. Kirjaudu sisään.");
+					Helper.setCookie("dieticianId", "", -1);
+					Helper.setCookie("admin", "", -1);
+					Helper.setCookie("accesstoken", "", -1);
+					props.authenticationHandler({ admin: 0, auth: 0 });
+					setTimeout(() => window.location.assign("/kirjaudu"), 2000);
+				}
+			}
+		);
 	}
 
 	function approveDietician(dieticianId) {
@@ -116,9 +137,14 @@ export default function AdminControl(props) {
 				expertises: [],
 			},
 		};
-		DieticianAPI.search(searchParams).then((success) => {
-			setDieticianSearchResult(success.data);
-		});
+		DieticianAPI.search(searchParams).then(
+			(success) => {
+				setDieticianSearchResult(success.data);
+			},
+			(error) => {
+				console.log("Error: ", error);
+			}
+		);
 	}
 
 	return (

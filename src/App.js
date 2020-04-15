@@ -34,7 +34,7 @@ function App() {
 		Helper.getCookie("accesstoken") != "" ? 1 : 0
 	);
 
-	const [admin, setAdmin] = useState(Helper.getCookie("admin") == 1 ? 1 : 0);
+	const [admin, setAdmin] = useState();
 
 	return (
 		<Router>
@@ -73,15 +73,15 @@ function App() {
 					</Route>
 
 					<Route path="/kayttajahallinta">
-						<UserControl />
+						<UserControl authenticationHandler={authHandler} />
 					</Route>
 
 					<Route path="/varaukset">
-						<DieticianBookings />
+						<DieticianBookings authenticationHandler={authHandler} />
 					</Route>
 
 					<Route path="/adminhallinta">
-						<AdminControl />
+						<AdminControl authenticationHandler={authHandler} />
 					</Route>
 
 					<Route path="/logout">
