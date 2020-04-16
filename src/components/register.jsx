@@ -67,7 +67,6 @@ export default function Register() {
 											id="Firstname"
 											label="Etunimi"
 											placeholder="Syötä etunimi"
-											error={errors.name ? errors.name : ""}
 											onChange={handleInputChange}
 										/>
 									</div>
@@ -77,7 +76,6 @@ export default function Register() {
 											id="Lastname"
 											label="Sukunimi"
 											placeholder="Syötä sukunimi"
-											error={errors.name ? errors.name : ""}
 											onChange={handleInputChange}
 										/>
 									</div>
@@ -122,7 +120,6 @@ export default function Register() {
 									id="Email"
 									label="Sähköposti"
 									placeholder="Syötä sähköposti"
-									error={errors.email ? errors.email : ""}
 									onChange={handleInputChange}
 								/>
 							</div>
@@ -167,7 +164,7 @@ export default function Register() {
 	);
 
 	function queryDone(response) {
-		setErrors(response.errors);
+		// setErrors(response.errors);
 	}
 
 	function handleInputChange(e) {

@@ -81,8 +81,9 @@ export default function Login(props) {
 			(success) => {
 				Helper.setCookie("accesstoken", success.data.AccessToken, 1);
 				Helper.setCookie("dieticianId", success.data.dieticianId, 1);
-				Helper.setCookie("admin", success.data.dieticianId ? 1 : 0);
 
+				Helper.setCookie("admin", success.data.dieticianId == null ? 1 : 0);
+				console.log("Admin asetetaan: ", Helper.getCookie("admin"));
 				props.authenticationHandler({
 					admin: success.data.dieticianId ? 0 : 1,
 					auth: 1,

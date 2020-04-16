@@ -88,9 +88,7 @@ export function get(id) {
 }
 
 export function add(data) {
-	const url = devMode
-		? `${devUrl}api/dieticians`
-		: `${releaseUrl}api/dieticians`;
+	const url = devMode ? `${devUrl}api/users` : `${releaseUrl}api/users`;
 
 	const request = axios.post(url, data, {
 		headers: {
