@@ -3,6 +3,7 @@ import * as BookingAPI from "../services/bookingAPI";
 import * as DieticianAPI from "../services/dieticianAPI";
 import * as ExpertiesAPI from "../services/expertiesAPI";
 import DieticianProfileEdit from "./dieticianProfileEdit";
+import { Calendar } from "./calendar";
 
 import * as Helper from "./helper";
 import ExpertiesList from "./expertiesList";
@@ -95,6 +96,14 @@ export default function DieticianBookings(props) {
 				<td key={`resTodayCell_3_${index}`}>{x.description}</td>
 				<td key={`resTodayCell_4_${index}`}>
 					<button
+						className="btn btn-info"
+						onClick={() => handleOnBookingEdit(x.id)}
+					>
+						Muokkaa
+					</button>
+				</td>
+				<td key={`resTodayCell_5_${index}`}>
+					<button
 						className="btn btn-danger"
 						onClick={() => deleteBooking(x.id)}
 					>
@@ -121,7 +130,15 @@ export default function DieticianBookings(props) {
 					)}
 				</td>
 				<td key={`resTomorrowRow_3${index}`}>{x.description}</td>
-				<td key={`resTomorrowRow_4_${index}`}>
+				<td key={`resTomorrowRow_4_${index}`} className="text-right">
+					<button
+						className="btn btn-info"
+						onClick={() => handleOnBookingEdit(x.id)}
+					>
+						Muokkaa
+					</button>
+				</td>
+				<td key={`resTomorrowRow_5_${index}`} className="text-right">
 					<button
 						className="btn btn-danger"
 						onClick={() => deleteBooking(x.id)}
@@ -149,7 +166,15 @@ export default function DieticianBookings(props) {
 					)}
 				</td>
 				<td key={`resCell_3_${index}`}>{x.description}</td>
-				<td key={`resCell_4_${index}`}>
+				<td key={`resCell_4_${index}`} className="text-right">
+					<button
+						className="btn btn-info"
+						onClick={() => handleOnBookingEdit(x.id)}
+					>
+						Muokkaa
+					</button>
+				</td>
+				<td key={`resCell_5_${index}`} className="text-right">
 					<button
 						className="btn btn-danger"
 						onClick={() => deleteBooking(x.id)}
@@ -177,67 +202,84 @@ export default function DieticianBookings(props) {
 			/>
 			<div className="row">
 				<div className="col-sm-12 mt-4 px-0">
-					<div className="card-group">
-						<div className="card">
-							<div className="card-body bg-light">
-								<h1>Varaukset tänään</h1>
-								<table className="table">
-									<thead>
-										<tr>
-											<th>Ajankohta</th>
-											<th>Asiakas</th>
-											<th>Viesti</th>
-											<th></th>
-										</tr>
-									</thead>
-									<tbody>{reservationsToday}</tbody>
-								</table>
-							</div>
-						</div>
-
-						<div className="card">
-							<div className="card-body bg-light">
-								<h1>Varaukset huomenna</h1>
-								<table className="table">
-									<thead>
-										<tr>
-											<th>Ajankohta</th>
-											<th>Asiakas</th>
-											<th>Viesti</th>
-											<th></th>
-										</tr>
-									</thead>
-									<tbody>{reservationTomorrow}</tbody>
-								</table>
-							</div>
+					<div className="card">
+						<div className="card-body bg-light">
+							<h1>Varauskalenterisi</h1>
+							<Calendar
+								dieticianId={dieticianData.id}
+								onUpdate={onReservationUpdate}
+							/>
 						</div>
 					</div>
 				</div>
 
 				<div className="col-sm-12 mt-4 px-0">
-					<div className="card-deck">
-						<div className="card">
-							<div className="card-body bg-light">
-								<h1>Varaukset seuraavat 2 viikkoa</h1>
-								<table className="table">
-									<thead>
-										<tr>
-											<th>Ajankohta</th>
-											<th>Asiakas</th>
-											<th>Viesti</th>
-											<th></th>
-										</tr>
-									</thead>
+					<div className="card">
+						<div className="card-body bg-light">
+							<h1>Varaukset tänään</h1>
+							<table className="table">
+								<thead>
+									<tr>
+										<th>Ajankohta</th>
+										<th>Asiakas</th>
+										<th>Viesti</th>
+										<th></th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>{reservationsToday}</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
 
-									<tbody>{reservationRest}</tbody>
-								</table>
-							</div>
+				<div className="col-sm-12 mt-4 px-0">
+					<div className="card">
+						<div className="card-body bg-light">
+							<h1>Varaukset huomenna</h1>
+							<table className="table">
+								<thead>
+									<tr>
+										<th>Ajankohta</th>
+										<th>Asiakas</th>
+										<th>Viesti</th>
+										<th></th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>{reservationTomorrow}</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+				<div className="col-sm-12 mt-4 px-0">
+					<div className="card">
+						<div className="card-body bg-light">
+							<h1>Varaukset seuraavat 2 viikkoa</h1>
+							<table className="table">
+								<thead>
+									<tr>
+										<th>Ajankohta</th>
+										<th>Asiakas</th>
+										<th>Viesti</th>
+										<th></th>
+										<th></th>
+									</tr>
+								</thead>
+
+								<tbody>{reservationRest}</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
 			</div>
 		</>
 	);
+
+	function onReservationUpdate() {
+		getBookings();
+	}
 
 	function handleChangeDieticianValues(e) {
 		if (e.target.id == "name")
@@ -258,6 +300,10 @@ export default function DieticianBookings(props) {
 			setDieticianData(success.data);
 			NotificationManager.success("Tekemäsi muutokset peruutettiin");
 		});
+	}
+
+	function handleOnBookingEdit(bookingId) {
+		console.log("Booking id:", bookingId);
 	}
 
 	function handleExpertiesChange(e) {

@@ -12,7 +12,7 @@ import {
 import "../css/calendar.css";
 import "../css/modal.css";
 
-export function Calendar({ calEvents, dieticianId }) {
+export function Calendar({ calEvents, dieticianId, customerData, onUpdate }) {
 	const calBase = drawCalendar();
 
 	const [reservationData, setReservationData] = useState(null);
@@ -132,6 +132,9 @@ export function Calendar({ calEvents, dieticianId }) {
 		BookingAPI.add(resObject).then(
 			(success) => {
 				NotificationManager.success("Varaus luotiin onnistuneesti");
+				if (onUpdate != null) {
+					onUpdate();
+				}
 				setIsOpen(false);
 				// console.log("API Response in responsehandler: ", response);
 			},
