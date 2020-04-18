@@ -11,7 +11,7 @@ export default function ExpertisesList({
 
 	return experties.map((expertise) => {
 		return (
-			<div key={expertise.id} className="col-sm-12 col-md-6 col-lg-4">
+			<div key={expertise.id} className="col-sm-12 col-md-3 col-lg-3 ml-5">
 				<label className="form-check-label">
 					<input
 						type="checkbox"

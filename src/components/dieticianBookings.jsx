@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import * as BookingAPI from "../services/bookingAPI";
 import * as DieticianAPI from "../services/dieticianAPI";
 import * as ExpertiesAPI from "../services/expertiesAPI";
+import DieticianProfileEdit from "./dieticianProfileEdit";
+
 import * as Helper from "./helper";
 import ExpertiesList from "./expertiesList";
 import {
@@ -164,185 +166,77 @@ export default function DieticianBookings(props) {
 	if (dieticianData == null) return null;
 
 	return (
-		<div className="row">
-			<div className="col-sm-12 mt-5 card card-body bg-light">
-				<div className="py-5 my-3 px-5 text-center">
-					<form>
-						<h1>Omat tietosi</h1>
-						<div className="container">
-							<div className="row">
-								<div className="col-4 text-center">
-									<h2>kuva</h2>
-								</div>
-								<div className="col-8">
-									<div className="row">
-										<div className="col">
-											<label>
-												<h6>Nimi</h6>
-											</label>
-										</div>
-										<div className="col">
-											<label>
-												<h6>Toimipaikka</h6>
-											</label>
-										</div>
-									</div>
-									<div className="row">
-										<div className="col">
-											<label htmlFor="name">
-												<TextInput
-													value={dieticianData.name}
-													id="name"
-													onChange={handleChangeDieticianValues}
-												></TextInput>
-											</label>
-										</div>
-										<div className="col">
-											<label htmlFor="Place">
-												<select
-													className="form-control"
-													id="Place"
-													onChange={handleChangeDieticianValues}
-												>
-													<option>Helsinki</option>
-													<option>Vantaa</option>
-													<option>Espoo</option>
-													<option>Kuopio</option>
-													<option>Oulu</option>
-												</select>
-											</label>
-										</div>
-									</div>
-									<hr />
-									<div className="row">
-										<div className="col">
-											<label>
-												<h6>Puhelin</h6>
-											</label>
-										</div>
-										<div className="col">
-											<label>
-												<h6>Koulutus</h6>
-											</label>
-										</div>
-									</div>
-									<div className="row">
-										<div className="col">
-											<label htmlFor="puhelin">
-												<TextInput
-													value={dieticianData.phone}
-													id="phone"
-													onChange={handleChangeDieticianValues}
-												></TextInput>
-											</label>
-										</div>
-										<div className="col">
-											<label htmlFor="education">
-												<TextInput
-													value={dieticianData.education}
-													id="education"
-													onChange={handleChangeDieticianValues}
-												></TextInput>
-											</label>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div className="row text-left">
-								<div className="col-sm-12">
-									<hr />
-									<h5>Erikoisosaamiset</h5>
-								</div>
-								<ExpertiesList
-									experties={experties}
-									selectedExperties={dieticianData.expertises}
-									onChange={handleExpertiesChange}
-								/>
-							</div>
-							<div className="row">
-								<div className="col-sm-12">
-									<hr />
-									<button
-										type="button"
-										className="btn btn-primary mr-1"
-										onClick={handleSubmitData}
-									>
-										Tallenna
-									</button>
-									<button
-										type="button"
-										className="btn btn-danger ml-1"
-										onClick={handleCancel}
-									>
-										Peruuta
-									</button>
-								</div>
+		<>
+			<DieticianProfileEdit
+				profile={dieticianData}
+				dataChangeHandler={handleChangeDieticianValues}
+				handleSubmitData={handleSubmitData}
+				handleCancel={handleCancel}
+				experties={experties}
+				handleExpertiesChange={handleExpertiesChange}
+			/>
+			<div className="row">
+				<div className="col-sm-12 mt-4 px-0">
+					<div className="card-group">
+						<div className="card">
+							<div className="card-body bg-light">
+								<h1>Varaukset tänään</h1>
+								<table className="table">
+									<thead>
+										<tr>
+											<th>Ajankohta</th>
+											<th>Asiakas</th>
+											<th>Viesti</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>{reservationsToday}</tbody>
+								</table>
 							</div>
 						</div>
-					</form>
-				</div>
-			</div>
 
-			<div className="col-sm-12 mt-4 px-0">
-				<div className="card-group">
-					<div className="card">
-						<div className="card-body bg-light">
-							<h1>Varaukset tänään</h1>
-							<table className="table">
-								<thead>
-									<tr>
-										<th>Ajankohta</th>
-										<th>Asiakas</th>
-										<th>Viesti</th>
-										<th></th>
-									</tr>
-								</thead>
-								<tbody>{reservationsToday}</tbody>
-							</table>
+						<div className="card">
+							<div className="card-body bg-light">
+								<h1>Varaukset huomenna</h1>
+								<table className="table">
+									<thead>
+										<tr>
+											<th>Ajankohta</th>
+											<th>Asiakas</th>
+											<th>Viesti</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>{reservationTomorrow}</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
+				</div>
 
-					<div className="card">
-						<div className="card-body bg-light">
-							<h1>Varaukset huomenna</h1>
-							<table className="table">
-								<thead>
-									<tr>
-										<th>Ajankohta</th>
-										<th>Asiakas</th>
-										<th>Viesti</th>
-										<th></th>
-									</tr>
-								</thead>
-								<tbody>{reservationTomorrow}</tbody>
-							</table>
+				<div className="col-sm-12 mt-4 px-0">
+					<div className="card-deck">
+						<div className="card">
+							<div className="card-body bg-light">
+								<h1>Varaukset seuraavat 2 viikkoa</h1>
+								<table className="table">
+									<thead>
+										<tr>
+											<th>Ajankohta</th>
+											<th>Asiakas</th>
+											<th>Viesti</th>
+											<th></th>
+										</tr>
+									</thead>
+
+									<tbody>{reservationRest}</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-
-			<div className="col-sm-12 mt-4 px-0">
-				<div className="card-deck">
-					<div className="card">
-						<div className="card-body bg-light">
-							<h1>Varaukset seuraavat 2 viikkoa</h1>
-							<table className="table">
-								<thead>
-									<tr>
-										<th>Ajankohta</th>
-										<th>Asiakas</th>
-										<th>Viesti</th>
-										<th></th>
-									</tr>
-								</thead>
-
-								<tbody>{reservationRest}</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+		</>
 	);
 
 	function handleChangeDieticianValues(e) {
@@ -355,7 +249,7 @@ export default function DieticianBookings(props) {
 		if (e.target.id == "education")
 			setDieticianData({ ...dieticianData, education: e.target.value });
 
-		if (e.target.id == "place")
+		if (e.target.id == "Place")
 			setDieticianData({ ...dieticianData, place: e.target.value });
 	}
 
@@ -395,6 +289,7 @@ export default function DieticianBookings(props) {
 		} catch {}
 
 		console.log("Expertises to submit: ", checkedExperties);
+		console.log("DieticianData to submit: ", dieticianData);
 
 		DieticianAPI.update(dieticianId, {
 			...dieticianData,
