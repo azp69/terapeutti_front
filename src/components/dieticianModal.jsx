@@ -100,9 +100,13 @@ export default function DieticianModal(props) {
 						<button
 							type="button"
 							className="btn btn-primary ml-1"
-							onClick={() => props.approveDietician(props.dieticianId)}
+							onClick={() =>
+								dieticianData.isPending
+									? props.approveDietician(props.dieticianId)
+									: props.deactivateDietician(props.dieticianId)
+							}
 						>
-							Hyväksy
+							{dieticianData.isPending ? "Hyväksy" : "Deaktivoi"}
 						</button>
 					</form>
 				</div>

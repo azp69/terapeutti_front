@@ -33,6 +33,8 @@ export default function DieticianBookings(props) {
 	const [reservationData, setReservationData] = useState();
 	const [dieticianData, setDieticianData] = useState();
 	const [experties, setExperties] = useState();
+	const [customerData, setCustomerData] = useState();
+	const [openModal, setOpenModal] = useState(false);
 
 	const dieticianId = Helper.getCookie("dieticianId");
 	const today = convertDate(new Date());
@@ -208,6 +210,8 @@ export default function DieticianBookings(props) {
 							<Calendar
 								dieticianId={dieticianData.id}
 								onUpdate={onReservationUpdate}
+								customerData={customerData}
+								openModal={openModal}
 							/>
 						</div>
 					</div>
@@ -304,6 +308,10 @@ export default function DieticianBookings(props) {
 
 	function handleOnBookingEdit(bookingId) {
 		console.log("Booking id:", bookingId);
+		const cust = reservationData.filter((x) => x.id == bookingId);
+		console.log("custo ", cust[0].customer);
+		setCustomerData(cust[0].customer);
+		setOpenModal(true);
 	}
 
 	function handleExpertiesChange(e) {

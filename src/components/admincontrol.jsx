@@ -130,6 +130,20 @@ export default function AdminControl(props) {
 		);
 	}
 
+	function deactivateDietician(dieticianId) {
+		console.log("Approving dietician: ", dieticianId);
+		DieticianAPI.deactivateDietician(dieticianId).then(
+			(success) => {
+				NotificationManager.success("Terapeutti on nyt deaktivoitu");
+				setIsOpen(false);
+				getPendingDieticians();
+			},
+			(error) => {
+				NotificationManager.error("Jokin meni pieleen");
+			}
+		);
+	}
+
 	function handleDieticianSearch(e) {
 		const searchParams = {
 			searchparams: {
@@ -154,6 +168,7 @@ export default function AdminControl(props) {
 				setIsOpen={setIsOpen}
 				dieticianId={selectedDietician}
 				approveDietician={approveDietician}
+				deactivateDietician={deactivateDietician}
 			/>
 
 			<div>

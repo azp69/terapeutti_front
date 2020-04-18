@@ -12,10 +12,16 @@ import {
 import "../css/calendar.css";
 import "../css/modal.css";
 
-export function Calendar({ calEvents, dieticianId, customerData, onUpdate }) {
+export function Calendar({
+	calEvents,
+	dieticianId,
+	customerData,
+	onUpdate,
+	openModal,
+}) {
 	const calBase = drawCalendar();
 
-	const [reservationData, setReservationData] = useState(null);
+	const [reservationData, setReservationData] = useState();
 	const [selectedDate, setSelectedDate] = useState();
 	const [modalIsOpen, setIsOpen] = React.useState(false);
 
@@ -89,9 +95,24 @@ export function Calendar({ calEvents, dieticianId, customerData, onUpdate }) {
 						data={res}
 						onChange={handleReservationDropDownChange}
 					/>
-					<TextInput label="Nimi" id="name" placeholder="Nimi" />
-					<TextInput label="Sähköposti" id="email" placeholder="Sähköposti" />
-					<TextInput label="Viesti" id="description" placeholder="Viesti" />
+					<TextInput
+						label="Nimi"
+						id="name"
+						placeholder="Nimi"
+						defaultValue={customerData ? customerData.name : ""}
+					/>
+					<TextInput
+						label="Sähköposti"
+						id="email"
+						placeholder="Sähköposti"
+						defaultValue={customerData ? customerData.email : ""}
+					/>
+					<TextInput
+						label="Viesti"
+						id="description"
+						placeholder="Viesti"
+						defaultValue={customerData ? customerData.description : ""}
+					/>
 					<button
 						className="btn btn-primary"
 						onClick={(e) => handleReservationSubmit(e)}

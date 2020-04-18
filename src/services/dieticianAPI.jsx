@@ -62,6 +62,25 @@ export function approveDietician(id) {
 	return request;
 }
 
+export function deactivateDietician(id) {
+	const url = devMode
+		? `${devUrl}api/dieticians/${id}`
+		: `${releaseUrl}api/dieticians/${id}`;
+
+	const request = axios.put(
+		url,
+		{ isPending: 1 },
+		{
+			headers: {
+				"Content-Type": "application/json",
+				AccessToken: Helper.getCookie("accesstoken"),
+			},
+		}
+	);
+
+	return request;
+}
+
 export function get(id) {
 	const url = devMode
 		? `${devUrl}api/dieticians/${id}`
