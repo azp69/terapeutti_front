@@ -189,6 +189,11 @@ export function Calendar({
 	}
 
 	function checkForReservation(begin, end, reservations) {
+		const dateNow = new Date();
+		console.log("nyt: ", dateNow);
+
+		if (dateNow >= new Date(`${selectedDate} ${begin}`)) return true;
+
 		for (let i = 0; i < reservations.length; i++) {
 			let element = reservations[i];
 			const start = getHoursAndMinutesFromDate(new Date(element.startsAt));
