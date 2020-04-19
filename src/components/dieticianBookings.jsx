@@ -35,6 +35,7 @@ export default function DieticianBookings(props) {
 	const [experties, setExperties] = useState();
 	const [customerData, setCustomerData] = useState();
 	const [openModal, setOpenModal] = useState(false);
+	const [oldBookingId, setOldBookingId] = useState();
 
 	const dieticianId = Helper.getCookie("dieticianId");
 	const today = convertDate(new Date());
@@ -82,7 +83,10 @@ export default function DieticianBookings(props) {
 
 	const reservationsToday = resDataToday.map((x, index) => {
 		return (
-			<tr key={`resTodayRow_1_${index}`}>
+			<tr
+				key={`resTodayRow_1_${index}`}
+				className={x.id == oldBookingId ? `bg-dark text-light` : ``}
+			>
 				<td key={`resTodayCell_1_${index}`}>
 					{getNameOfDay(x.startsAt)} {getDayMonthYear(x.startsAt)}{" "}
 					{getHoursAndMinutesFromDate(x.startsAt)} -{" "}
@@ -96,17 +100,16 @@ export default function DieticianBookings(props) {
 					)}
 				</td>
 				<td key={`resTodayCell_3_${index}`}>{x.description}</td>
-				<td key={`resTodayCell_4_${index}`}>
+				<td key={`resTodayCell_4_${index}`} className="text-right">
 					<button
-						className="btn btn-info"
+						className="btn btn-info mr-2"
 						onClick={() => handleOnBookingEdit(x.id)}
 					>
 						Muokkaa
 					</button>
-				</td>
-				<td key={`resTodayCell_5_${index}`}>
+
 					<button
-						className="btn btn-danger"
+						className="btn btn-danger mr-2"
 						onClick={() => deleteBooking(x.id)}
 					>
 						Peruuta
@@ -117,8 +120,12 @@ export default function DieticianBookings(props) {
 	});
 
 	const reservationTomorrow = resDataTomorrow.map((x, index) => {
+		console.log("varausid ", x.id);
 		return (
-			<tr key={`resTomorrowRow_1_${index}`}>
+			<tr
+				key={`resTomorrowRow_1_${index}`}
+				className={x.id == oldBookingId ? `bg-dark text-light` : ``}
+			>
 				<td key={`resTomorrowRow_1_${index}`}>
 					{getNameOfDay(x.startsAt)} {getDayMonthYear(x.startsAt)}{" "}
 					{getHoursAndMinutesFromDate(x.startsAt)} -{" "}
@@ -134,15 +141,14 @@ export default function DieticianBookings(props) {
 				<td key={`resTomorrowRow_3${index}`}>{x.description}</td>
 				<td key={`resTomorrowRow_4_${index}`} className="text-right">
 					<button
-						className="btn btn-info"
+						className="btn btn-info mr-2"
 						onClick={() => handleOnBookingEdit(x.id)}
 					>
 						Muokkaa
 					</button>
-				</td>
-				<td key={`resTomorrowRow_5_${index}`} className="text-right">
+
 					<button
-						className="btn btn-danger"
+						className="btn btn-danger mr-2"
 						onClick={() => deleteBooking(x.id)}
 					>
 						Peruuta
@@ -154,7 +160,10 @@ export default function DieticianBookings(props) {
 
 	const reservationRest = resData.map((x, index) => {
 		return (
-			<tr key={`resRow_1_${index}`}>
+			<tr
+				key={`resRow_1_${index}`}
+				className={x.id == oldBookingId ? `bg-dark text-light` : ``}
+			>
 				<td key={`resCell_1_${index}`}>
 					{getNameOfDay(x.startsAt)} {getDayMonthYear(x.startsAt)}{" "}
 					{getHoursAndMinutesFromDate(x.startsAt)} -{" "}
@@ -170,15 +179,14 @@ export default function DieticianBookings(props) {
 				<td key={`resCell_3_${index}`}>{x.description}</td>
 				<td key={`resCell_4_${index}`} className="text-right">
 					<button
-						className="btn btn-info"
+						className="btn btn-info mr-2"
 						onClick={() => handleOnBookingEdit(x.id)}
 					>
 						Muokkaa
 					</button>
-				</td>
-				<td key={`resCell_5_${index}`} className="text-right">
+
 					<button
-						className="btn btn-danger"
+						className="btn btn-danger mr-2"
 						onClick={() => deleteBooking(x.id)}
 					>
 						Peruuta
@@ -228,7 +236,6 @@ export default function DieticianBookings(props) {
 										<th>Asiakas</th>
 										<th>Viesti</th>
 										<th></th>
-										<th></th>
 									</tr>
 								</thead>
 								<tbody>{reservationsToday}</tbody>
@@ -247,7 +254,6 @@ export default function DieticianBookings(props) {
 										<th>Ajankohta</th>
 										<th>Asiakas</th>
 										<th>Viesti</th>
-										<th></th>
 										<th></th>
 									</tr>
 								</thead>
@@ -268,7 +274,6 @@ export default function DieticianBookings(props) {
 										<th>Asiakas</th>
 										<th>Viesti</th>
 										<th></th>
-										<th></th>
 									</tr>
 								</thead>
 
@@ -282,7 +287,11 @@ export default function DieticianBookings(props) {
 	);
 
 	function onReservationUpdate() {
-		getBookings();
+		BookingAPI.remove(oldBookingId).then((success) => {
+			getBookings();
+			setCustomerData(null);
+			setOldBookingId(null);
+		});
 	}
 
 	function handleChangeDieticianValues(e) {
@@ -307,6 +316,13 @@ export default function DieticianBookings(props) {
 	}
 
 	function handleOnBookingEdit(bookingId) {
+		if (oldBookingId == bookingId) {
+			setOldBookingId(null);
+			setCustomerData(null);
+			return;
+		}
+
+		setOldBookingId(bookingId);
 		console.log("Booking id:", bookingId);
 		const cust = reservationData.filter((x) => x.id == bookingId);
 		console.log("custo ", cust[0].customer);
