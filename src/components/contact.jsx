@@ -14,18 +14,18 @@ export default function Contact() {
 				<h1>Tutustutaan!</h1>
 			</div>
 			<div className="col-sm-12 col-md-4 text-center">
-				<p>Matti Meikäläinen</p>
-				<p>matti@meikalainen.fi</p>
+				<p>Reetta Eerikäinen</p>
+				<p>reettaee@student.uef.fi</p>
+				<p>044 295 5552</p>
+			</div>
+			<div className="col-sm-12 col-md-4 text-center">
+				<p>Eevi Peltola</p>
+				<p>eevip@student.uef.fi</p>
 				<p>050-123123123</p>
 			</div>
 			<div className="col-sm-12 col-md-4 text-center">
-				<p>Matti Meikäläinen</p>
-				<p>matti@meikalainen.fi</p>
-				<p>050-123123123</p>
-			</div>
-			<div className="col-sm-12 col-md-4 text-center">
-				<p>Matti Meikäläinen</p>
-				<p>matti@meikalainen.fi</p>
+				<p>Jasmin Qvick</p>
+				<p>jasminq@studen.uef.fi</p>
 				<p>050-123123123</p>
 			</div>
 		</div>
