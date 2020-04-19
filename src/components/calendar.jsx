@@ -97,13 +97,13 @@ export function Calendar({
 					/>
 					<TextInput
 						label="Nimi"
-						id="name"
+						id="resname"
 						placeholder="Nimi"
 						defaultValue={customerData ? customerData.name : ""}
 					/>
 					<TextInput
 						label="Sähköposti"
-						id="email"
+						id="resemail"
 						placeholder="Sähköposti"
 						defaultValue={customerData ? customerData.email : ""}
 					/>
@@ -126,8 +126,8 @@ export function Calendar({
 
 	function handleReservationSubmit(e) {
 		e.preventDefault();
-		const email = document.getElementById("email").value;
-		const name = document.getElementById("name").value;
+		const email = document.getElementById("resemail").value;
+		const name = document.getElementById("resname").value;
 		const description = document.getElementById("description").value;
 		const reservation = document.getElementById("reservationPicker").value;
 
@@ -190,8 +190,6 @@ export function Calendar({
 
 	function checkForReservation(begin, end, reservations) {
 		const dateNow = new Date();
-		console.log("nyt: ", dateNow);
-
 		if (dateNow >= new Date(`${selectedDate} ${begin}`)) return true;
 
 		for (let i = 0; i < reservations.length; i++) {

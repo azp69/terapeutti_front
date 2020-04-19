@@ -287,11 +287,12 @@ export default function DieticianBookings(props) {
 	);
 
 	function onReservationUpdate() {
-		BookingAPI.remove(oldBookingId).then((success) => {
-			getBookings();
-			setCustomerData(null);
-			setOldBookingId(null);
-		});
+		if (oldBookingId != null) {
+			BookingAPI.remove(oldBookingId).then((success) => {});
+		}
+		getBookings();
+		setCustomerData(null);
+		setOldBookingId(null);
 	}
 
 	function handleChangeDieticianValues(e) {
