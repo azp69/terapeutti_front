@@ -326,8 +326,8 @@ export default function DieticianBookings(props) {
 		setOldBookingId(bookingId);
 		console.log("Booking id:", bookingId);
 		const cust = reservationData.filter((x) => x.id == bookingId);
-		console.log("custo ", cust[0].customer);
-		setCustomerData(cust[0].customer);
+		console.log("custo ", cust);
+		setCustomerData({ ...cust[0].customer, description: cust[0].description });
 		setOpenModal(true);
 	}
 
