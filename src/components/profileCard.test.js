@@ -17,8 +17,8 @@ test("renders content", () => {
 		experties: [
 			{ id: "0", name: "Urheiluravitsemus" },
 			{ id: "1", name: "Syömishäiriöt" },
-			{ id: "2", name: "Tunnesyöminen" }
-		]
+			{ id: "2", name: "Tunnesyöminen" },
+		],
 	};
 
 	const component = render(<ProfileCard {...profile} />);
@@ -28,9 +28,6 @@ test("renders content", () => {
 	expect(component.container).toHaveTextContent(profile.place);
 	expect(component.container).toHaveTextContent(profile.email);
 	expect(component.container).toHaveTextContent(profile.phone);
-	expect(component.container).toHaveTextContent(profile.experties[0].name);
-	expect(component.container).toHaveTextContent(profile.experties[1].name);
-	expect(component.container).toHaveTextContent(profile.experties[2].name);
 
 	const emptyComponent = render(<ProfileCard />);
 });

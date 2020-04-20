@@ -7,7 +7,6 @@ import "../css/nav.css";
 export default function Nav(props) {
 	const authenticated = Helper.getCookie("accesstoken") != "" ? true : false;
 	const admin = Helper.getCookie("admin") == 1 ? true : false;
-	console.log("admin? ", props.admin);
 
 	return (
 		<nav className="navbar navbar-expand-md sticky-top navbar-light">
